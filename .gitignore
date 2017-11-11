@@ -3,6 +3,7 @@
 *.swp
 *.pdb
 .project
+.idea
 .pydevproject
 .settings
 __pycache__/
