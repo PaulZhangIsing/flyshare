@@ -5,6 +5,7 @@ Created on 2017/10/27
 '''
 import unittest
 import flyshare.stock.trading as fd
+import flyshare.ApiConfig as ac
 
 class Test(unittest.TestCase):
 
@@ -18,6 +19,9 @@ class Test(unittest.TestCase):
     def test_get_hist_data(self):
         self.set_data()
         print(fd.get_hist_data(self.code, self.start))
+
+    def test_set_api_key(self):
+        ac.api_key = 'default key'
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

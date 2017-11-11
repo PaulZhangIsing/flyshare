@@ -23,6 +23,7 @@ except ImportError:
 
 import json
 import bson.json_util as ju
+import flyshare.ApiConfig as ac
 
 def get_hist_data(code=None, start=None, end=None, ktype='D'):
     """
@@ -39,7 +40,7 @@ def get_hist_data(code=None, start=None, end=None, ktype='D'):
     return
     -------
       DataFrame
-
+        amount  close    code        date    date_stamp   high    low   open        vol
     """
     url = ct.DATA_SOURCE+'/histdata?'
     if code is None:
@@ -52,11 +53,12 @@ def get_hist_data(code=None, start=None, end=None, ktype='D'):
     if end is not None:
         url += '&end='+end
 
+    url += '&api_key='+ ac.api_key
+
     data = json.loads(ju.loads(urlopen(url).read()))
     df = pd.DataFrame(data)
     df = df.drop('_id',1)
     return df
-
 
 def _code_to_symbol(code):
     """
