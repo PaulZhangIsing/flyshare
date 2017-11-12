@@ -11,7 +11,7 @@ You can find your API key on your [account settings page](http://www.asiabigdata
 #### Authenticating your requests
 The Flyshare is free but you must have a API key in order to download data. To get your own API key, you will need to create a free  account and set your API key.
 
-After importing the Quandl module, you can set your API key with the following command: 
+After importing the Flyshare module, you can set your API key with the following command: 
 ```
 flyshare.ApiConfig.api_key = "YOURAPIKEY"
 ```
@@ -27,6 +27,7 @@ To install pyfolio, run:
 
 ```bash
 pip install flyshare
+import flyshare 
 ```
 
 ## Usage

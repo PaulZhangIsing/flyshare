@@ -5,3 +5,5 @@ __author__ = 'Rubing Duan'
 for trading data
 """
 from flyshare.stock.trading import (get_hist_data)
+
+from flyshare.stock.fundamental import (get_stock_basics)

@@ -15,7 +15,7 @@ from bson.json_util import loads
 import pandas as pd
 import numpy as np
 from pymongo import MongoClient
-from flyshare.stock import cons as ct
+from flyshare.stock import cons
 try:
     from urllib.request import urlopen, Request
 except ImportError:
@@ -24,8 +24,9 @@ except ImportError:
 import json
 import bson.json_util as ju
 import flyshare.ApiConfig as ac
+import tushare as ts
 
-def get_hist_data(code=None, start=None, end=None, ktype='D'):
+def get_hist_data(code=None, start=None, end=None, ktype='D', src='tushare'):
     """
     Parameters
     ------
@@ -42,7 +43,10 @@ def get_hist_data(code=None, start=None, end=None, ktype='D'):
       DataFrame
         amount  close    code        date    date_stamp   high    low   open        vol
     """
-    url = ct.DATA_SOURCE+'/histdata?'
+    if src == 'tushare':
+        return ts.get_hist_data(code = code, start= start, end= end, ktype= ktype)
+
+    url = cons.DATA_SOURCE+'/histdata?'
     if code is None:
         return None
     else:
@@ -63,12 +67,15 @@ def get_hist_data(code=None, start=None, end=None, ktype='D'):
 
 def _code_to_symbol(code):
     """
-        生成symbol代码标志
+        convert code to symbol
     """
-    if code in ct.INDEX_LABELS:
-        return ct.INDEX_LIST[code]
+    if code in cons.INDEX_LABELS:
+        return cons.INDEX_LIST[code]
     else:
         if len(code) != 6 :
             return code
         else:
             return 'sh%s'%code if code[:1] in ['5', '6', '9'] else 'sz%s'%code
+
+if __name__ == '__main__':
+    print get_hist_data('000001',start='2017-01-01', end='2017-10-10', src='flyshare')
