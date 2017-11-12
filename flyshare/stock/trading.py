@@ -57,7 +57,8 @@ def get_hist_data(code=None, start=None, end=None, ktype='D'):
 
     data = json.loads(ju.loads(urlopen(url).read()))
     df = pd.DataFrame(data)
-    df = df.drop('_id',1)
+    if '_id' in df:
+        df = df.drop('_id',1)
     return df
 
 def _code_to_symbol(code):
