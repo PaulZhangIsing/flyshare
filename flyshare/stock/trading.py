@@ -25,8 +25,9 @@ import json
 import bson.json_util as ju
 import flyshare.ApiConfig as ac
 import tushare as ts
+import datetime
 
-def get_hist_data(code=None, start=None, end=None, ktype='D', src='tushare'):
+def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='tushare'):
     """
     Parameters
     ------
@@ -38,32 +39,40 @@ def get_hist_data(code=None, start=None, end=None, ktype='D', src='tushare'):
                   End Date format：YYYY-MM-DD
       ktype：string
                   Data Type，D=Day W=Week M=Month 5=5min 15=15min 30=30min 60=60min，Default is 'D'
+      data_source: string
+                  tushare, datareader, flyshare
     return
     -------
       DataFrame
         amount  close    code        date    date_stamp   high    low   open        vol
     """
-    if src == 'tushare':
+    if data_source == 'tushare':
         return ts.get_hist_data(code = code, start= start, end= end, ktype= ktype)
+    elif data_source == 'datareader':
+        import pandas_datareader.data as web
 
-    url = cons.DATA_SOURCE+'/histdata?'
-    if code is None:
-        return None
-    else:
-        url += 'code='+code
+        start = datetime.datetime.strptime(start, '%Y-%m-%d')
+        end = datetime.datetime.strptime(end, '%Y-%m-%d')
+        return web.DataReader(code, 'yahoo', start, end)
+    elif data_source == 'flyshare':
+        url = cons.DATA_SOURCE+'/histdata?'
+        if code is None:
+            return None
+        else:
+            url += 'code='+code
 
-    if start is not None:
-        url += '&start='+start
-    if end is not None:
-        url += '&end='+end
+        if start is not None:
+            url += '&start='+start
+        if end is not None:
+            url += '&end='+end
 
-    url += '&api_key='+ ac.api_key
+        url += '&api_key='+ ac.api_key
 
-    data = json.loads(ju.loads(urlopen(url).read()))
-    df = pd.DataFrame(data)
-    if '_id' in df:
-        df = df.drop('_id',1)
-    return df
+        data = json.loads(ju.loads(urlopen(url).read()))
+        df = pd.DataFrame(data)
+        if '_id' in df:
+            df = df.drop('_id',1)
+        return df
 
 def _code_to_symbol(code):
     """
@@ -78,4 +87,4 @@ def _code_to_symbol(code):
             return 'sh%s'%code if code[:1] in ['5', '6', '9'] else 'sz%s'%code
 
 if __name__ == '__main__':
-    print get_hist_data('000001',start='2017-01-01', end='2017-10-10', src='flyshare')
+    print get_hist_data('AAPL',start='2017-01-01', end='2017-10-10', data_source='datareader')

@@ -22,7 +22,7 @@ try:
 except ImportError:
     from urllib2 import urlopen, Request
 
-def get_stock_basics(date=None, src = 'tushare'):
+def get_stock_basics(date=None, data_source = 'tushare'):
     """
 
 
@@ -50,7 +50,7 @@ def get_stock_basics(date=None, src = 'tushare'):
                pb,
                timeToMarket
     """
-    if src == 'tushare':
+    if data_source == 'tushare':
         print 'tushare'
         return ts.get_stock_basics(date=date)
 
