@@ -6,6 +6,7 @@ Created on 2017/10/27
 import unittest
 import flyshare.stock.trading as fd
 import flyshare.ApiConfig as ac
+import flyshare.util.log as lg
 
 class Test(unittest.TestCase):
 
@@ -22,6 +23,10 @@ class Test(unittest.TestCase):
 
     def test_set_api_key(self):
         ac.api_key = 'default key'
+
+    def test_util_log(self):
+        lg.log_critical("critical")
+
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
