@@ -27,6 +27,7 @@ import flyshare.ApiConfig as ac
 import tushare as ts
 import datetime
 import flyshare.util as util
+from flyshare.util import vars
 
 def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='tushare'):
     """
