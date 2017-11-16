@@ -26,6 +26,7 @@ import bson.json_util as ju
 import flyshare.ApiConfig as ac
 import tushare as ts
 import datetime
+import flyshare.util as util
 
 def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='tushare'):
     """
@@ -46,15 +47,14 @@ def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='tusha
       DataFrame
         amount  close    code        date    date_stamp   high    low   open        vol
     """
-    if data_source == 'tushare':
+    if util.is_tushare(data_source):
         return ts.get_hist_data(code = code, start= start, end= end, ktype= ktype)
-    elif data_source == 'datareader':
+    elif util.is_datareader(data_source):
         import pandas_datareader.data as web
-
         start = datetime.datetime.strptime(start, '%Y-%m-%d')
         end = datetime.datetime.strptime(end, '%Y-%m-%d')
         return web.DataReader(code, 'yahoo', start, end)
-    elif data_source == 'flyshare':
+    elif util.is_flyshare('flyshare'):
         url = cons.DATA_SOURCE+'/histdata?'
         if code is None:
             return None
@@ -73,6 +73,9 @@ def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='tusha
         if '_id' in df:
             df = df.drop('_id',1)
         return df
+
+
+
 
 def _code_to_symbol(code):
     """

@@ -6,7 +6,7 @@ Created on 2017/10/27
 import unittest
 import flyshare.stock.trading as fd
 import flyshare.ApiConfig as ac
-import flyshare.util.log as lg
+import flyshare.util as util
 
 class Test(unittest.TestCase):
 
@@ -25,7 +25,11 @@ class Test(unittest.TestCase):
         ac.api_key = 'default key'
 
     def test_util_log(self):
-        lg.log_critical("critical")
+        util.log_critical("critical")
+
+    def test_ping(self):
+        print util.ping("www.google.com")
+
 
 
 if __name__ == "__main__":

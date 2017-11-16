@@ -6,4 +6,9 @@ for trading data
 """
 from flyshare.stock.trading import (get_hist_data)
 
-from flyshare.stock.fundamental import (get_stock_basics)
+"""
+for fundamental data
+"""
+from flyshare.stock.fundamental import (get_stock_basics, get_report_data,get_balance_sheet,get_cash_flow,
+                                        get_debtpaying_data, get_cashflow_data,get_growth_data,get_operation_data,
+                                        get_profit_data,get_profit_statement)
