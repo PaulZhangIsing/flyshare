@@ -19,3 +19,15 @@ def validate_date(date):
     except:
         return False
 
+def is_today(date):
+    if validate_date(date):
+        if str(today().date()) == date:
+            return True
+        else:
+            return False
+    else:
+        return False
+
+if __name__ == '__main__':
+    date = '2017-11-16'
+    print is_today(date)

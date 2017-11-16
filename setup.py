@@ -85,6 +85,7 @@ if __name__ == "__main__":
                      'Programming Language :: Python :: 3.3',
                      'Programming Language :: Python :: 3.4',
                      'License :: OSI Approved :: BSD License'],
+        install_requires=['tushare>=0.92','pandas_datareader>=0.5.0'],
         packages=['flyshare', 'flyshare.stock'],
         package_data={'': ['*.csv']},
     )

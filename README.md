@@ -4,7 +4,7 @@
 ## Getting Startted
 ### [Authentication](http://www.asiabigdata.org/registration/)
 
-Get your free API key to start using our data.
+Get your free API key to start using the data collected from China stock.
 
 You can find your API key on your [account settings page](http://www.asiabigdata.org/login/).
 

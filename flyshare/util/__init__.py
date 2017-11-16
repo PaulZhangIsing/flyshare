@@ -1,4 +1,4 @@
-from flyshare.util.date import (date_stamp, now, today)
+from flyshare.util.date import (date_stamp, now, today, is_today)
 
 from flyshare.util.csv import (save_csv)
 

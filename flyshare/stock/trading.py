@@ -47,13 +47,32 @@ def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='tusha
       DataFrame
         amount  close    code        date    date_stamp   high    low   open        vol
     """
+    if '.HK' in code:
+        util.log_info("HK data is only available in Datareader!")
+        data_source='datareader'
+
     if util.is_tushare(data_source):
         return ts.get_hist_data(code = code, start= start, end= end, ktype= ktype)
     elif util.is_datareader(data_source):
         import pandas_datareader.data as web
         start = datetime.datetime.strptime(start, '%Y-%m-%d')
         end = datetime.datetime.strptime(end, '%Y-%m-%d')
-        return web.DataReader(code, 'yahoo', start, end)
+        data = None
+        try:
+            data  =  web.DataReader(code, 'yahoo', start, end)
+        except:
+            pass
+        if data is not None:
+            util.log_info("Datareader-Yahoo data:")
+            return data
+        else:
+            try:
+                data = web.DataReader(code, 'google', start, end)
+            except:
+                pass
+            if data is not None:
+                util.log_info("Datareader-Google data:")
+                return data
     elif util.is_flyshare('flyshare'):
         url = cons.DATA_SOURCE+'/histdata?'
         if code is None:
@@ -74,6 +93,34 @@ def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='tusha
             df = df.drop('_id',1)
         return df
 
+def get_tick_data(code=None, date=None, retry_count=3, pause=0.001,
+                  src='sn', data_source = 'tusahre'):
+    if util.is_today(date):
+        return ts.get_today_ticks(code, retry_count, pause)
+    if util.is_tushare(data_source):
+        return ts.get_tick_data(code, date, retry_count, pause, src)
+
+def get_large_order(code=None, date=None, vol=400, retry_count=3, pause=0.001 , data_source = 'tusahre'):
+    if util.is_tushare(data_source):
+        return ts.get_sina_dd(code, date, vol, retry_count, pause)
+
+def get_today_all(data_source='tushare'):
+    if util.is_tushare(data_source):
+        return ts.get_today_all()
+
+def get_realtime_quotes(symbols=None, data_source='tushare'):
+    if util.is_tushare(data_source):
+        return ts.get_realtime_quotes(symbols)
+
+def get_h_data(code, start=None, end=None, autype='qfq',
+               index=False, retry_count=3, pause=0.001, drop_factor=True, data_source='tushare'):
+    if util.is_tushare(data_source):
+        return ts.get_h_data(code, start, end, autype, index, retry_count, pause, drop_factor)
+
+def get_index(data_source='tushare'):
+    if util.is_tushare(data_source):
+        return ts.get_index()
+
 
 
 
@@ -90,4 +137,5 @@ def _code_to_symbol(code):
             return 'sh%s'%code if code[:1] in ['5', '6', '9'] else 'sz%s'%code
 
 if __name__ == '__main__':
-    print get_hist_data('AAPL',start='2017-01-01', end='2017-10-10', data_source='datareader')
+    # print get_hist_data('AAPL',start='2017-01-01', end='2017-10-10', data_source='datareader').head(2)
+    print get_hist_data('0700.HK',start='2017-01-01', end='2017-10-10').head(2)

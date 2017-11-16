@@ -13,7 +13,7 @@ def is_flyshare(source):
         return False
 
 def is_datareader(source):
-    if source in ['datareader']:
+    if source in ['datareader', 'pandas_datareader']:
         return True
     else:
         return False
