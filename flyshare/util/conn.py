@@ -2,43 +2,43 @@
 
 from pytdx.hq import TdxHq_API
 from pytdx.exhq import TdxExHq_API
-from tushare.stock import cons as ct
+from flyshare.util import vars
 
 
 def api(retry_count=3):
     for _ in range(retry_count):
         try:
             api = TdxHq_API(heartbeat=True)
-            api.connect(ct._get_server(), ct.T_PORT)
+            api.connect(_get_server(), vars.T_PORT)
         except Exception as e:
             print(e)
         else:
             return api
-    raise IOError(ct.NETWORK_URL_ERROR_MSG)
+    raise IOError(vars.NETWORK_URL_ERROR_MSG)
 
 
 def xapi(retry_count=3):
     for _ in range(retry_count):
         try:
             api = TdxExHq_API(heartbeat=True)
-            api.connect(ct._get_xserver(), ct.X_PORT)
+            api.connect(_get_xserver(), vars.X_PORT)
         except Exception as e:
             print(e)
         else:
             return api
-    raise IOError(ct.NETWORK_URL_ERROR_MSG)
+    raise IOError(vars.NETWORK_URL_ERROR_MSG)
 
 
 def xapi_x(retry_count=3):
     for _ in range(retry_count):
         try:
             api = TdxExHq_API(heartbeat=True)
-            api.connect(ct._get_xxserver(), ct.X_PORT)
+            api.connect(_get_xxserver(), vars.X_PORT)
         except Exception as e:
             print(e)
         else:
             return api
-    raise IOError(ct.NETWORK_URL_ERROR_MSG)
+    raise IOError(vars.NETWORK_URL_ERROR_MSG)
 
 
 def get_apis():
@@ -52,3 +52,22 @@ def close_apis(conn):
         xapi.disconnect()
     except Exception as e:
         print(e)
+
+
+def _get_server():
+    import random
+    ips = vars.SLIST
+    random.shuffle(ips)
+    return ips[0]
+
+def _get_xserver():
+    import random
+    ips = vars.XLIST
+    random.shuffle(ips)
+    return ips[0]
+
+def _get_xxserver():
+    import random
+    ips = vars.XXLIST
+    random.shuffle(ips)
+    return ips[0]
