@@ -36,3 +36,7 @@ Flyshare 收集了广泛的数据源，为用户提供一个简单、方便、�
 pip install flyshare
 import flyshare 
 ```
+
+### Tutorial
+
+tutorial目录下的 tutorial.ipynb 是一个简单的的例子
