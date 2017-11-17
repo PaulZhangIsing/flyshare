@@ -13,7 +13,7 @@ from lxml import etree
 import re
 import time
 from pandas.compat import StringIO
-from flyshare.stock import cons
+from flyshare.util import vars
 import json
 import bson.json_util as ju
 import tushare as ts
@@ -53,7 +53,7 @@ def get_stock_basics(date=None, data_source = 'tushare'):
         util.log_debug('Tushare Data:')
         return ts.get_stock_basics(date=date)
     elif util.is_flyshare(data_source):
-        url = cons.DATA_SOURCE + '/stockbasics'
+        url = vars.DATA_SOURCE + '/stockbasics'
         if date is not None:
             url += '?date='+date
         data = json.loads(ju.loads(urlopen(url).read()))

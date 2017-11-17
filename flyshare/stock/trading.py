@@ -2,7 +2,7 @@
 """
 Trading Data API 
 Created on 2017/10/27
-@author: Rubing Duan
+@author: robin
 @group : abda
 @contact: rubing.duan@gmail.com
 """

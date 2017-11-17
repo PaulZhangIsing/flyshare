@@ -9,7 +9,7 @@ def read(fname):
 
 
 LONG_DESCRIPTION = """
-flyshare
+Flyshare
 ===============
 
 * easy to use as most of the data returned are pandas DataFrame objects
@@ -19,9 +19,9 @@ flyshare
 Target Users
 --------------
 
-* financial market analyst of China
+* financial market analyst
 * learners of financial data analysis with pandas/NumPy
-* people who are interested in China financial data
+* people who are interested in financial data of China, HongKong, US, etc.
 
 Installation
 --------------
@@ -61,7 +61,7 @@ date
 2017-10-11  27.26  27.37  26.31  26.02  128767.41         -0.81     -2.99
 
 """
-MAINTAINER = 'Asia Big Data Association'
+MAINTAINER = 'duanrb'
 MAINTAINER_EMAIL = 'rubing.duan@gmail.com'
 
 
