@@ -104,13 +104,13 @@ def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='tusha
         return df
 
 def get_tick_data(code=None, date=None, retry_count=3, pause=0.001,
-                  src='sn', data_source = 'tusahre'):
+                  src='sn', data_source = 'tushare'):
     if util.is_today(date):
         return ts.get_today_ticks(code, retry_count, pause)
     if util.is_tushare(data_source):
         return ts.get_tick_data(code, date, retry_count, pause, src)
 
-def get_large_order(code=None, date=None, vol=400, retry_count=3, pause=0.001 , data_source = 'tusahre'):
+def get_large_order(code=None, date=None, vol=400, retry_count=3, pause=0.001 , data_source = 'tushare'):
     if util.is_tushare(data_source):
         return ts.get_sina_dd(code, date, vol, retry_count, pause)
 
