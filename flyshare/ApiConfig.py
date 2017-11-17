@@ -7,5 +7,5 @@ Created on 2017/11/11
 """
 import logging
 api_key = 'default'
-LOG_LEVEL = logging.INFO
+LOG_LEVEL = logging.DEBUG
 LOG_TO_FILE = False

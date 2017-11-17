@@ -15,7 +15,6 @@ from bson.json_util import loads
 import pandas as pd
 import numpy as np
 from pymongo import MongoClient
-from flyshare.stock import cons
 try:
     from urllib.request import urlopen, Request
 except ImportError:
@@ -48,23 +47,33 @@ def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='tusha
       DataFrame
         amount  close    code        date    date_stamp   high    low   open        vol
     """
-    if '.HK' in code:
-        util.log_info("HK data is only available in Datareader!")
+    if code is None:
+        return None
+
+    if not code.isdigit():
+        util.log_debug("The data is only available in Datareader: code ="+code)
         data_source='datareader'
 
     if util.is_tushare(data_source):
         return ts.get_hist_data(code = code, start= start, end= end, ktype= ktype)
     elif util.is_datareader(data_source):
         import pandas_datareader.data as web
-        start = datetime.datetime.strptime(start, '%Y-%m-%d')
-        end = datetime.datetime.strptime(end, '%Y-%m-%d')
+        if start is None:
+            start = datetime.datetime.strptime('2017-01-01', '%Y-%m-%d')
+        else:
+            start = datetime.datetime.strptime(start, '%Y-%m-%d')
+
+        if end is not None:
+            end = datetime.datetime.strptime(end, '%Y-%m-%d')
+        else:
+            end = util.today()
         data = None
         try:
             data  =  web.DataReader(code, 'yahoo', start, end)
         except:
             pass
         if data is not None:
-            util.log_info("Datareader-Yahoo data:")
+            util.log_debug("Datareader-Yahoo data:")
             return data
         else:
             try:
@@ -72,10 +81,10 @@ def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='tusha
             except:
                 pass
             if data is not None:
-                util.log_info("Datareader-Google data:")
+                util.log_debug("Datareader-Google data:")
                 return data
     elif util.is_flyshare('flyshare'):
-        url = cons.DATA_SOURCE+'/histdata?'
+        url = vars.DATA_SOURCE+'/histdata?'
         if code is None:
             return None
         else:
@@ -129,8 +138,8 @@ def _code_to_symbol(code):
     """
         convert code to symbol
     """
-    if code in cons.INDEX_LABELS:
-        return cons.INDEX_LIST[code]
+    if code in vars.INDEX_LABELS:
+        return vars.INDEX_LIST[code]
     else:
         if len(code) != 6 :
             return code
@@ -139,4 +148,4 @@ def _code_to_symbol(code):
 
 if __name__ == '__main__':
     # print get_hist_data('AAPL',start='2017-01-01', end='2017-10-10', data_source='datareader').head(2)
-    print get_hist_data('0700.HK',start='2017-01-01', end='2017-10-10').head(2)
+    print get_hist_data('0700.HK').head(2)
