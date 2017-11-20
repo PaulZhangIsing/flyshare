@@ -11,3 +11,5 @@ LOG_TO_FILE = False
 
 api_key = 'default'
 DATA_SOURCE = None
+
+TDX_CONN = None

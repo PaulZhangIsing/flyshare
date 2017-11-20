@@ -12,6 +12,9 @@ def now():
 def today():
     return datetime.datetime.today()
 
+def get_date_today():
+    return datetime.date.today().strftime("%Y-%m-%d")
+
 def validate_date(date):
     try:
         time.strptime(date, '%Y-%m-%d')
@@ -30,4 +33,5 @@ def is_today(date):
 
 if __name__ == '__main__':
     date = '2017-11-16'
-    print is_today(date)
+    print get_date_today()
+

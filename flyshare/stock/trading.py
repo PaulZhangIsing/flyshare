@@ -27,8 +27,9 @@ import tushare as ts
 import datetime
 import flyshare.util as util
 from flyshare.util import vars
+import flyshare.util.conn as conn
 
-def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='tushare'):
+def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='default'):
     """
     Parameters
     ------
@@ -49,6 +50,11 @@ def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='tusha
     """
     if code is None:
         return None
+
+    if util.is_default(data_source) and ac.DATA_SOURCE is not None:
+        data_source = ac.DATA_SOURCE
+    elif util.is_default(data_source):
+        data_source = 'tushare'
 
     if not code.isdigit():
         util.log_debug("The data is only available in Datareader: code ="+code)
@@ -71,8 +77,8 @@ def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='tusha
             end = util.today()
         data = None
         try:
-            data  =  web.DataReader(code, 'yahoo', start, end)
-        except:
+            data = web.DataReader(code, 'yahoo', start, end)
+        except Exception as e:
             pass
         if data is not None:
             util.log_debug("Datareader-Yahoo data:")
@@ -85,7 +91,7 @@ def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='tusha
             if data is not None:
                 util.log_debug("Datareader-Google data:")
                 return data
-    elif util.is_flyshare('flyshare'):
+    elif util.is_flyshare(data_source):
         url = vars.DATA_SOURCE+'/histdata?'
         if code is None:
             return None
@@ -104,6 +110,14 @@ def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='tusha
         if '_id' in df:
             df = df.drop('_id',1)
         return df
+    elif util.is_tdx(data_source):
+        if ac.TDX_CONN is None:
+            ac.TDX_CONN = conn.get_apis()
+        start = start if start is not None else '2017-01-01'
+        end = end if end is not None else util.get_date_today()
+
+        ts.bar(code, ac.TDX_CONN, start, end)
+
 
 def get_tick_data(code=None, date=None, retry_count=3, pause=0.001,
                   src='sn', data_source = 'tushare'):
@@ -150,4 +164,4 @@ def _code_to_symbol(code):
 
 if __name__ == '__main__':
     # print get_hist_data('AAPL',start='2017-01-01', end='2017-10-10', data_source='datareader').head(2)
-    print get_hist_data('0700.HK').head(2)
+    print get_hist_data('0700.HK', data_source='tdx').head(2)

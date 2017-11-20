@@ -13,7 +13,7 @@
 import sys
 import os
 import flyshare.ApiConfig as ac
-
+import flyshare.util.conn as conn
 
 # =======================
 #     MENUS FUNCTIONS
@@ -83,7 +83,9 @@ def menu3():
 
 def menu4():
     ac.DATA_SOURCE = 'tdx'
-    print "TDX !\n"
+    print "get apis..."
+    ac.TDX_CONN = conn.get_apis()
+
     print "9. Back"
     print "0. Quit"
     choice = raw_input(" >>  ")
@@ -117,7 +119,7 @@ menu_actions = {
     '0': exit,
 }
 
-def select_datasource():
+def set_datasource():
     main_menu()
 
 # =======================
