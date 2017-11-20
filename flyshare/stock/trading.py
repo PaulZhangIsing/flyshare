@@ -29,7 +29,12 @@ import flyshare.util as util
 from flyshare.util import vars
 import flyshare as fs
 
-def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='default'):
+def get_hist_data(code=None,
+                  start=None,
+                  end=None,
+                  autype='qfq',
+                  ktype='D',
+                  data_source='default'):
     """
     Parameters
     ------
@@ -39,6 +44,8 @@ def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='defau
                   Start Date format：YYYY-MM-DD 
       end:string
                   End Date format：YYYY-MM-DD
+      autype:string
+                  复权类型，qfq-前复权 hfq-后复权 None-不复权，默认为qfq
       ktype：string
                   Data Type，D=Day W=Week M=Month 5=5min 15=15min 30=30min 60=60min，Default is 'D'
       data_source: string
@@ -64,7 +71,7 @@ def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='defau
     util.log_debug("datasource = "+data_source)
 
     if util.is_tushare(data_source):
-        return ts.get_hist_data(code = code, start= start, end= end, ktype= ktype)
+        return ts.get_k_data(code = code, start= start, end= end, ktype= ktype, autype=autype)
     elif util.is_datareader(data_source):
         import pandas_datareader.data as web
         if start is None:
@@ -118,11 +125,6 @@ def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='defau
 
         start = start if start is not None else ''
         end = end if end is not None else util.get_date_today()
-
-        util.log_debug("code:"+ code)
-        util.log_debug("tdx :" + str(ac.TDX_CONN))
-        util.log_debug("start:"+ start)
-        util.log_debug("end:"+ end)
 
         return ts.bar(code, start_date=start, end_date=end, conn=ac.TDX_CONN)
 
