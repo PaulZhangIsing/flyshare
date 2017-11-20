@@ -33,5 +33,6 @@ def is_today(date):
 
 if __name__ == '__main__':
     date = '2017-11-16'
+    print type(get_date_today())
     print get_date_today()
 

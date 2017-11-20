@@ -10,10 +10,10 @@ if ac.LOG_TO_FILE:
                         str(datetime.datetime.now().strftime(
                             '%Y-%m-%d')) + '.log',
                         filemode='a')
-# else:
-#     logging.basicConfig(level=ac.LOG_LEVEL,
-#                         format='%(asctime)s - %(levelname)s - %(message)s',
-#                         datefmt='%H:%M:%S')
+else:
+    logging.basicConfig(level=ac.LOG_LEVEL,
+                        format='%(asctime)s - %(levelname)s - %(message)s',
+                        datefmt='%H:%M:%S')
 
 console = logging.StreamHandler()
 console.setLevel(logging.INFO)

@@ -7,7 +7,7 @@ Created on 2017/11/11
 """
 import logging
 LOG_LEVEL = logging.DEBUG
-LOG_TO_FILE = False
+LOG_TO_FILE = True
 
 api_key = 'default'
 DATA_SOURCE = None

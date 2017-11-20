@@ -27,7 +27,7 @@ import tushare as ts
 import datetime
 import flyshare.util as util
 from flyshare.util import vars
-import flyshare.util.conn as conn
+import flyshare as fs
 
 def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='default'):
     """
@@ -61,6 +61,7 @@ def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='defau
         data_source = 'datareader'
 
     data_source = data_source.lower()
+    util.log_debug("datasource = "+data_source)
 
     if util.is_tushare(data_source):
         return ts.get_hist_data(code = code, start= start, end= end, ktype= ktype)
@@ -111,12 +112,19 @@ def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='defau
             df = df.drop('_id',1)
         return df
     elif util.is_tdx(data_source):
+        util.log_debug("TDX data: ")
         if ac.TDX_CONN is None:
-            ac.TDX_CONN = conn.get_apis()
-        start = start if start is not None else '2017-01-01'
+            ac.TDX_CONN = fs.get_apis()
+
+        start = start if start is not None else ''
         end = end if end is not None else util.get_date_today()
 
-        ts.bar(code, ac.TDX_CONN, start, end)
+        util.log_debug("code:"+ code)
+        util.log_debug("tdx :" + str(ac.TDX_CONN))
+        util.log_debug("start:"+ start)
+        util.log_debug("end:"+ end)
+
+        return ts.bar(code, start_date=start, end_date=end, conn=ac.TDX_CONN)
 
 
 def get_tick_data(code=None, date=None, retry_count=3, pause=0.001,
@@ -164,4 +172,4 @@ def _code_to_symbol(code):
 
 if __name__ == '__main__':
     # print get_hist_data('AAPL',start='2017-01-01', end='2017-10-10', data_source='datareader').head(2)
-    print get_hist_data('0700.HK', data_source='tdx').head(2)
+    print get_hist_data('600519', data_source='tdx')

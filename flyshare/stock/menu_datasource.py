@@ -85,11 +85,6 @@ def menu4():
     ac.DATA_SOURCE = 'tdx'
     print "get apis..."
     ac.TDX_CONN = conn.get_apis()
-
-    print "9. Back"
-    print "0. Quit"
-    choice = raw_input(" >>  ")
-    exec_menu(choice)
     return
 
 

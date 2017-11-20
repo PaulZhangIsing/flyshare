@@ -5,7 +5,6 @@ from pytdx.exhq import TdxExHq_API
 from flyshare.util import vars
 import flyshare.ApiConfig as ac
 
-
 def api(retry_count=3):
     for _ in range(retry_count):
         try:
@@ -46,8 +45,9 @@ def get_apis():
     return api(), xapi()
 
 
-def close_apis(conn = ac.TDX_CONN):
-    api, xapi = conn
+def close_apis():
+    print ac.TDX_CONN
+    api, xapi = ac.TDX_CONN
     try:
         api.disconnect()
         xapi.disconnect()
