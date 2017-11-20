@@ -1,4 +1,4 @@
-__version__ = '0.0.12'
+__version__ = '0.0.13'
 __author__ = 'Rubing Duan'
 
 """
@@ -18,3 +18,5 @@ from flyshare.stock.fundamental import (get_stock_basics, get_report_data,get_ba
 for data source
 """
 from flyshare.util.conn import (get_apis, close_apis)
+
+from flyshare.stock.menu_datasource import (select_datasource)

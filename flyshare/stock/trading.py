@@ -2,7 +2,7 @@
 """
 Trading Data API 
 Created on 2017/10/27
-@author: robin
+@author: Rubing Duan
 @group : abda
 @contact: rubing.duan@gmail.com
 """
@@ -52,7 +52,9 @@ def get_hist_data(code=None, start=None, end=None, ktype='D', data_source='tusha
 
     if not code.isdigit():
         util.log_debug("The data is only available in Datareader: code ="+code)
-        data_source='datareader'
+        data_source = 'datareader'
+
+    data_source = data_source.lower()
 
     if util.is_tushare(data_source):
         return ts.get_hist_data(code = code, start= start, end= end, ktype= ktype)

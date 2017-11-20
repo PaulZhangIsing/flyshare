@@ -6,6 +6,8 @@ Created on 2017/11/11
 @contact: rubing.duan@gmail.com
 """
 import logging
-api_key = 'default'
 LOG_LEVEL = logging.DEBUG
 LOG_TO_FILE = False
+
+api_key = 'default'
+DATA_SOURCE = None
