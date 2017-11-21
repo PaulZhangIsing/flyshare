@@ -12,4 +12,6 @@ LOG_TO_FILE = True
 api_key = 'default'
 DATA_SOURCE = None
 
+LANGUAGE = 'english'
+
 TDX_CONN = None
