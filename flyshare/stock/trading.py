@@ -130,11 +130,47 @@ def get_hist_data(code=None,
 
 
 def get_tick_data(code=None, date=None, retry_count=3, pause=0.001,
-                  src='sn', data_source = 'tushare'):
+                  src='sn', asset='X', data_source = 'tushare'):
+    """
+    tick数据
+    Parameters:
+    ------------
+    code:证券代码，支持股票,ETF/LOF,期货/期权,港股
+    conn:服务器连接 ，通过ts.api()或者ts.xpi()获得
+    date:日期
+    asset:证券品种，E:沪深交易所股票和基金, INDEX:沪深交易所指数， X:其他证券品种，大致如下：
+                     支持的扩展行情包括(asset='X')：
+                            郑州商品期权         OZ 大连商品期权         OD 上海商品期权         OS
+                            上海个股期权         QQ 香港指数         FH 郑州商品         QZ 大连商品         QD 上海期货         QS
+                            香港主板         KH 香港权证         KR 开放式基金         FU 货币型基金         FB
+                            招商理财产品         LC 招商货币产品         LB 国际指数         FW 国内宏观指标         HG 中国概念股         CH
+                            美股知名公司         MG B股转H股         HB 股份转让         SB 股指期货         CZ 香港创业板         KG 香港信托基金         KT
+                             国债预发行         GY 主力期货合约         MA
+                              中证指数         ZZ 港股通         GH
+    market:市场代码，通过ts.get_markets()获取
+
+    Return
+    ----------
+    DataFrame
+    date:日期
+    time:时间
+    price:成交价
+    vol:成交量
+    type:买卖方向，0-买入 1-卖出 2-集合竞价成交
+            期货  0:开仓  1:多开   -1:空开
+         期货多一列数据oi_change:增仓数据
+
+    """
     if util.is_today(date):
         return ts.get_today_ticks(code, retry_count, pause)
+
     if util.is_tushare(data_source):
         return ts.get_tick_data(code, date, retry_count, pause, src)
+    elif util.is_tdx(data_source):
+        if ac.TDX_CONN is None:
+            ac.TDX_CONN = fs.get_apis()
+
+        return ts.tick(code, date=date, conn= ac.TDX_CONN, asset=asset)
 
 def get_large_order(code=None, date=None, vol=400, retry_count=3, pause=0.001 , data_source = 'tushare'):
     if util.is_tushare(data_source):

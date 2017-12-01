@@ -1,3 +1,6 @@
 tushare
 pandas_datareader
 pytdx
+asyncio
+tabulate
+apscheduler

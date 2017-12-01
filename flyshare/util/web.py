@@ -1,7 +1,5 @@
 import subprocess
 
-
-
 def ping(host = "www.google.com"):
     """
     :param host:
@@ -15,7 +13,7 @@ def ping(host = "www.google.com"):
     )
 
     out, error = ping.communicate()
-    print out
+    print(out)
     if out is None or out == "":
         return -1
     else:
@@ -23,4 +21,4 @@ def ping(host = "www.google.com"):
 
 
 if __name__ == '__main__':
-    print ping("www.google.com")
+    print(ping("www.google.com"))

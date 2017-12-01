@@ -46,7 +46,7 @@ def get_apis():
 
 
 def close_apis():
-    print ac.TDX_CONN
+    print(ac.TDX_CONN)
     api, xapi = ac.TDX_CONN
     try:
         api.disconnect()
