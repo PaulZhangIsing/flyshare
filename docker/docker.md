@@ -33,4 +33,4 @@ ipython
 ```angular2html
 docker pull ubuntu
 ```
-然后按照[Flyshare 安装说明](../README.md)进行安装
+然后按照[Flyshare 安装说明](../README-cn.md)进行安装
