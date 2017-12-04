@@ -1,4 +1,4 @@
-__version__ = '0.0.17'
+__version__ = '0.0.18'
 __author__ = 'Rubing Duan'
 
 """
@@ -25,3 +25,5 @@ from flyshare.arp import Account, Portfolio, Risk
 
 # market
 from flyshare.market import (MarketBid, Market)
+
+from flyshare import ApiConfig

@@ -2,7 +2,7 @@
 
 
 import flyshare as fs
-from flyshare import Backtest as B
+from flyshare import backtest as B
 
 
 """
@@ -10,7 +10,7 @@ BACKTEST STOCK_DAY中的变量
 
 常量:
 B.backtest_type 回测类型 day/1min/5min/15min/30min/60min/index_day/index_1min/index_5min/index_15min/index_30min/index_60min/
-B.account.message  当前账户消息
+B.account.message b 当前账户消息
 B.account.cash  当前可用资金
 B.account.hold  当前账户持仓
 B.account.history  当前账户的历史交易记录
@@ -103,17 +103,14 @@ def init():
     B.commission_fee_coeff = 0.0015  # 千五的手续费(单向)
 
     B.strategy_gap = 30   # 在取数据的时候 向前取多少个bar(会按回测的时间动态移动)
-    B.strategy_stock_list = ['000001', '000002',
-                              '600010', '601801']  # 回测的股票列表/如果是指数回测 就是指数列表
+    B.strategy_stock_list = ['000001', '000002', '600010', '601801']  # 回测的股票列表/如果是指数回测 就是指数列表
     B.strategy_start_date = '2016-07-01 10:30:00'  # 回测开始日期
     B.strategy_end_date = '2017-07-10'    # 回测结束日期
     B.backtest_print_log = True  # 是否在屏幕上输出结果
 
-
 @B.before_backtest
 def before_backtest():
     global risk_position
-
 
 @B.load_strategy
 def strategy():

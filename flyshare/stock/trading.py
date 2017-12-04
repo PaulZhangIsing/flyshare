@@ -63,7 +63,13 @@ def get_hist_data(code=None,
     util.log_debug("datasource = "+data_source)
 
     if util.is_tushare(data_source):
-        return ts.get_k_data(code = code, start= start, end= end, ktype= ktype, autype=autype)
+
+        if start is None:
+            start = '2017-01-01'
+        if end is None:
+            end = util.get_date_today()
+        util.log_debug("tushare data code:" + code+", start:"+start+", end:"+end)
+        return ts.get_k_data(code=code, start=start, end=end, ktype=ktype, autype=autype)
     elif util.is_datareader(data_source):
         import pandas_datareader.data as web
         if start is None:
@@ -202,4 +208,5 @@ def _code_to_symbol(code):
 
 if __name__ == '__main__':
     # print get_hist_data('AAPL',start='2017-01-01', end='2017-10-10', data_source='datareader').head(2)
-    get_hist_data('600519', data_source='tdx')
+    # print(get_hist_data('600519', start='2017-01-01', end='2017-10-10', data_source='tushare'))
+    print(get_hist_data('600519', data_source='tushare'))

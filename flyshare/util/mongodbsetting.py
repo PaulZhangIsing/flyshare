@@ -5,7 +5,7 @@ from flyshare.util import log_info
 import flyshare.ApiConfig as ac
 import pymongo
 
-def util_sql_mongo_setting(ip='127.0.0.1', port=27017):
+def get_mongo_client(ip='127.0.0.1', port=27017):
     sql_mongo_client = pymongo.MongoClient(ip, int(port))
     # log_info('ip3:{},port:{}'.format(str(ip), str(port)))
     return sql_mongo_client
@@ -13,25 +13,25 @@ def util_sql_mongo_setting(ip='127.0.0.1', port=27017):
 
 class MongoDBSetting():
 
-    util_sql_mongo_ip = ac.MONGODB_IP
-    util_sql_mongo_port = ac.MONGODB_PORT
-    client = util_sql_mongo_setting(util_sql_mongo_ip, util_sql_mongo_port)
+    mongo_ip = ac.MONGODB_IP
+    mongo_port = ac.MONGODB_PORT
+    client = get_mongo_client(mongo_ip, mongo_port)
 
     setting_user_name = ''
     setting_user_password = ''
     user = {'username': '', 'password': '', 'login': False}
 
-    def setting_init(self, ip='127.0.0.1', port=27017):
-        self.util_sql_mongo_ip = ip
-        self.util_sql_mongo_port = port
-        self.client = util_sql_mongo_setting(self.util_sql_mongo_ip, self.util_sql_mongo_port)
+    def init_mongodb(self, ip='127.0.0.1', port=27017):
+        self.mongo_ip = ip
+        self.mongo_port = port
+        self.client = get_mongo_client(self.mongo_ip, self.mongo_port)
 
         # return self
         self.user = self.setting_login()
 
     def set_ip(self, ip='127.0.0.1'):
-        self.util_sql_mongo_ip = ip
-        self.client = util_sql_mongo_setting(self.util_sql_mongo_ip, self.util_sql_mongo_port)
+        self.mongo_ip = ip
+        self.client = get_mongo_client(self.mongo_ip, self.mongo_port)
         return self
 
     def setting_login(self):

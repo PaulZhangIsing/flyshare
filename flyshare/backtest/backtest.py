@@ -44,7 +44,7 @@ class Backtest():
     market = Market()
     bid = MarketBid()
     order = MarketBidList()
-    setting = MongoDBSetting()
+    mongo_setting = MongoDBSetting()
     clients = setting.client
     user = setting.setting_user_name
     market_data = []
@@ -73,9 +73,9 @@ class Backtest():
         self.market = Market()
         self.order = MarketBidList()
         self.bid = MarketBid()
-        self.setting = MongoDBSetting()
-        self.clients = self.setting.client
-        self.user = self.setting.setting_user_name
+        self.mongo_setting = MongoDBSetting()
+        self.clients = self.mongo_setting.client
+        self.user = self.mongo_setting.setting_user_name
         self.market_data = []
         self.now = ''
         self.strategy_start_date = ''
@@ -102,10 +102,10 @@ class Backtest():
         # gap是回测时,每日获取数据的前推日期(交易日)
         self.strategy_gap = int(60)
         # 设置全局的数据库地址,回测用户名,密码,并初始化
-        self.setting.util_sql_mongo_ip = str('127.0.0.1')
-        self.setting.setting_user_name = str('admin')
-        self.setting.setting_user_password = str('admin')
-        self.setting.setting_init()
+        self.mongo_setting.mongo_ip = str('127.0.0.1')
+        self.mongo_setting.setting_user_name = str('admin')
+        self.mongo_setting.setting_user_password = str('admin')
+        self.mongo_setting.init_mongodb()
         # 回测的名字
         self.strategy_name = str('example_min')
        # 股票的交易日历,真实回测的交易周期,和交易周期在交易日历中的id
@@ -124,10 +124,10 @@ class Backtest():
         """
         这是模型内部的 初始化,主要是初始化一些账户和市场资产
         """
-        self.strategy_stock_list=np.unique(self.strategy_stock_list).tolist() #保证不会重复
+        self.strategy_stock_list = np.unique(self.strategy_stock_list).tolist() #保证不会重复
+
         if len(str(self.strategy_start_date)) == 10:
-            self.strategy_start_time = str(
-                self.strategy_start_date) + ' 15:00:00'
+            self.strategy_start_time = str(self.strategy_start_date) + ' 15:00:00'
         elif len(str(self.strategy_start_date)) == 19:
             self.strategy_start_time = str(self.strategy_start_date)
             self.strategy_start_date = str(self.strategy_start_date)[0:10]
@@ -144,7 +144,7 @@ class Backtest():
 
         # 重新初始账户资产
         self.market = Market(self.commission_fee_coeff)
-        self.setting.setting_init()
+        self.mongo_setting.init_mongodb()
         self.account.init()
         self.account_d_value.append(self.account.init_assets)
         self.start_real_date = util_get_real_date(self.strategy_start_date, self.trade_list, 1)
@@ -160,23 +160,34 @@ class Backtest():
         # 初始化股票池的市场数据
         if self.benchmark_type in ['I', 'index']:
             self.benchmark_data = fetch_index_day_adv(
-                self.benchmark_code, self.trade_list[self.start_real_id - 1], self.end_real_date)
+                self.benchmark_code,
+                self.trade_list[self.start_real_id - 1],
+                self.end_real_date)
+
         elif self.benchmark_type in ['S', 'stock']:
             self.benchmark_data = fetch_stock_day_adv(
-                self.benchmark_code, self.trade_list[self.start_real_id - 1], self.end_real_date)
+                self.benchmark_code,
+                self.trade_list[self.start_real_id - 1],
+                self.end_real_date)
+
         if self.backtest_type in ['day', 'd', '0x00']:
             self.market_data = fetch_stocklist_day_adv(
                 self.strategy_stock_list,
                 self.trade_list[self.start_real_id - int(self.strategy_gap + 1)],
                 self.trade_list[self.end_real_id]).to_qfq()
+
         elif self.backtest_type in ['1min', '5min', '15min', '30min', '60min']:
             self.market_data = fetch_stocklist_min_adv(
                 self.strategy_stock_list,
                 util_time_gap(self.start_real_time, self.strategy_gap + 1, '<', self.backtest_type),
                 util_time_gap(self.end_real_time, 1, '>', self.backtest_type), self.backtest_type).to_qfq()
+
         elif self.backtest_type in ['index_day']:
-            self.market_data = fetch_index_day_adv(self.strategy_stock_list, self.trade_list[self.start_real_id - int(
-                self.strategy_gap + 1)], self.end_real_date)
+            self.market_data = fetch_index_day_adv(
+                self.strategy_stock_list,
+                self.trade_list[self.start_real_id - int(self.strategy_gap + 1)],
+                self.end_real_date)
+
         elif self.backtest_type in ['index_1min', 'index_5min', 'index_15min', 'index_30min', 'index_60min']:
             self.market_data = fetch_index_min_adv(
                 self.strategy_stock_list,
@@ -487,11 +498,11 @@ class Backtest():
         __exist_time = int(self.end_real_id) - int(self.start_real_id) + 1
         if len(self.__messages) > 1:
             performace = backtest_analysis_start(
-                self.setting.client, self.strategy_stock_list, self.account_d_value, self.account_d_key, self.__messages,
+                self.mongo_setting.client, self.strategy_stock_list, self.account_d_value, self.account_d_key, self.__messages,
                 self.trade_list[self.start_real_id:self.end_real_id + 1],
                 self.benchmark_data.data)
             _backtest_mes = {
-                'user': self.setting.setting_user_name,
+                'user': self.mongo_setting.setting_user_name,
                 'strategy': self.strategy_name,
                 'stock_list': performace['code'],
                 'start_time': self.strategy_start_date,
@@ -513,8 +524,8 @@ class Backtest():
                 'exist': __exist_time,
                 'time': datetime.datetime.now()
             }
-            save_backtest_message(_backtest_mes, self.setting.client)
-            save_account_message(self.__messages, self.setting.client)
+            save_backtest_message(_backtest_mes, self.mongo_setting.client)
+            save_account_message(self.__messages, self.mongo_setting.client)
             save_account_to_csv(self.__messages)
 
             self.account.detail.to_csv('backtest-pnl--' + str(self.account.account_cookie) + '.csv')
@@ -648,7 +659,7 @@ class Backtest():
          __bid.code, __bid.date, __bid.datetime,
          __bid.sending_time,
          __bid.amount, __bid.towards) = (str(random.random()),
-                                         self.setting.setting_user_name, self.strategy_name,
+                                         self.mongo_setting.setting_user_name, self.strategy_name,
                                          __code, self.running_date, str(
                                              self.now),
                                          self.running_date, __amount, __towards)
