@@ -129,9 +129,6 @@ def backtest_calc_assets(trade_history, assets):
 
     return assets_d
 
-
-
-
 def backtest_calc_benchmark(benchmark_data, init_assets):
 
     return list(benchmark_data['close'] / float(benchmark_data['open'][0]) * float(init_assets))

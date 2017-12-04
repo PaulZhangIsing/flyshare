@@ -15,7 +15,7 @@ from flyshare.util import log_info, util_to_json_from_pandas
 """
 
 
-class market_bid():
+class MarketBid():
     def __init__(self):
         self.price = 16
         self.date = '2015-01-05'
@@ -112,7 +112,7 @@ class market_bid():
             log_info('Failed to tran from dict')
         
 
-class market_bid_list():   # also the order tree
+class MarketBidList():   # also the order tree
     """
     一个待成交列表
     
@@ -121,10 +121,10 @@ class market_bid_list():   # also the order tree
         self.list = []
 
     def from_dataframe(self, dataframe):
-        self.list=[market_bid().from_dict(item) for item in util_to_json_from_pandas(dataframe)]
+        self.list=[MarketBid().from_dict(item) for item in util_to_json_from_pandas(dataframe)]
         return self.list
 
 if __name__ == '__main__':
-    ax = market_bid()
+    ax = MarketBid()
     ax.stock_day()
     print(ax.type)

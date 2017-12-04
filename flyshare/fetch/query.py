@@ -3,19 +3,22 @@
 import numpy
 import pandas as pd
 
-from bson.objectid import ObjectId
 from pandas import DataFrame
-from flyshare.util import (Setting, util_date_stamp, trade_date_sse,
-                           util_date_valid, log_info,
-                           util_time_stamp, util_to_json_from_pandas, util_to_list_from_pandas)
-from flyshare.data import data_make_hfq, data_make_qfq
+from flyshare.util import (MongoDBSetting as ms,
+                           util_date_stamp,
+                           trade_date_sse,
+                           util_date_valid,
+                           log_info,
+                           util_time_stamp,
+                           util_to_json_from_pandas,
+                           util_to_list_from_pandas)
 """
 按要求从数据库取数据，并转换成numpy结构
 
 """
 
 
-def fetch_stock_day(code, __start, __end, format_='numpy', collections=Setting.client.flyshare.stock_day):
+def fetch_stock_day(code, __start, __end, format_='numpy', collections=ms.client.flyshare.stock_day):
     '获取股票日线'
     __start = str(__start)[0:10]
     __end = str(__end)[0:10]
@@ -38,9 +41,7 @@ def fetch_stock_day(code, __start, __end, format_='numpy', collections=Setting.c
         elif format_ in ['list', 'l', 'L']:
             __data = __data
         elif format_ in ['P', 'p', 'pandas', 'pd']:
-
-            __data = DataFrame(__data, columns=[
-                'code', 'open', 'high', 'low', 'close', 'volume', 'date'])
+            __data = DataFrame(__data, columns=['code', 'open', 'high', 'low', 'close', 'volume', 'date'])
 
             __data['date'] = pd.to_datetime(__data['date'])
             __data = __data.set_index('date', drop=False)
@@ -54,12 +55,12 @@ def fetch_trade_date():
     return trade_date_sse
 
 
-def fetch_stock_list(collections=Setting.client.flyshare.stock_list):
+def fetch_stock_list(collections=ms.client.flyshare.stock_list):
     '获取股票列表'
     return [item for item in collections.find()]
 
 
-def fetch_stock_full(date_, format_='numpy', collections=Setting.client.flyshare.stock_day):
+def fetch_stock_full(date_, format_='numpy', collections=ms.client.flyshare.stock_day):
     '获取全市场的某一日的数据'
     #__start = str(__start)[0:10]
     Date = str(date_)[0:10]
@@ -92,7 +93,7 @@ def fetch_stock_info(code, collections):
     pass
 
 
-def fetch_stocklist_day(stock_list, date_range, collections=Setting.client.flyshare.stock_day):
+def fetch_stocklist_day(stock_list, date_range, collections=ms.client.flyshare.stock_day):
     '获取多个股票的日线'
     __data = []
     for item in stock_list:
@@ -101,7 +102,7 @@ def fetch_stocklist_day(stock_list, date_range, collections=Setting.client.flysh
     return __data
 
 
-def fetch_index_day(code, __start, __end, format_='numpy', collections=Setting.client.flyshare.index_day):
+def fetch_index_day(code, __start, __end, format_='numpy', collections=ms.client.flyshare.index_day):
     '获取指数日线'
     __start = str(__start)[0:10]
     __end = str(__end)[0:10]
@@ -135,7 +136,7 @@ def fetch_index_day(code, __start, __end, format_='numpy', collections=Setting.c
         log_info('something wrong with date')
 
 
-def fetch_indexlist_day(stock_list, date_range, collections=Setting.client.flyshare.index_day):
+def fetch_indexlist_day(stock_list, date_range, collections=ms.client.flyshare.index_day):
     '获取多个股票的日线'
     __data = []
     for item in stock_list:
@@ -149,7 +150,7 @@ def fetch_index_min(
         startTime, endTime,
         format_='numpy',
         type_='1min',
-        collections=Setting.client.flyshare.index_min):
+        collections=ms.client.flyshare.index_min):
     '获取股票分钟线'
     if type_ in ['1min', '1m']:
         type_ = '1min'
@@ -186,7 +187,7 @@ def fetch_index_min(
         return __data
 
 
-def fetch_stock_min(code, startTime, endTime, format_='numpy', type_='1min', collections=Setting.client.flyshare.stock_min):
+def fetch_stock_min(code, startTime, endTime, format_='numpy', type_='1min', collections=ms.client.flyshare.stock_min):
     '获取股票分钟线'
     if type_ in ['1min', '1m']:
         type_ = '1min'
@@ -223,7 +224,7 @@ def fetch_stock_min(code, startTime, endTime, format_='numpy', type_='1min', col
         return __data
 
 
-def fetch_stocklist_min(stock_list, date_range, type_='1min', collections=Setting.client.flyshare.stock_min):
+def fetch_stocklist_min(stock_list, date_range, type_='1min', collections=ms.client.flyshare.stock_min):
     '获取不复权股票分钟线'
     __data = []
     for item in stock_list:
@@ -244,7 +245,7 @@ def fetch_future_tick():
     pass
 
 
-def fetch_stock_xdxr(code, format_='pd', collections=Setting.client.flyshare.stock_xdxr):
+def fetch_stock_xdxr(code, format_='pd', collections=ms.client.flyshare.stock_xdxr):
     '获取股票除权信息/数据库'
     data = pd.DataFrame([item for item in collections.find(
         {'code': code})]).drop(['_id'], axis=1)
@@ -253,16 +254,16 @@ def fetch_stock_xdxr(code, format_='pd', collections=Setting.client.flyshare.sto
     # data['date']=data['date'].apply(lambda)
 
 
-def fetch_backtest_info(user=None, account_cookie=None, strategy=None, stock_list=None, collections=Setting.client.flyshare.backtest_info):
+def fetch_backtest_info(user=None, account_cookie=None, strategy=None, stock_list=None, collections=ms.client.flyshare.backtest_info):
 
     return util_to_json_from_pandas(pd.DataFrame([item for item in collections.find(util_to_json_from_pandas(pd.DataFrame([user, account_cookie, strategy, stock_list], index=['user', 'account_cookie', 'strategy', 'stock_list']).dropna().T)[0])]).drop(['_id'], axis=1))
 
 
-def fetch_backtest_history(cookie=None, collections=Setting.client.flyshare.backtest_history):
+def fetch_backtest_history(cookie=None, collections=ms.client.flyshare.backtest_history):
     return util_to_json_from_pandas(pd.DataFrame([item for item in collections.find(util_to_json_from_pandas(pd.DataFrame([cookie], index=['cookie']).dropna().T)[0])]).drop(['_id'], axis=1))
 
 
-def fetch_stock_block(code=None, format_='pd', collections=Setting.client.flyshare.stock_block):
+def fetch_stock_block(code=None, format_='pd', collections=ms.client.flyshare.stock_block):
     if code is not None:
         data = pd.DataFrame([item for item in collections.find(
             {'code': code})]).drop(['_id'], axis=1)
@@ -273,7 +274,7 @@ def fetch_stock_block(code=None, format_='pd', collections=Setting.client.flysha
         return data.set_index('code', drop=False)
 
 
-def fetch_stock_info(code, format_='pd', collections=Setting.client.flyshare.stock_info):
+def fetch_stock_info(code, format_='pd', collections=ms.client.flyshare.stock_info):
     try:
         data = pd.DataFrame([item for item in collections.find(
             {'code': code})]).drop(['_id'], axis=1)
@@ -284,7 +285,7 @@ def fetch_stock_info(code, format_='pd', collections=Setting.client.flyshare.sto
         return None
 
 
-def fetch_stock_name(code, collections=Setting.client.flyshare.stock_list):
+def fetch_stock_name(code, collections=ms.client.flyshare.stock_list):
     try:
         return collections.find_one({'code': code})['name']
     except Exception as e:

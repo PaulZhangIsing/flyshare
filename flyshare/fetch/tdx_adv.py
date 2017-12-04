@@ -1,25 +1,14 @@
 # coding:utf-8
 
-import asyncio
-import concurrent
 import datetime
-import logging
 import queue
-import threading
-from collections import deque
 from concurrent.futures import ThreadPoolExecutor
-from multiprocessing import Pool, Process
 from threading import Event, Thread, Timer
 
-import numpy as np
 import pandas as pd
-from motor.motor_asyncio import AsyncIOMotorClient
-
-from pytdx.exhq import TdxExHq_API
 from pytdx.hq import TdxHq_API
-from flyshare.util.QADate import util_calc_time
-from flyshare.util.setting import info_ip_list, Setting
-from flyshare.util.QATransform import util_to_json_from_pandas
+from flyshare.util.mongodbsetting import info_ip_list, MongoDBSetting as ms
+from flyshare.util.transform import util_to_json_from_pandas
 
 """
 准备做一个多连接的连接池执行器Executor
@@ -202,7 +191,7 @@ class Tdx_Executor():
         except Exception as e:
             raise e
 
-    def save_mongo(self, data, client=Setting.client.flyshares.realtime):
+    def save_mongo(self, data, client=ms.client.flyshares.realtime):
         client.insert_many(util_to_json_from_pandas(data))
 
 

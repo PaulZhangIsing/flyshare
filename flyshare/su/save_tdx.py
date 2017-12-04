@@ -1,32 +1,8 @@
 # coding:utf-8
-#
-# The MIT License (MIT)
-#
-# Copyright (c) 2016-2017 yutiansut/flyshare
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
 
 import concurrent
 import datetime
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
-
-import pandas as pd
 import pymongo
 
 from flyshare.fetch import fetch_get_stock_block
@@ -39,7 +15,7 @@ from flyshare.fetch.tdx import (fetch_get_index_day,
                                 fetch_get_stock_transaction,
                                 fetch_get_stock_xdxr, select_best_ip)
 from flyshare.fetch.tushare import fetch_get_stock_time_to_market
-from flyshare.util import (Setting, util_get_real_date,
+from flyshare.util import (MongoDBSetting as ms, util_get_real_date,
                            log_info, util_to_json_from_pandas,
                            trade_date_sse)
 
@@ -50,7 +26,7 @@ def now_time():
     return str(util_get_real_date(str(datetime.date.today() - datetime.timedelta(days=1)), trade_date_sse, -1)) + ' 15:00:00' if datetime.datetime.now().hour < 15 else str(util_get_real_date(str(datetime.date.today()), trade_date_sse, -1)) + ' 15:00:00'
 
 
-def SU_save_stock_day(client=Setting.client):
+def SU_save_stock_day(client=ms.client):
     __stock_list = fetch_get_stock_time_to_market()
     coll_stock_day = client.flyshares.stock_day
     coll_stock_day.create_index(
@@ -89,7 +65,7 @@ def SU_save_stock_day(client=Setting.client):
     log_info(__err)
 
 
-def SU_save_stock_xdxr(client=Setting.client):
+def SU_save_stock_xdxr(client=ms.client):
     client.flyshares.drop_collection('stock_xdxr')
     __stock_list = fetch_get_stock_time_to_market()
     __coll = client.flyshares.stock_xdxr
@@ -116,7 +92,7 @@ def SU_save_stock_xdxr(client=Setting.client):
     log_info(__err)
 
 
-def SU_save_stock_min(client=Setting.client):
+def SU_save_stock_min(client=ms.client):
     __stock_list = fetch_get_stock_time_to_market()
     __coll = client.flyshares.stock_min
     __coll.create_index([('code', pymongo.ASCENDING), ('time_stamp',
@@ -162,7 +138,7 @@ def SU_save_stock_min(client=Setting.client):
     log_info(__err)
 
 
-def SU_save_index_day(client=Setting.client):
+def SU_save_index_day(client=ms.client):
     __index_list = fetch_get_stock_list('index')
     __coll = client.flyshares.index_day
     __coll.create_index([('code', pymongo.ASCENDING),
@@ -199,7 +175,7 @@ def SU_save_index_day(client=Setting.client):
     log_info(__err)
 
 
-def SU_save_index_min(client=Setting.client):
+def SU_save_index_min(client=ms.client):
     __index_list = fetch_get_stock_list('index')
     __coll = client.flyshares.index_min
     __coll.create_index([('code', pymongo.ASCENDING), ('time_stamp',
@@ -245,7 +221,7 @@ def SU_save_index_min(client=Setting.client):
     log_info(__err)
 
 
-def SU_save_etf_day(client=Setting.client):
+def SU_save_etf_day(client=ms.client):
     __index_list = fetch_get_stock_list('etf')
     __coll = client.flyshares.index_day
     __coll.create_index([('code', pymongo.ASCENDING),
@@ -282,7 +258,7 @@ def SU_save_etf_day(client=Setting.client):
     log_info(__err)
 
 
-def SU_save_etf_min(client=Setting.client):
+def SU_save_etf_min(client=ms.client):
     __index_list = fetch_get_stock_list('etf')
     __coll = client.flyshares.index_min
     __coll.create_index([('code', pymongo.ASCENDING), ('time_stamp',
@@ -328,7 +304,7 @@ def SU_save_etf_min(client=Setting.client):
     log_info(__err)
 
 
-def SU_save_stock_list(client=Setting.client):
+def SU_save_stock_list(client=ms.client):
     client.flyshares.drop_collection('stock_list')
     __coll = client.flyshares.stock_list
     __coll.create_index('code')
@@ -342,7 +318,7 @@ def SU_save_stock_list(client=Setting.client):
         pass
 
 
-def SU_save_stock_block(client=Setting.client):
+def SU_save_stock_block(client=ms.client):
     client.flyshares.drop_collection('stock_block')
     __coll = client.flyshares.stock_block
     __coll.create_index('code')
@@ -355,7 +331,7 @@ def SU_save_stock_block(client=Setting.client):
             fetch_get_stock_block('ths')))
     except:
         pass
-def SU_save_stock_info(client=Setting.client):
+def SU_save_stock_info(client=ms.client):
     client.flyshares.drop_collection('stock_info')
     __stock_list = fetch_get_stock_time_to_market()
     __coll = client.flyshares.stock_info
@@ -381,7 +357,7 @@ def SU_save_stock_info(client=Setting.client):
     log_info(__err)
 
 
-def SU_save_stock_transaction(client=Setting.client):
+def SU_save_stock_transaction(client=ms.client):
     __stock_list = fetch_get_stock_time_to_market()
     __coll = client.flyshares.stock_transaction
     __coll.create_index('code', pymongo.ASCENDING)

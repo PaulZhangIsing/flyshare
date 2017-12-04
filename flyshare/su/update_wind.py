@@ -23,7 +23,7 @@
 # SOFTWARE.
 from ..fetch import wind
 from .save_wind import *
-from ..util import util_date_stamp,util_time_stamp,Setting
+from ..util import util_date_stamp,util_time_stamp,MongoDBSetting
 import pymongo
 import datetime
 import re

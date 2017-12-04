@@ -25,4 +25,4 @@
 
 from .market_core import Market
 import datetime
-from .bid import market_bid
+from .bid import MarketBid

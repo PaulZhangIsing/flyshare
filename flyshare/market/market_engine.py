@@ -4,7 +4,7 @@
 import datetime
 import random
 
-from flyshare.util import Setting, log_info, util_to_json_from_pandas
+from flyshare.util import MongoDBSetting, log_info, util_to_json_from_pandas
 from flyshare.fetch.query import fetch_stock_day, fetch_stock_min
 
 """stock market trading engine

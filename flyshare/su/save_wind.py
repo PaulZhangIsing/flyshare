@@ -28,7 +28,7 @@ import time
 
 import pymongo
 
-from flyshare.util import Setting
+from flyshare.util import MongoDBSetting
 
 from ..fetch import wind
 from ..util import util_date_stamp, log_info, util_time_stamp

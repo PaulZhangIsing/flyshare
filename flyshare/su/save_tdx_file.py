@@ -22,24 +22,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import datetime
 import json
 import os
-import sys
-import time
-
-import pymongo
-from pytdx.reader import TdxFileNotFoundException, TdxMinBarReader
-from flyshare.util import Setting, log_info, util_time_stamp, util_date_stamp
+from pytdx.reader import TdxMinBarReader
+from flyshare.util import MongoDBSetting as ms, log_info, util_time_stamp, util_date_stamp
 
 
-def save_tdx_to_mongo(file_dir, client=Setting.client):
+def save_tdx_to_mongo(file_dir, client=ms.client):
     reader = TdxMinBarReader()
     __coll = client.flyshares.stock_min_five
     for a, v, files in os.walk(file_dir):
-
         for file in files:
-
             if (str(file)[0:2] == 'sh' and int(str(file)[2]) == 6) or \
                 (str(file)[0:2] == 'sz' and int(str(file)[2]) == 0) or \
                     (str(file)[0:2] == 'sz' and int(str(file)[2]) == 3):
@@ -61,7 +54,7 @@ def save_tdx_to_mongo(file_dir, client=Setting.client):
 
 
 if __name__ == '__main__':
-    file_dir = ['C:\\users\\yutiansut\\desktop\\sh5fz',
-                'C:\\users\\yutiansut\\desktop\\sz5fz']
+    file_dir = ['/tdx',
+                '/tdx2']
     for item in file_dir:
         save_tdx_to_mongo(item)

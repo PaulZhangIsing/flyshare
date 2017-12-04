@@ -11,7 +11,7 @@ from flyshare.data import (data_make_hfq, data_make_qfq,
 from flyshare.fetch.query import (fetch_indexlist_day,
                                   fetch_stocklist_day,
                                   fetch_stocklist_min)
-from flyshare.util import (Setting, util_date_stamp,
+from flyshare.util import (MongoDBSetting, util_date_stamp,
                            util_date_valid, log_info,
                            util_time_stamp)
 from flyshare.util import util_sql_async_mongo_setting

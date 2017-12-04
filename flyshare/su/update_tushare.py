@@ -23,7 +23,7 @@
 # SOFTWARE.
 
 from flyshare.fetch import tushare
-from flyshare.util import util_date_stamp, Setting, util_date_valid, log_info
+from flyshare.util import util_date_stamp, MongoDBSetting as ms, util_date_valid, log_info
 from .save_tushare import SU_save_stock_info, SU_save_stock_list, SU_save_trade_date_all,save_stock_day_with_fqfactor
 import json
 import pymongo
@@ -36,7 +36,7 @@ def update_stock_day(name, startDate, endDate):
     data = tushare.fetch_get_stock_day(name, startDate, endDate)
 
 
-def SU_update_stock_day(client=Setting.client):
+def SU_update_stock_day(client=ms.client):
 
     data = tushare.fetch_get_stock_list()
     date = str(datetime.date.today())

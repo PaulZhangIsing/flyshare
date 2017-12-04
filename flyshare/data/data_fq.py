@@ -2,7 +2,7 @@
 
 
 from flyshare.fetch import fetch_get_stock_day, fetch_get_stock_xdxr
-from flyshare.util import Setting, log_info
+from flyshare.util import MongoDBSetting as ms, log_info
 
 import datetime
 import pandas as pd
@@ -77,7 +77,7 @@ def data_make_hfq(bfq_data, xdxr_data):
 
 def data_stock_to_fq(__data, type_='01'):
 
-    def __fetch_stock_xdxr(code, format_='pd', collections=Setting.client.flyshares.stock_xdxr):
+    def __fetch_stock_xdxr(code, format_='pd', collections=ms.client.flyshares.stock_xdxr):
         '获取股票除权信息/数据库'
         try:
             data = pd.DataFrame([item for item in collections.find(

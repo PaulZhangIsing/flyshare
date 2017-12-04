@@ -9,7 +9,7 @@ from flyshare.fetch.query import (fetch_future_day,
                                   fetch_future_tick,
                                   fetch_index_day, fetch_index_min,
                                   fetch_stock_day, fetch_stock_min)
-from flyshare.util import (Setting, log_info,
+from flyshare.util import (MongoDBSetting, log_info,
                            util_sql_mongo_setting,
                            util_to_json_from_pandas)
 

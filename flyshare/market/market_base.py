@@ -1,7 +1,7 @@
 import datetime
 import random
 
-from flyshare.util import Setting, log_info
+from flyshare.util import MongoDBSetting, log_info
 
 """
 需要一个可以被修改和继承的基类
@@ -19,7 +19,7 @@ def market_engine_base(__bid, fp=None):
     # inside function
     def __get_data(__bid):
 
-        __coll = Setting.client.flyshares.stock_day
+        __coll = MongoDBSetting.client.flyshares.stock_day
         __data = __coll.find_one(
             {"code": str(__bid['code'])[0:6], "date": str(__bid['date'])[0:10]})
         return __data

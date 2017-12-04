@@ -8,7 +8,7 @@ from flyshare.util.data_source import (is_datareader, is_flyshare, is_tushare, i
 
 from flyshare.util.web import (ping)
 
-from .setting import (Setting)
+from .mongodbsetting import (MongoDBSetting)
 
 from .date import(util_date_stamp, util_time_stamp, util_ms_stamp, util_date_valid,
                   util_realtime, util_id2date, util_is_trade, util_get_date_index,

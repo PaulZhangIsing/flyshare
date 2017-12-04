@@ -24,4 +24,4 @@ from flyshare.stock.menu_datasource import (set_datasource)
 from flyshare.arp import Account, Portfolio, Risk
 
 # market
-from flyshare.market import (market_bid, Market)
+from flyshare.market import (MarketBid, Market)

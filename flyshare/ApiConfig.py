@@ -15,5 +15,7 @@ DATA_SOURCE = None
 LANGUAGE = 'english'
 
 TDX_CONN = None
-
 TDX_BEST_IP = None
+
+MONGODB_IP = '127.0.0.1'
+MONGODB_PORT = '27017'

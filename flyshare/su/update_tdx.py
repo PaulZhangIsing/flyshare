@@ -5,9 +5,11 @@ from flyshare.fetch.tdx import (fetch_get_stock_day,
                                 fetch_get_stock_transaction,
                                 fetch_get_stock_xdxr)
 from flyshare.fetch.tushare import fetch_get_stock_time_to_market
-from flyshare.saveupdate.save_tdx import SU_save_stock_xdxr
-from flyshare.util import (Setting, log_info,
-                           util_to_json_from_pandas, trade_date_sse)
+from flyshare.su.save_tdx import SU_save_stock_xdxr
+from flyshare.util import (MongoDBSetting as ms,
+                           log_info,
+                           util_to_json_from_pandas,
+                           trade_date_sse)
 
 """
 该模块已经废弃
@@ -17,7 +19,7 @@ from flyshare.util import (Setting, log_info,
 """
 
 
-def SU_update_stock_day(client=Setting.client):
+def SU_update_stock_day(client=ms.client):
     def save_stock_day(code, start, end, coll):
         log_info('##JOB01 Now Updating STOCK_DAY==== %s' % (str(code)))
         data = util_to_json_from_pandas(
@@ -51,12 +53,12 @@ def SU_update_stock_day(client=Setting.client):
     log_info('Done == \n')
 
 
-def SU_update_stock_xdxr(client=Setting.client):
+def SU_update_stock_xdxr(client=ms.client):
     client.flyshares.drop_collection('stock_xdxr')
     SU_save_stock_xdxr()
 
 
-def SU_update_stock_min(client=Setting.client):
+def SU_update_stock_min(client=ms.client):
     """
     stock_min 分三个库 type区分
     1. 1min_level 库
@@ -64,13 +66,11 @@ def SU_update_stock_min(client=Setting.client):
     3. 15min_level 库
     """
 
-
-
-def SU_update_index_day(client=Setting.client):
+def SU_update_index_day(client=ms.client):
     pass
 
 
-def SU_update_index_min(client=Setting.client):
+def SU_update_index_min(client=ms.client):
     pass
 
 

@@ -26,7 +26,7 @@ import csv
 import os
 import sys
 
-from flyshare.util import Setting, log_expection
+from flyshare.util import MongoDBSetting, log_expection
 
 
 def save_account_message(message, client):
