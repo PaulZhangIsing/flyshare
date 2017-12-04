@@ -9,7 +9,7 @@ from pytdx.exhq import TdxExHq_API
 from flyshare.util import (util_date_stamp, util_date_str2int,
                            util_date_valid, util_get_real_date,
                            util_get_real_datelist, log_info,
-                           util_time_stamp, util_web_ping,
+                           util_time_stamp, ping,
                            trade_date_sse)
 #from pypinyin import lazy_pinyin
 import tushare as ts
@@ -474,6 +474,7 @@ def fetch_get_stock_xdxr(code, ip=best_ip, port=7709):
             return data.assign(date=data['date'].apply(lambda x: str(x)[0:10]))
         else:
             return None
+
 def fetch_get_stock_info(code, ip=best_ip, port=7709):
     '除权除息'
     api = TdxHq_API()
@@ -498,14 +499,11 @@ def fetch_get_stock_block(ip=best_ip, port=7709):
         else:
             log_info('Wrong with fetch block ')
 
-
-
-
-if __name__ == '__main__':
-    # print(fetch_get_stock_day('000001','2017-07-03','2017-07-10'))
-    # print(fetch_get_stock_day('000001', '2013-07-01', '2013-07-09'))
-    print(fetch_get_stock_realtime('000001'))
-    #print(fetch_get_index_day('000001', '2017-01-01', '2017-07-01'))
-    # print(fetch_get_stock_transaction('000001', '2017-07-03', '2017-07-10'))
-
-    print(fetch_get_stock_info('600116'))
+# if __name__ == '__main__':
+#     # print(fetch_get_stock_day('000001','2017-07-03','2017-07-10'))
+#     # print(fetch_get_stock_day('000001', '2013-07-01', '2013-07-09'))
+#     print(fetch_get_stock_realtime('000001'))
+#     #print(fetch_get_index_day('000001', '2017-01-01', '2017-07-01'))
+#     # print(fetch_get_stock_transaction('000001', '2017-07-03', '2017-07-10'))
+#
+#     print(fetch_get_stock_info('600116'))

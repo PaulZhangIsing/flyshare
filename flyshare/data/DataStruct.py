@@ -22,9 +22,6 @@ import six
 from pyecharts import Kline
 from flyshare.data.data_fq import data_stock_to_fq
 from flyshare.data.data_resample import data_tick_resample
-from flyshare.data.proto import stock_day_pb2  # protobuf import
-from flyshare.data.proto import stock_min_pb2
-from flyshare.indicator import EMA, HHV, LLV, SMA
 from flyshare.util import (Setting, log_info,
                            util_to_json_from_pandas, trade_date_sse)
 from flyshare.fetch.tdx import fetch_get_stock_realtime

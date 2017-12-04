@@ -30,7 +30,7 @@ import pymongo
 
 from flyshare.util import Setting
 
-from ..fetch import QAWind
+from ..fetch import wind
 from ..util import util_date_stamp, log_info, util_time_stamp
 
 
@@ -38,13 +38,13 @@ from ..util import util_date_stamp, log_info, util_time_stamp
 # under QUANTAXIS_Standard_501[QAS 501]
 def SU_save_stock_list(client):
     datestr=datetime.datetime.now().strftime("%Y-%m-%d")
-    data=QAWind.fetch_get_stock_list(datestr)
+    data=wind.fetch_get_stock_list(datestr)
     #util_log_info(stocklist)
     coll=client.quantaxis.stock_list
     coll.insert({'date':data[0][0],'date_stamp':data[0][0].timestamp(),"stock":{'code':data[1],'name':data[2]}})
 def SU_save_trade_date(client):
     datestr=datetime.datetime.now().strftime("%Y-%m-%d")
-    data=QAWind.fetch_get_trade_date(datestr,'SSE')
+    data=wind.fetch_get_trade_date(datestr, 'SSE')
     coll=client.quantaxis.trade_date
     #util_log_info(stocklist)
     for i in range(0,len(data[0]),1):
@@ -56,7 +56,7 @@ def SU_save_stock_day(name,startDate,endDate,client):
     end_date_stamp=util_date_stamp(endDate)
     if (coll.find({"code":name,"last_trade_day":{"$gte":int(end_date_stamp),"$lte":int(start_date_stamp)}}).count()==0):
         log_info(str(name) + '--' + str(startDate) + '--' + str(endDate))
-        data=QAWind.fetch_get_stock_day(name,startDate,endDate)
+        data=wind.fetch_get_stock_day(name, startDate, endDate)
         log_info(len(data[0]))
         for i in range(0,len(data[0]),1):
             log_info('now saving=====' + str(name) + '===date====' + str(data[16][i]))
@@ -71,7 +71,7 @@ def SU_save_stock_day_simple(name,startDate,endDate,client):
     end_date_stamp=util_date_stamp(endDate)
     if (coll.find({"code":name,"last_trade_day":{"$gte":int(end_date_stamp),"$lte":int(start_date_stamp)}}).count()==0):
         log_info(str(name) + '--' + str(startDate) + '--' + str(endDate))
-        data=QAWind.fetch_get_stock_day_simple(name,startDate,endDate)
+        data=wind.fetch_get_stock_day_simple(name, startDate, endDate)
         log_info(len(data[0]))
         for i in range(0,len(data[0]),1):
             log_info('now saving=====' + str(name) + '===date====' + str(data[16][i]))

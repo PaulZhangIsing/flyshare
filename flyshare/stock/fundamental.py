@@ -99,4 +99,4 @@ def get_cash_flow(code, data_source = 'tushare'):
         return ts.get_cash_flow(code)
 
 if __name__ == '__main__':
-    print get_stock_basics().head(2)
+    print(get_stock_basics().head(2))

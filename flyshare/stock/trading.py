@@ -1,16 +1,8 @@
-# -*- coding:utf-8 -*- 
-"""
-Trading Data API 
-Created on 2017/10/27
-@author: Rubing Duan
-@group : abda
-@contact: rubing.duan@gmail.com
-"""
+# -*- coding:utf-8 -*-
 from __future__ import division
 
 import time
 import json
-import urllib2
 from bson.json_util import loads
 import pandas as pd
 import numpy as np
@@ -210,4 +202,4 @@ def _code_to_symbol(code):
 
 if __name__ == '__main__':
     # print get_hist_data('AAPL',start='2017-01-01', end='2017-10-10', data_source='datareader').head(2)
-    print get_hist_data('600519', data_source='tdx')
+    get_hist_data('600519', data_source='tdx')

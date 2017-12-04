@@ -1,10 +1,10 @@
 # coding:utf-8
 #
 
-from . import QAWind as QAWind
-from . import QATushare as QATushare
-from . import QATdx as QATdx
-from . import QAThs as QAThs
+from . import wind as wind
+from . import tushare as tushare
+from . import tdx as tdx
+from . import ths as ths
 
 
 class Fetcher():
@@ -26,13 +26,13 @@ def use(package):
     if package in ['wind']:
         from WindPy import w
         # w.start()
-        return QAWind
+        return wind
     elif package in ['tushare', 'ts']:
-        return QATushare
+        return tushare
     elif package in ['tdx', 'pytdx']:
-        return QATdx
+        return tdx
     elif package in ['ths', 'THS']:
-        return QAThs
+        return ths
 
 
 def fetch_get_stock_day(package, code, startDate, endDate, if_fq='01', level='day', type_='json'):
@@ -127,4 +127,4 @@ def fetch_get_stock_info(package, code):
 
 
 def fetch_security_bars(code, _type, lens):
-    return QATdx.fetch_security_bars(code, _type, lens)
+    return tdx.fetch_security_bars(code, _type, lens)

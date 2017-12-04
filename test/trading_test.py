@@ -28,7 +28,7 @@ class Test(unittest.TestCase):
         util.log_critical("critical")
 
     def test_ping(self):
-        print util.ping("www.google.com")
+        print(util.ping("www.google.com"))
 
 
 

@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from flyshare.fetch import QATushare
+from flyshare.fetch import tushare
 from flyshare.util import util_date_stamp, Setting, util_date_valid, log_info
 from .save_tushare import SU_save_stock_info, SU_save_stock_list, SU_save_trade_date_all,save_stock_day_with_fqfactor
 import json
@@ -33,12 +33,12 @@ import time
 
 
 def update_stock_day(name, startDate, endDate):
-    data = QATushare.fetch_get_stock_day(name, startDate, endDate)
+    data = tushare.fetch_get_stock_day(name, startDate, endDate)
 
 
 def SU_update_stock_day(client=Setting.client):
 
-    data = QATushare.fetch_get_stock_list()
+    data = tushare.fetch_get_stock_list()
     date = str(datetime.date.today())
     date_stamp = util_date_stamp(date)
     #
@@ -74,11 +74,11 @@ def SU_update_stock_day(client=Setting.client):
 
                 log_info('trying updating from %s to %s' %
                          (start_date, end_date))
-                data = QATushare.fetch_get_stock_day(
+                data = tushare.fetch_get_stock_day(
                     str(item)[0:6], start_date, end_date,'02')[1::]
             else:
                 # 这时候直接更新拿到所有的数据就好了
-                data = QATushare.fetch_get_stock_day(
+                data = tushare.fetch_get_stock_day(
                     item, startDate='1990-01-01',if_fq='02')
 
             coll_stock_day.insert_many(data)

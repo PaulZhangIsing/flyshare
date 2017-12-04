@@ -21,7 +21,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from ..fetch import QAWind
+from ..fetch import wind
 from .save_wind import *
 from ..util import util_date_stamp,util_time_stamp,Setting
 import pymongo

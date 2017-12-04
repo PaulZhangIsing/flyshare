@@ -4,3 +4,6 @@ pytdx
 asyncio
 tabulate
 apscheduler
+zenlog
+motor
+pyecharts

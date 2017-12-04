@@ -1,15 +1,20 @@
 # coding:utf-8
 
 from flyshare.su.user import user_sign_in, user_sign_up
-from flyshare.util import log_info, util_sql_mongo_setting
+from flyshare.util import log_info
+import pymongo
+
+def util_sql_mongo_setting(ip='127.0.0.1', port=27017):
+    sql_mongo_client = pymongo.MongoClient(ip, int(port))
+    log_info('ip:{},port:{}'.format(str(ip), str(port)))
+    return sql_mongo_client
 
 
 class Setting():
 
     util_sql_mongo_ip = '127.0.0.1'
     util_sql_mongo_port = '27017'
-    client = util_sql_mongo_setting(
-        util_sql_mongo_ip, util_sql_mongo_port)
+    client = util_sql_mongo_setting(util_sql_mongo_ip, util_sql_mongo_port)
 
     setting_user_name = ''
     setting_user_password = ''
@@ -18,16 +23,14 @@ class Setting():
     def setting_init(self, ip='127.0.0.1', port=27017):
         self.util_sql_mongo_ip = ip
         self.util_sql_mongo_port = port
-        self.client = util_sql_mongo_setting(
-            self.util_sql_mongo_ip, self.util_sql_mongo_port)
+        self.client = util_sql_mongo_setting(self.util_sql_mongo_ip, self.util_sql_mongo_port)
 
         # return self
         self.user = self.setting_login()
 
     def set_ip(self, ip='127.0.0.1'):
         self.util_sql_mongo_ip = ip
-        self.client = util_sql_mongo_setting(
-            self.util_sql_mongo_ip, self.util_sql_mongo_port)
+        self.client = util_sql_mongo_setting(self.util_sql_mongo_ip, self.util_sql_mongo_port)
         return self
 
     def setting_login(self):
