@@ -27,7 +27,7 @@ def SU_update_stock_day(client=Setting.client):
             coll.insert_many(data)
         else:
             pass
-    coll_stock_day = client.quantaxis.stock_day
+    coll_stock_day = client.flyshares.stock_day
     for item in fetch_get_stock_time_to_market().index:
 
         if coll_stock_day.find({'code': str(item)[0:6]}).count() > 0:
@@ -52,7 +52,7 @@ def SU_update_stock_day(client=Setting.client):
 
 
 def SU_update_stock_xdxr(client=Setting.client):
-    client.quantaxis.drop_collection('stock_xdxr')
+    client.flyshares.drop_collection('stock_xdxr')
     SU_save_stock_xdxr()
 
 

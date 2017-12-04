@@ -28,7 +28,7 @@ def fetch_stock_day_adv(
         code,
         __start, __end,
         if_drop_index=False,
-        collections=Setting.client.quantaxis.stock_day):
+        collections=Setting.client.flyshares.stock_day):
     '获取股票日线'
     __start = str(__start)[0:10]
     __end = str(__end)[0:10]
@@ -56,7 +56,7 @@ def fetch_stocklist_day_adv(
         code,
         __start, __end,
         if_drop_index=False,
-        collections=Setting.client.quantaxis.stock_day):
+        collections=Setting.client.flyshares.stock_day):
     '获取股票日线'
     return DataStruct_Stock_day(pd.concat(fetch_stocklist_day(code, [__start, __end])).query('volume>1').set_index(['date', 'code'], drop=if_drop_index))
 
@@ -65,7 +65,7 @@ def fetch_index_day_adv(
         code,
         __start, __end,
         if_drop_index=False,
-        collections=Setting.client.quantaxis.index_day):
+        collections=Setting.client.flyshares.index_day):
     '获取指数日线'
     __start = str(__start)[0:10]
     __end = str(__end)[0:10]
@@ -94,7 +94,7 @@ def fetch_index_min_adv(
         start, end,
         type_='1min',
         if_drop_index=False,
-        collections=Setting.client.quantaxis.index_min):
+        collections=Setting.client.flyshares.index_min):
     '获取股票分钟线'
     if type_ in ['1min', '1m']:
         type_ = '1min'
@@ -133,7 +133,7 @@ def fetch_stock_min_adv(
         start, end,
         type_='1min',
         if_drop_index=False,
-        collections=Setting.client.quantaxis.stock_min):
+        collections=Setting.client.flyshares.stock_min):
     '获取股票分钟线'
     if type_ in ['1min', '1m']:
         type_ = '1min'
@@ -173,7 +173,7 @@ def fetch_stocklist_min_adv(
         code,
         start, end,
         type_='1min',
-        if_drop_index=False,  collections=Setting.client.quantaxis.stock_min):
+        if_drop_index=False,  collections=Setting.client.flyshares.stock_min):
     return DataStruct_Stock_min(pd.concat(fetch_stocklist_min(code, [start, end], type_)).query('volume>1').set_index(['datetime', 'code'], drop=if_drop_index))
 
 
@@ -181,7 +181,7 @@ def fetch_stock_transaction_adv(
         code,
         start, end,
         if_drop_index=False,
-        collections=Setting.client.quantaxis.stock_transaction):
+        collections=Setting.client.flyshares.stock_transaction):
     data = DataFrame([item for item in collections.find({
         'code': str(code), "date": {
             "$gte": start,
@@ -191,17 +191,17 @@ def fetch_stock_transaction_adv(
     return DataStruct_Stock_transaction(data.set_index('datetime', drop=if_drop_index))
 
 
-def fetch_security_list_adv(collections=Setting.client.quantaxis.stock_list):
+def fetch_security_list_adv(collections=Setting.client.flyshares.stock_list):
     '获取股票列表'
     return pd.DataFrame([item for item in collections.find()]).drop('_id', axis=1, inplace=False)
 
 
-def fetch_stock_list_adv(collections=Setting.client.quantaxis.stock_list):
+def fetch_stock_list_adv(collections=Setting.client.flyshares.stock_list):
     '获取股票列表'
     return pd.DataFrame([item for item in collections.find()]).drop('_id', axis=1, inplace=False)
 
 
-def fetch_stock_block_adv(code=None, collections=Setting.client.quantaxis.stock_block):
+def fetch_stock_block_adv(code=None, collections=Setting.client.flyshares.stock_block):
     if code is not None:
         data = pd.DataFrame([item for item in collections.find(
             {'code': code})]).drop(['_id'], axis=1)

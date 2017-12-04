@@ -1,9 +1,12 @@
+# coding=utf-8
+
+
 import flyshare as fs
-from flyshare.backtest import Backtest as B
+from flyshare import Backtest as B
 
 
 """
-flyshare BACKTEST STOCK_DAY中的变量
+BACKTEST STOCK_DAY中的变量
 
 常量:
 B.backtest_type 回测类型 day/1min/5min/15min/30min/60min/index_day/index_1min/index_5min/index_15min/index_30min/index_60min/
@@ -13,7 +16,7 @@ B.account.hold  当前账户持仓
 B.account.history  当前账户的历史交易记录
 B.account.assets 当前账户总资产
 B.account.detail 当前账户的交易对账单
-B.account.init_assest 账户的最初资金
+B.account.init_assets 账户的最初资金
 B.strategy_gap 前推日期
 B.strategy_name 策略名称
 
@@ -21,8 +24,8 @@ B.strategy_stock_list 回测初始化的时候  输入的一个回测标的
 B.strategy_start_date 回测的开始时间
 B.strategy_end_date  回测的结束时间
 
-B.setting.QA_setting_user_name = str('admin') #回测账户
-B.setting.QA_setting_user_password = str('admin') #回测密码
+B.setting.setting_user_name = str('admin') #回测账户
+B.setting.setting_user_password = str('admin') #回测密码
 
 B.today  在策略里面代表策略执行时的日期
 B.now  在策略里面代表策略执行时的时间
@@ -34,21 +37,21 @@ B.backtest_print_log = True  # 是否在屏幕上输出结果
 
 函数:
 获取市场(基于gap)行情:
-B.QA_backtest_get_market_data(QB,code,B.today)
+B.backtest_get_market_data(QB,code,B.today)
 获取单个bar
-B.QA_backtest_get_market_data_bar(QB,code,B.today/B.now)
+B.backtest_get_market_data_bar(QB,code,B.today/B.now)
 
 拿到开高收低量
-Open,High,Low,Close,Volume=B.QA_backtest_get_OHLCV(QB,B.QA_backtest_get_market_data(QB,item,B.today))
+Open,High,Low,Close,Volume=B.backtest_get_OHLCV(QB,B.backtest_get_market_data(QB,item,B.today))
 
 获取市场自定义时间段行情:
-QA.QA_fetch_stock_day(code,start,end,model)
+QA.fetch_stock_day(code,start,end,model)
 
 一键平仓:
-B.QA_backtest_sell_all(QB)
+B.backtest_sell_all(QB)
 
 报单:
-B.QA_backtest_send_order(QB, code,amount,towards,order: dict)
+B.backtest_send_order(QB, code,amount,towards,order: dict)
 
 order有三种方式:
 1.限价成交 order['bid_model']=0或者l,L
@@ -61,18 +64,18 @@ order有三种方式:
 3.收盘价成交模式 order['bid_model']=3或者c,C
 
 #查询当前一只股票的持仓量
-B.QA_backtest_hold_amount(QB,code)
+B.backtest_hold_amount(QB,code)
 #查询当前一只股票的可卖数量
-B.QA_backtest_sell_available(QB,code)
+B.backtest_sell_available(QB,code)
 #查询当前一只股票的持仓平均成本
-B.QA_backtest_hold_price(QB,code)
+B.backtest_hold_price(QB,code)
 
 
 =====
 近期新增:
-B.QA_backtest_get_market_data_panel(QB,time,type_)
+B.backtest_get_market_data_panel(QB,time,type_)
 
-B.B.QA_backtest_get_block(QB,block_list)  # 获取股票的板块代码  输入是一个板块的list ['钢铁','昨日涨停']  输出是不重复的股票列表
+B.B.backtest_get_block(QB,block_list)  # 获取股票的板块代码  输入是一个板块的list ['钢铁','昨日涨停']  输出是不重复的股票列表
 
 """
 
@@ -86,11 +89,11 @@ def init():
     # 策略的名称
     B.strategy_name = 'test_daily'
     # 数据库位置
-    B.setting.QA_util_sql_mongo_ip = '127.0.0.1'  # 回测数据库
-    B.setting.QA_setting_user_name = str('admin') #回测账户
-    B.setting.QA_setting_user_password = str('admin') #回测密码
+    B.setting.util_sql_mongo_ip = '127.0.0.1'  # 回测数据库
+    B.setting.setting_user_name = str('admin') #回测账户
+    B.setting.setting_user_password = str('admin') #回测密码
 
-    B.account.init_assest = 2500000  # 初始资金
+    B.account.init_assets = 2500000  # 初始资金
 
     # benchmark
     B.benchmark_code = '399300'
@@ -118,15 +121,15 @@ def strategy():
     fs.log_info(B.account.sell_available)
     fs.log_info('LEFT Cash: %s' % B.account.cash_available)
 
-    #B.QA_backtest_get_market_data_panel(QB,time,type_) 面板数据
+    #B.backtest_get_market_data_panel(QB,time,type_) 面板数据
     # time 如果不填 就是默认的B.now/B.today
     # type_ 如果不填 默认是 'lt' 如果需要当日的数据 'lte' 
     for item in B.strategy_stock_list:
-        market_data=B.backtest_get_market_data(QB, item, B.today)
+        market_data=B.backtest_get_market_data(B, item, B.today)
         if market_data is not None:
             fs.log_info(market_data.data)
         else:
-            fs.log_info('{} HAS NO DATA IN {}'.format(item,B.today))# 如果是分钟回测 用B.now
+            fs.log_info('{} HAS NO DATA IN {}'.format(item, B.today))# 如果是分钟回测 用B.now
 
         if B.backtest_hold_amount(B, item) == 0:  # 如果不持仓
             B.backtest_send_order(

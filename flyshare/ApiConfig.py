@@ -15,3 +15,5 @@ DATA_SOURCE = None
 LANGUAGE = 'english'
 
 TDX_CONN = None
+
+TDX_BEST_IP = None

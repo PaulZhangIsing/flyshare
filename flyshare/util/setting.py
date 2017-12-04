@@ -6,7 +6,7 @@ import pymongo
 
 def util_sql_mongo_setting(ip='127.0.0.1', port=27017):
     sql_mongo_client = pymongo.MongoClient(ip, int(port))
-    log_info('ip:{},port:{}'.format(str(ip), str(port)))
+    log_info('ip3:{},port:{}'.format(str(ip), str(port)))
     return sql_mongo_client
 
 
@@ -14,7 +14,8 @@ class Setting():
 
     util_sql_mongo_ip = '127.0.0.1'
     util_sql_mongo_port = '27017'
-    client = util_sql_mongo_setting(util_sql_mongo_ip, util_sql_mongo_port)
+    client = None
+    # client = util_sql_mongo_setting(util_sql_mongo_ip, util_sql_mongo_port)
 
     setting_user_name = ''
     setting_user_password = ''

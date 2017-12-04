@@ -40,17 +40,17 @@ def SU_save_stock_list(client):
     datestr=datetime.datetime.now().strftime("%Y-%m-%d")
     data=wind.fetch_get_stock_list(datestr)
     #util_log_info(stocklist)
-    coll=client.quantaxis.stock_list
+    coll=client.flyshares.stock_list
     coll.insert({'date':data[0][0],'date_stamp':data[0][0].timestamp(),"stock":{'code':data[1],'name':data[2]}})
 def SU_save_trade_date(client):
     datestr=datetime.datetime.now().strftime("%Y-%m-%d")
     data=wind.fetch_get_trade_date(datestr, 'SSE')
-    coll=client.quantaxis.trade_date
+    coll=client.flyshares.trade_date
     #util_log_info(stocklist)
     for i in range(0,len(data[0]),1):
         coll.insert({'date':data[0][i],'date_stamp':data[0][i].timestamp(),'exchangeName':'SSE'})
 def SU_save_stock_day(name,startDate,endDate,client):
-    coll=client.quantaxis.stock_day
+    coll=client.flyshares.stock_day
     #find if have the same
     start_date_stamp=util_date_stamp(startDate)
     end_date_stamp=util_date_stamp(endDate)
@@ -65,7 +65,7 @@ def SU_save_stock_day(name,startDate,endDate,client):
     else:
         log_info('there is something wrong with the date')
 def SU_save_stock_day_simple(name,startDate,endDate,client):
-    coll=client.quantaxis.stock_day
+    coll=client.flyshares.stock_day
     #find if have the same
     start_date_stamp=util_date_stamp(startDate)
     end_date_stamp=util_date_stamp(endDate)
@@ -82,7 +82,7 @@ def SU_save_stock_day_simple(name,startDate,endDate,client):
 
 def SU_save_stock_day_init(startDate,client):
     #just for first using
-    coll_get=client.quantaxis.stock_list
+    coll_get=client.flyshares.stock_list
     item=coll_get.find_one({"date_stamp":{"$gte":1483200000.0}})
     for stock_name in item['stock']['code']:
         log_info('now init the stock_day of---' + str(stock_name))
@@ -90,7 +90,7 @@ def SU_save_stock_day_init(startDate,client):
         SU_save_stock_day(str(stock_name),startDate,str(datetime.date.today()),client)
 def SU_save_stock_day_init_simple(startDate,client):
     #just for first using
-    coll_get=client.quantaxis.stock_list
+    coll_get=client.flyshares.stock_list
     item=coll_get.find_one({"date_stamp":{"$gte":1483200000.0}})
     for stock_name in item['stock']['code']:
         log_info('now init the stock_day of---' + str(stock_name))

@@ -286,7 +286,7 @@ class DataStruct_Index_day(__stock_hq_base):
         self.data = DataFrame
         self.type = 'index_day'
         self.if_fq = ''
-        self.mongo_coll = Setting.client.quantaxis.index_day
+        self.mongo_coll = Setting.client.flyshares.index_day
 
     """
     def __add__(self,DataStruct):
@@ -399,7 +399,7 @@ class DataStruct_Index_min(__stock_hq_base):
         self.if_fq = ''
         self.data = DataFrame.ix[:, [
             'code', 'open', 'high', 'low', 'close', 'volume', 'datetime', 'date']]
-        self.mongo_coll = Setting.client.quantaxis.index_min
+        self.mongo_coll = Setting.client.flyshares.index_min
 
     def __repr__(self):
         return '< DataStruct_Index_Min with %s securities >' % len(self.code)
@@ -506,7 +506,7 @@ class DataStruct_Stock_min(__stock_hq_base):
             'code', 'open', 'high', 'low', 'close', 'volume', 'datetime', 'date']]
         self.type = 'stock_min'
         self.if_fq = 'bfq'
-        self.mongo_coll = Setting.client.quantaxis.stock_min
+        self.mongo_coll = Setting.client.flyshares.stock_min
 
     def __repr__(self):
         return '< DataStruct_Stock_Min with %s securities >' % len(self.code)
@@ -636,7 +636,7 @@ class DataStruct_Stock_day(__stock_hq_base):
         self.data = DataFrame
         self.type = 'stock_day'
         self.if_fq = 'bfq'
-        self.mongo_coll = Setting.client.quantaxis.stock_day
+        self.mongo_coll = Setting.client.flyshares.stock_day
 
     def __repr__(self):
         return '< DataStruct_Stock_day with %s securities >' % len(self.code)
@@ -819,7 +819,7 @@ class DataStruct_Stock_transaction():
     def __init__(self, DataFrame):
         self.type = 'stock_transaction'
         self.if_fq = 'None'
-        self.mongo_coll = Setting.client.quantaxis.stock_transaction
+        self.mongo_coll = Setting.client.flyshares.stock_transaction
         self.buyorsell = DataFrame['buyorsell']
         self.price = DataFrame['price']
         if 'volume' in DataFrame.columns:

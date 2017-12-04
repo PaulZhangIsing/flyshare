@@ -11,6 +11,7 @@ from flyshare.util import (util_date_stamp, util_date_str2int,
                            util_get_real_datelist, log_info,
                            util_time_stamp, ping,
                            trade_date_sse)
+import flyshare.ApiConfig as ac
 #from pypinyin import lazy_pinyin
 import tushare as ts
 
@@ -36,13 +37,14 @@ def select_best_ip():
     listx = ['218.75.126.9', '115.238.90.165',
              '124.160.88.183', '60.12.136.250', '218.108.98.244', '218.108.47.69',
              '14.17.75.71', '180.153.39.51']
-    data = [ping(x) for x in listx]
-    log_info('===The BEST SERVER is :  %s ===' %
-             (listx[data.index(min(data))]))
-    return listx[data.index(min(data))]
+    conn_times = [ping(x) for x in listx]
+    best_ip = listx[conn_times.index(min(conn_times))]
+    log_info('===The BEST SERVER is :  %s ===' % (best_ip))
+    ac.TDX_BEST_IP = best_ip
+    return best_ip
 
 
-best_ip = select_best_ip()
+# best_ip = select_best_ip()
 
 # return 1 if sh, 0 if sz
 
@@ -79,7 +81,7 @@ def __select_type(level):
     return level
 
 
-def fetch_security_bars(code, _type, lens, ip=best_ip, port=7709):
+def fetch_security_bars(code, _type, lens, ip=ac.TDX_BEST_IP, port=7709):
     api = TdxHq_API()
     with api.connect(ip, port):
         data = pd.concat([api.to_df(api.get_security_bars(__select_type(_type), __select_market_code(
@@ -90,7 +92,7 @@ def fetch_security_bars(code, _type, lens, ip=best_ip, port=7709):
             return None
 
 
-def fetch_get_stock_day(code, start_date, end_date, if_fq='00', level='day', ip=best_ip, port=7709):
+def fetch_get_stock_day(code, start_date, end_date, if_fq='00', level='day', ip=ac.TDX_BEST_IP, port=7709):
     api = TdxHq_API()
     with api.connect(ip, port):
 
@@ -262,7 +264,7 @@ def fetch_get_stock_day(code, start_date, end_date, if_fq='00', level='day', ip=
             return data.drop(['fenhong', 'peigu', 'peigujia', 'songzhuangu', 'if_trade', 'category'], axis=1)[data['open'] != 0].assign(date=data['date'].apply(lambda x: str(x)[0:10]))[start_date:end_date]
 
 
-def fetch_get_stock_min(code, start, end, level='1min', ip=best_ip, port=7709):
+def fetch_get_stock_min(code, start, end, level='1min', ip=ac.TDX_BEST_IP, port=7709):
     api = TdxHq_API()
     type_ = ''
     if str(level) in ['5', '5m', '5min', 'five']:
@@ -290,7 +292,7 @@ def fetch_get_stock_min(code, start, end, level='1min', ip=best_ip, port=7709):
         return data.assign(datetime=data['datetime'].apply(lambda x: str(x)))
 
 
-def fetch_get_stock_latest(code, ip=best_ip, port=7709):
+def fetch_get_stock_latest(code, ip=ac.TDX_BEST_IP, port=7709):
     code = [code] if isinstance(code, str) else code
     api = TdxHq_API(multithread=True)
     with api.connect(ip, port):
@@ -304,7 +306,7 @@ def fetch_get_stock_latest(code, ip=best_ip, port=7709):
             .drop(['year', 'month', 'day', 'hour', 'minute', 'datetime'], axis=1)
 
 
-def fetch_get_stock_realtime(code=['000001', '000002'], ip=best_ip, port=7709):
+def fetch_get_stock_realtime(code=['000001', '000002'], ip=ac.TDX_BEST_IP, port=7709):
     api = TdxHq_API()
     __data = pd.DataFrame()
     with api.connect(ip, port):
@@ -320,7 +322,7 @@ def fetch_get_stock_realtime(code=['000001', '000002'], ip=best_ip, port=7709):
         return data.set_index('code', drop=False, inplace=False)
 
 
-def fetch_get_stock_list(type_='stock', ip=best_ip, port=7709):
+def fetch_get_stock_list(type_='stock', ip=ac.TDX_BEST_IP, port=7709):
 
     api = TdxHq_API()
     with api.connect(ip, port):
@@ -352,7 +354,7 @@ def fetch_get_stock_list(type_='stock', ip=best_ip, port=7709):
             #    .assign(quanpin=data['name'].apply(lambda x: ''.join(lazy_pinyin(x))))
 
 
-def fetch_get_index_day(code, start_date, end_date, level='day', ip=best_ip, port=7709):
+def fetch_get_index_day(code, start_date, end_date, level='day', ip=ac.TDX_BEST_IP, port=7709):
     '指数日线'
     api = TdxHq_API()
     if level in ['day', 'd', 'D', 'DAY', 'Day']:
@@ -381,7 +383,7 @@ def fetch_get_index_day(code, start_date, end_date, level='day', ip=best_ip, por
         return data.assign(date=data['date'].apply(lambda x: str(x)[0:10]))
 
 
-def fetch_get_index_min(code, start, end, level='1min', ip=best_ip, port=7709):
+def fetch_get_index_min(code, start, end, level='1min', ip=ac.TDX_BEST_IP, port=7709):
     '指数分钟线'
     api = TdxHq_API()
     type_ = ''
@@ -425,7 +427,7 @@ def __fetch_get_stock_transaction(code, day, retry, api):
                         .assign(code=str(code)).assign(order=range(len(data_.index))).set_index('datetime', drop=False, inplace=False)
 
 
-def fetch_get_stock_transaction(code, start, end, retry=2, ip=best_ip, port=7709):
+def fetch_get_stock_transaction(code, start, end, retry=2, ip=ac.TDX_BEST_IP, port=7709):
     '逐笔成交'
     api = TdxHq_API()
 
@@ -451,7 +453,7 @@ def fetch_get_stock_transaction(code, start, end, retry=2, ip=best_ip, port=7709
         return data.assign(datetime=data['datetime'].apply(lambda x: str(x)[0:19]))
 
 
-def fetch_get_stock_xdxr(code, ip=best_ip, port=7709):
+def fetch_get_stock_xdxr(code, ip=ac.TDX_BEST_IP, port=7709):
     '除权除息'
     api = TdxHq_API()
     market_code = __select_market_code(code)
@@ -475,14 +477,14 @@ def fetch_get_stock_xdxr(code, ip=best_ip, port=7709):
         else:
             return None
 
-def fetch_get_stock_info(code, ip=best_ip, port=7709):
+def fetch_get_stock_info(code, ip=ac.TDX_BEST_IP, port=7709):
     '除权除息'
     api = TdxHq_API()
     market_code = __select_market_code(code)
     with api.connect(ip, port):
         return api.to_df(api.get_finance_info(market_code, code))
 
-def fetch_get_stock_block(ip=best_ip, port=7709):
+def fetch_get_stock_block(ip=ac.TDX_BEST_IP, port=7709):
     '板块数据'
     api = TdxHq_API()
     with api.connect(ip, port):

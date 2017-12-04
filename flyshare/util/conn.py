@@ -2,7 +2,7 @@
 
 from pytdx.hq import TdxHq_API
 from pytdx.exhq import TdxExHq_API
-from flyshare.util import vars
+from flyshare.util import vars,ping
 import flyshare.ApiConfig as ac
 
 def api(retry_count=3):
@@ -56,10 +56,15 @@ def close_apis():
 
 
 def _get_server():
-    import random
-    ips = vars.SLIST
-    random.shuffle(ips)
-    return ips[0]
+    if ac.TDX_BEST_IP is not None:
+        return ac.TDX_BEST_IP
+    else:
+        conn_times = [ping(x) for x in vars.SLIST]
+
+    # import random
+    # ips = vars.SLIST
+    # random.shuffle(ips)
+    # return ips[0]
 
 def _get_xserver():
     import random

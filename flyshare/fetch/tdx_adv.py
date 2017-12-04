@@ -202,7 +202,7 @@ class Tdx_Executor():
         except Exception as e:
             raise e
 
-    def save_mongo(self, data, client=Setting.client.quantaxis.realtime):
+    def save_mongo(self, data, client=Setting.client.flyshares.realtime):
         client.insert_many(util_to_json_from_pandas(data))
 
 

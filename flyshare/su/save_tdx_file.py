@@ -35,7 +35,7 @@ from flyshare.util import Setting, log_info, util_time_stamp, util_date_stamp
 
 def save_tdx_to_mongo(file_dir, client=Setting.client):
     reader = TdxMinBarReader()
-    __coll = client.quantaxis.stock_min_five
+    __coll = client.flyshares.stock_min_five
     for a, v, files in os.walk(file_dir):
 
         for file in files:

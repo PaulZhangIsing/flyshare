@@ -42,21 +42,21 @@ def SU_update_stock_day(client=Setting.client):
     date = str(datetime.date.today())
     date_stamp = util_date_stamp(date)
     #
-    client.quantaxis.drop_collection('stock_list')
-    client.quantaxis.drop_collection('trade_date')
-    client.quantaxis.drop_collection('stock_info')
-    #client.quantaxis.drop_collection('stock_day')
-    # client.quantaxis.user_list.insert(
+    client.flyshares.drop_collection('stock_list')
+    client.flyshares.drop_collection('trade_date')
+    client.flyshares.drop_collection('stock_info')
+    #client.flyshares.drop_collection('stock_day')
+    # client.flyshares.user_list.insert(
     #{'username': 'admin', 'password': 'admin'})
     SU_save_stock_info()
     SU_save_stock_list()
     SU_save_trade_date_all()
     #save_stock_day_with_fqfactor()
 
-    coll_stocklist = client.quantaxis.stock_list
+    coll_stocklist = client.flyshares.stock_list
     # 使用find_one
     stock_list = coll_stocklist.find_one()['stock']['code']
-    coll_stock_day = client.quantaxis.stock_day
+    coll_stock_day = client.flyshares.stock_day
     stock_list.append('sz50')
     stock_list.append('hs300')
 

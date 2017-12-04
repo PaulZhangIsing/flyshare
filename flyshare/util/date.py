@@ -83,7 +83,7 @@ def util_date_valid(date):
 
 def util_realtime(strtime, client):
     time_stamp = util_date_stamp(strtime)
-    coll = client.quantaxis.trade_date
+    coll = client.flyshares.trade_date
     temp_str = coll.find_one({'date_stamp': {"$gte": time_stamp}})
     time_real = temp_str['date']
     time_id = temp_str['num']
@@ -91,13 +91,13 @@ def util_realtime(strtime, client):
 
 
 def util_id2date(id, client):
-    coll = client.quantaxis.trade_date
+    coll = client.flyshares.trade_date
     temp_str = coll.find_one({'num': id})
     return temp_str['date']
 
 
 def util_is_trade(date, code, client):
-    coll = client.quantaxis.stock_day
+    coll = client.flyshares.stock_day
     date = str(date)[0:10]
     is_trade = coll.find_one({'code': code, 'date': date})
     try:
