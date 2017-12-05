@@ -3,7 +3,7 @@
 
 Flyshare is a Pythonic data sharing and algorithmic trading library. 
 
-- `Join our community! <https://groups.google.com/forum/#!forum/flyshare>`_
+- [Join our community!](https://groups.google.com/forum/#!forum/flyshare)
 - Join our QQ discussion group: 589516242
 
 ## Getting Startted
