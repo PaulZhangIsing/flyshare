@@ -27,7 +27,20 @@ To install flyshare, run:
 
 ```bash
 pip install flyshare
-import flyshare 
+import flyshare as fs
+
+# get data from the US market
+fs.get_hist_data('AAPL')
+
+# get data from the China market
+fs.get_hist_data('600519')
+
+# get data from the Hong Kong Market
+fs.get_hist_data('0700.HK')
+
+# select data source
+fs.set_datasource()
+
 ```
 
 ## Usage
