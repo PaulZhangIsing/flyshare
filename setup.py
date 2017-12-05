@@ -95,4 +95,5 @@ if __name__ == "__main__":
                      ],
         packages=find_packages(include=['flyshare', 'flyshare.*']),
         package_data={'': ['*.csv']},
+        entry_points={'console_scripts': ['flyshare=flyshare.cmd:flyshare_cmd']},
     )

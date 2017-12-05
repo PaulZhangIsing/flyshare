@@ -199,6 +199,6 @@ def sourcecpy(src, des):
             shutil.copytree(source, des)  # 第一个参数是目录，第二个参数也是目录
 
 # 创建CLI实例并运行
-def cmd():
+def flyshare_cmd():
     cli = CLI()
     cli.cmdloop()

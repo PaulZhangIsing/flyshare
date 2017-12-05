@@ -4,7 +4,7 @@
 ## Getting Startted
 ### [Authentication](http://www.asiabigdata.org/registration/)
 
-Get your free API key to start using the data collected from China stock.
+Get your free API key to start using the data collected from stock markets like China, Hong Kong, USA, etc.
 
 You can find your API key on your [account settings page](http://www.asiabigdata.org/login/).
 
@@ -32,7 +32,7 @@ import flyshare
 
 ## Usage
 
-A good way to get started is to run the flyshare examples in
+A good way to get started is to run the [flyshare examples](tutorial) in
 a [Jupyter notebook](http://jupyter.org/). To do this, you first want to
 start a Jupyter notebook server:
 
@@ -40,7 +40,7 @@ start a Jupyter notebook server:
 jupyter notebook
 ```
 
-From the notebook list page, navigate to the pyfolio examples directory
+From the notebook list page, navigate to the [examples directory](tutorial)
 and open a notebook. Execute the code in a notebook cell by clicking on it
 and hitting Shift+Enter.
 

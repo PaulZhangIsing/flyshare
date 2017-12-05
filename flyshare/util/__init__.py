@@ -30,3 +30,6 @@ from .bar import (util_make_min_index,
 from .transform import (util_to_json_from_pandas,
                         util_to_list_from_numpy,
                         util_to_list_from_pandas)
+
+from .mongo import (util_mongo_initial, util_mongo_make_index,
+                    util_mongo_status, util_mongo_infos)
