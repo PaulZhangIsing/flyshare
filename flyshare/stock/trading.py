@@ -129,7 +129,7 @@ def get_hist_data(code=None,
 
 def get_tick_data(code=None, date=None, retry_count=3, pause=0.001,
                   src='sn', asset='X', data_source = 'tushare'):
-    """
+    """rf
     tick数据
     Parameters:
     ------------
@@ -209,4 +209,4 @@ def _code_to_symbol(code):
 if __name__ == '__main__':
     # print get_hist_data('AAPL',start='2017-01-01', end='2017-10-10', data_source='datareader').head(2)
     # print(get_hist_data('600519', start='2017-01-01', end='2017-10-10', data_source='tushare'))
-    print(get_hist_data('600519', data_source='tushare'))
+    print(get_hist_data('600519', data_source='tdx'))

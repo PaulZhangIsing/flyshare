@@ -56,15 +56,17 @@ def close_apis():
 
 
 def _get_server():
-    if ac.TDX_BEST_IP is not None:
-        return ac.TDX_BEST_IP
-    else:
-        conn_times = [ping(x) for x in vars.SLIST]
-
-    # import random
-    # ips = vars.SLIST
-    # random.shuffle(ips)
-    # return ips[0]
+    # if ac.TDX_BEST_IP is not None:
+    #     return ac.TDX_BEST_IP
+    # else:
+    #     conn_times = [ping(x) for x in vars.SLIST]
+    #     best_ip = vars.SLIST[conn_times.index(min(conn_times))]
+    #     ac.TDX_BEST_IP = best_ip
+    #     return best_ip
+    import random
+    ips = vars.SLIST
+    random.shuffle(ips)
+    return ips[0]
 
 def _get_xserver():
     import random

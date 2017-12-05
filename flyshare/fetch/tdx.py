@@ -12,6 +12,9 @@ from flyshare.util import (util_date_stamp, util_date_str2int,
                            util_time_stamp, ping,
                            trade_date_sse)
 import flyshare.ApiConfig as ac
+import flyshare.util.vars as vars
+
+
 #from pypinyin import lazy_pinyin
 import tushare as ts
 
@@ -34,9 +37,7 @@ def ping(ip):
 
 def select_best_ip():
     log_info('Selecting the Best Server IP of TDX')
-    listx = ['218.75.126.9', '115.238.90.165',
-             '124.160.88.183', '60.12.136.250', '218.108.98.244', '218.108.47.69',
-             '14.17.75.71', '180.153.39.51']
+    listx = vars.SLIST
     conn_times = [ping(x) for x in listx]
     best_ip = listx[conn_times.index(min(conn_times))]
     log_info('===The BEST SERVER is :  %s ===' % (best_ip))
@@ -501,7 +502,8 @@ def fetch_get_stock_block(ip=ac.TDX_BEST_IP, port=7709):
         else:
             log_info('Wrong with fetch block ')
 
-# if __name__ == '__main__':
+if __name__ == '__main__':
+    print(select_best_ip())
 #     # print(fetch_get_stock_day('000001','2017-07-03','2017-07-10'))
 #     # print(fetch_get_stock_day('000001', '2013-07-01', '2013-07-09'))
 #     print(fetch_get_stock_realtime('000001'))
