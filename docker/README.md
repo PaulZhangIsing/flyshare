@@ -34,3 +34,23 @@ docker run username/repository:tag                   # Run image from a registry
 
 
 ## 镜像制作与实例运行
+
+### 制作环境镜像
+在`docker/`目录下运行:
+
+```bash
+➜  docker build -f Dockerfile --force-rm -t flyshare ..
+...
+Successfully built 8w3jjofejeaij
+```
+
+漫长的等待后之后，查看
+```bash
+➜  docker images
+REPOSITORY                    TAG                 IMAGE ID            CREATED                  SIZE
+flyshare                      latest              8w3jjofejeai        Less than a second ago   3.02GB
+ubuntu                        16.04-tools         1196ea15dad6        5 months ago             336MB
+```
+
+flyshare 的运行环境镜像 `flyshare:latest` 制作成功。
+之后可以使用该镜像继续构建下层镜像，用于生产环境的部署。

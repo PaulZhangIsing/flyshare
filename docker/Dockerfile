@@ -33,8 +33,9 @@ RUN echo "开始配置 flyshare 环境" \
 RUN echo "安装 anaconda" \
     && mkdir /tmp/conda/ \
     && cd /tmp/conda/ \
-    # && echo "下载 Miniconda by Python3" && wget -t 0 https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh \
-    && echo "下载 Miniconda by Python2" && wget -t 0 https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda2-latest-Linux-x86_64.sh \
+#    && echo "下载 Miniconda by Python3" && wget -t 0 https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+#    && echo "下载 Miniconda by Python2" && wget -t 0 https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda2-latest-Linux-x86_64.sh \
+    && echo "下载 Miniconda by Python3" && wget -t 0 https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
     && bash Miniconda*.sh -b -p /opt/conda \
     && rm Miniconda*.sh \
     # && echo "下载 anaconda by Python2" && wget -t 0 https://repo.continuum.io/archive/Anaconda2-4.4.0-Linux-x86_64.sh \
@@ -46,7 +47,7 @@ RUN echo "安装 anaconda" \
     && ln -s /opt/conda/bin/pip /usr/local/bin/pip
 
 RUN echo "设置 conda 国内源, 从 conda 安装 python 库" \
-    && conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/ \
+#    && conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/ \
     && conda config --set show_channel_urls yes \
     && conda install -y pymongo pyzmq numpy msgpack-python qtpy pyqt \
     && conda install -c https://conda.anaconda.org/quantopian ta-lib \
@@ -57,35 +58,26 @@ RUN echo "从 pip 安装 python 库" \
     && echo "[global]" >> ~/.pip/pip.conf \
     && echo "index-url = http://pypi.douban.com/simple" >> ~/.pip/pip.conf \
     && echo "使用 pip 安装 python 库" \
-    && pip --trusted-host pypi.douban.com install ta-lib websocket-client qdarkstyle psutil quantopian-tools \
-    && pip --trusted-host pypi.douban.com install zipline
-
+#    && pip --trusted-host pypi.douban.com install ta-lib websocket-client qdarkstyle psutil quantopian-tools \
+#    && pip --trusted-host pypi.douban.com install zipline
+    && pip install ta-lib websocket-client qdarkstyle psutil quantopian-tools \
+    && pip install zipline
 
 RUN echo "安装 fluxbox 桌面管理器" \
     && apt-get install -y fluxbox
 
-#RUN echo "安装 mongodb 服务" \
-#    && mkdir -p /data/db \
-#    && apt-get install -y mongodb \
-#    && systemctl enable mongodb.service \
-#    && sed -i 's/bind_ip = 127.0.0.1/\#bind_ip = 127.0.0.1/g' /etc/mongodb.conf
+RUN echo "安装 mongodb 服务" \
+    && mkdir -p /data/db \
+    && apt-get install -y mongodb \
+    && systemctl enable mongodb.service \
+    && sed -i 's/bind_ip = 127.0.0.1/\#bind_ip = 127.0.0.1/g' /etc/mongodb.conf
 
-# 在客户端登录时自动启动 GUI 程序 (might not be the best way to do it, but it does the trick)
-#RUN bash -c 'echo "python /srv/vnpy/examples/VnTrader/run_simple.py" >> ~/.bashrc'
-#RUN bash -c 'echo "/usr/bin/xterm" >> ~/.bashrc'
 # 设置登录时开启本地 mongodb 服务并激活图形管理界面
-#RUN bash -c 'echo "service mongodb restart" >> ~/.bashrc'
+RUN bash -c 'echo "service mongodb restart" >> ~/.bashrc'
 RUN bash -c 'echo "fluxbox &" >> ~/.bashrc'
-RUN bash -c 'echo "pip install -e /srv/vnpy" >> ~/.bashrc'
-# 编译安装相关接口库
-#RUN bash -c 'echo "cd /srv/vnpy/vnpy/api/ctp && bash ./build.sh && cp -af ./build/lib/*.so . && cd /srv/vnpy" >> ~/.bashrc'
+RUN bash -c 'echo "pip install -e /srv/flyshare" >> ~/.bashrc'
 
 RUN echo "安装配置结束"
 
 
-WORKDIR /srv/vnpy
-
-
-# 暂时不设置入口点，否则不能使用 -it 交互模式
-# ENTRYPOINT python /srv/vnpy/vn.trader/vtServer.py
-
+WORKDIR /srv/flyshare
