@@ -1,4 +1,4 @@
-# -*- coding:utf-8 -*-
+#coding=utf-8
 """
 Created on 2017/11/11
 @author: Rubing Duan

@@ -1,4 +1,4 @@
-# -*- coding:utf-8 -*-
+#coding=utf-8
 """
 Trading Data API
 Created on 2017/10/27

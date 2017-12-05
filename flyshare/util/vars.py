@@ -1,4 +1,4 @@
-# -*- coding:utf-8 -*-
+#coding=utf-8
 
 P_TYPE = {'http': 'http://', 'https': 'https://'}
 FLYSHARE_URL='%s%s/trading/%s?code=%s&start=%s&end=%s'

@@ -1,4 +1,4 @@
-# -*- coding:utf-8 -*-
+#coding=utf-8
 from __future__ import division
 
 import time
@@ -17,8 +17,8 @@ import bson.json_util as ju
 import flyshare.ApiConfig as ac
 import tushare as ts
 import datetime
-import flyshare.util as util
-from flyshare.util import vars
+from flyshare.util import vars,get_date_today,log_debug,log_info,log_exception,get_date_today,today,\
+    is_tdx,is_tushare,is_default,is_today,is_flyshare, is_datareader
 import flyshare as fs
 
 def get_hist_data(code=None,
@@ -50,27 +50,27 @@ def get_hist_data(code=None,
     if code is None:
         return None
 
-    if util.is_default(data_source) and ac.DATA_SOURCE is not None:
+    if is_default(data_source) and ac.DATA_SOURCE is not None:
         data_source = ac.DATA_SOURCE
-    elif util.is_default(data_source):
+    elif is_default(data_source):
         data_source = 'tushare'
 
     if not code.isdigit():
-        util.log_debug("The data is only available in Datareader: code ="+code)
+        log_debug("The data is only available in Datareader: code ="+code)
         data_source = 'datareader'
 
     data_source = data_source.lower()
-    util.log_debug("datasource = "+data_source)
+    log_debug("datasource = "+data_source)
 
-    if util.is_tushare(data_source):
+    if is_tushare(data_source):
 
         if start is None:
             start = '2017-01-01'
         if end is None:
-            end = util.get_date_today()
-        util.log_debug("tushare data code:" + code+", start:"+start+", end:"+end)
+            end = get_date_today()
+        log_debug("tushare data code:" + code+", start:"+start+", end:"+end)
         return ts.get_k_data(code=code, start=start, end=end, ktype=ktype, autype=autype)
-    elif util.is_datareader(data_source):
+    elif is_datareader(data_source):
         import pandas_datareader.data as web
         if start is None:
             start = datetime.datetime.strptime('2017-01-01', '%Y-%m-%d')
@@ -80,14 +80,14 @@ def get_hist_data(code=None,
         if end is not None:
             end = datetime.datetime.strptime(end, '%Y-%m-%d')
         else:
-            end = util.today()
+            end = today()
         data = None
         try:
             data = web.DataReader(code, 'yahoo', start, end)
         except Exception as e:
             pass
         if data is not None:
-            util.log_debug("Datareader-Yahoo data:")
+            log_debug("Datareader-Yahoo data:")
             return data
         else:
             try:
@@ -95,9 +95,9 @@ def get_hist_data(code=None,
             except:
                 pass
             if data is not None:
-                util.log_debug("Datareader-Google data:")
+                log_debug("Datareader-Google data:")
                 return data
-    elif util.is_flyshare(data_source):
+    elif is_flyshare(data_source):
         url = vars.DATA_SOURCE+'/histdata?'
         if code is None:
             return None
@@ -116,13 +116,13 @@ def get_hist_data(code=None,
         if '_id' in df:
             df = df.drop('_id',1)
         return df
-    elif util.is_tdx(data_source):
-        util.log_debug("TDX data: ")
+    elif is_tdx(data_source):
+        log_debug("TDX data: ")
         if ac.TDX_CONN is None:
             ac.TDX_CONN = fs.get_apis()
 
         start = start if start is not None else ''
-        end = end if end is not None else util.get_date_today()
+        end = end if end is not None else get_date_today()
 
         return ts.bar(code, start_date=start, end_date=end, conn=ac.TDX_CONN)
 
@@ -159,36 +159,36 @@ def get_tick_data(code=None, date=None, retry_count=3, pause=0.001,
          期货多一列数据oi_change:增仓数据
 
     """
-    if util.is_today(date):
+    if is_today(date):
         return ts.get_today_ticks(code, retry_count, pause)
 
-    if util.is_tushare(data_source):
+    if is_tushare(data_source):
         return ts.get_tick_data(code, date, retry_count, pause, src)
-    elif util.is_tdx(data_source):
+    elif is_tdx(data_source):
         if ac.TDX_CONN is None:
             ac.TDX_CONN = fs.get_apis()
 
         return ts.tick(code, date=date, conn= ac.TDX_CONN, asset=asset)
 
 def get_large_order(code=None, date=None, vol=400, retry_count=3, pause=0.001 , data_source = 'tushare'):
-    if util.is_tushare(data_source):
+    if is_tushare(data_source):
         return ts.get_sina_dd(code, date, vol, retry_count, pause)
 
 def get_today_all(data_source='tushare'):
-    if util.is_tushare(data_source):
+    if is_tushare(data_source):
         return ts.get_today_all()
 
 def get_realtime_quotes(symbols=None, data_source='tushare'):
-    if util.is_tushare(data_source):
+    if is_tushare(data_source):
         return ts.get_realtime_quotes(symbols)
 
 def get_h_data(code, start=None, end=None, autype='qfq',
                index=False, retry_count=3, pause=0.001, drop_factor=True, data_source='tushare'):
-    if util.is_tushare(data_source):
+    if is_tushare(data_source):
         return ts.get_h_data(code, start, end, autype, index, retry_count, pause, drop_factor)
 
 def get_index(data_source='tushare'):
-    if util.is_tushare(data_source):
+    if is_tushare(data_source):
         return ts.get_index()
 
 

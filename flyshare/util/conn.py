@@ -1,4 +1,4 @@
-# -*- coding:utf-8 -*-
+#coding=utf-8
 
 from pytdx.hq import TdxHq_API
 from pytdx.exhq import TdxExHq_API

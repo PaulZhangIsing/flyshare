@@ -1,3 +1,4 @@
+#coding=utf-8
 import subprocess
 
 def ping(host = "www.google.com"):
@@ -13,11 +14,11 @@ def ping(host = "www.google.com"):
     )
 
     out, error = ping.communicate()
-    print(out)
+    # print(out)
     if out is None or out == "":
         return -1
     else:
-        return out.split("/")[-3]
+        return str(out).split("/")[-3]
 
 
 if __name__ == '__main__':
