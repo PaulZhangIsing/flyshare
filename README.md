@@ -23,7 +23,7 @@ central banks, governments, multinational organizations and more.
 
 ## Installation
 
-To install pyfolio, run:
+To install flyshare, run:
 
 ```bash
 pip install flyshare
