@@ -13,22 +13,27 @@ from flyshare.util.date_trade import (util_get_real_datelist, util_date_gap,
 
 def util_make_min_index(day, type_='1min'):
     if util_if_trade(day) is True:
-        return pd.date_range(str(day) + ' 09:30:00', str(day) + ' 11:30:00', freq=type_, closed='right').append(
-            pd.date_range(str(day) + ' 13:00:00', str(day) + ' 15:00:00', freq=type_, closed='right'))
+        return pd.date_range(str(day) + ' 09:30:00',
+                             str(day) + ' 11:30:00',
+                             freq=type_,
+                             closed='right').\
+            append(pd.date_range(str(day) + ' 13:00:00',
+                                 str(day) + ' 15:00:00',
+                                 freq=type_,
+                                 closed='right'))
     else:
         return pd.DataFrame(['No trade'])
 
 
 def util_make_hour_index(day, type_='1h'):
     if util_if_trade(day) is True:
-        return pd.date_range(str(day) + '09:30:00', str(day) + ' 11:30:00', freq=type_, closed='right').append(
-            pd.date_range(str(day) + ' 13:00:00', str(day) + ' 15:00:00', freq=type_, closed='right'))
+        return pd.date_range(str(day) + '09:30:00', str(day) + ' 11:30:00', freq=type_, closed='right').\
+            append(pd.date_range(str(day) + ' 13:00:00', str(day) + ' 15:00:00', freq=type_, closed='right'))
     else:
         return pd.DataFrame(['No trade'])
 
 
 def util_time_gap(time, gap, methods, type_):
-
     '分钟线回测的时候的gap'
     min_len = int(240 / int(str(type_).split('min')[0]))
     day_gap = math.ceil(gap / min_len)

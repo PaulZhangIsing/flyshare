@@ -9,87 +9,87 @@ from flyshare.su import update_wind as uw
 from flyshare.util import MongoDBSetting as ms
 
 
-def SU_save_trade_date(engine, client=ms.client):
+def save_trade_date(engine, client=ms.client):
     engine = select_save_engine(engine)
-    engine.SU_save_trade_date(client)
+    engine.save_trade_date(client)
 
 
-def SU_save_stock_info(engine, client=ms.client):
+def save_stock_info(engine, client=ms.client):
     engine = select_save_engine(engine)
-    engine.SU_save_stock_info(client)
+    engine.save_stock_info(client)
 
 
-def SU_save_stock_list(engine, client=ms.client):
+def save_stock_list(engine, client=ms.client):
     engine = select_save_engine(engine)
-    engine.SU_save_stock_list(client)
+    engine.save_stock_list(client)
 
 
-def SU_save_stock_day(engine, client=ms.client):
+def save_stock_day(engine, client=ms.client):
     engine = select_save_engine(engine)
-    engine.SU_save_stock_day(client)
+    engine.save_stock_day(client)
 
 
-def SU_save_stock_min(engine, client=ms.client):
+def save_stock_min(engine, client=ms.client):
     engine = select_save_engine(engine)
-    engine.SU_save_stock_min(client)
+    engine.save_stock_min(client)
 
 
-def SU_save_index_day(engine, client=ms.client):
+def save_index_day(engine, client=ms.client):
     engine = select_save_engine(engine)
-    engine.SU_save_index_day(client)
+    engine.save_index_day(client)
 
 
-def SU_save_index_min(engine, client=ms.client):
+def save_index_min(engine, client=ms.client):
     engine = select_save_engine(engine)
-    engine.SU_save_index_min(client)
+    engine.save_index_min(client)
 
 
-def SU_save_etf_day(engine, client=ms.client):
+def save_etf_day(engine, client=ms.client):
     engine = select_save_engine(engine)
-    engine.SU_save_etf_day(client)
+    engine.save_etf_day(client)
 
 
-def SU_save_etf_min(engine, client=ms.client):
+def save_etf_min(engine, client=ms.client):
     engine = select_save_engine(engine)
-    engine.SU_save_etf_min(client)
+    engine.save_etf_min(client)
 
 
-def SU_save_stock_xdxr(engine, client=ms.client):
+def save_stock_xdxr(engine, client=ms.client):
     engine = select_save_engine(engine)
-    engine.SU_save_stock_xdxr(client)
+    engine.save_stock_xdxr(client)
 
-def SU_save_stock_block(engine, client=ms.client):
+def save_stock_block(engine, client=ms.client):
     engine = select_save_engine(engine)
-    engine.SU_save_stock_block(client)
-def SU_save_stock_day_init(startDate, engine, client=ms.client):
+    engine.save_stock_block(client)
+def save_stock_day_init(startDate, engine, client=ms.client):
     engine = select_save_engine(engine)
-    engine.SU_save_stock_day_init(startDate, client)
+    engine.save_stock_day_init(startDate, client)
 
 
-def SU_update_stock_day(engine, client=ms.client):
+def update_stock_day(engine, client=ms.client):
     engine = select_update_engine(engine)
-    engine.SU_update_stock_day(client)
+    engine.update_stock_day(client)
 
 
-def SU_update_stock_xdxr(engine, client=ms.client):
+def update_stock_xdxr(engine, client=ms.client):
     engine = select_update_engine(engine)
-    engine.SU_update_stock_xdxr(client)
+    engine.update_stock_xdxr(client)
 
 
-def SU_update_stock_min(engine, client=ms.client):
+def update_stock_min(engine, client=ms.client):
     engine = select_update_engine(engine)
-    engine.SU_update_stock_min(client)
+    engine.update_stock_min(client)
 
 
 
-def SU_update_index_day(engine, client=ms.client):
+def update_index_day(engine, client=ms.client):
     engine = select_update_engine(engine)
-    engine.SU_update_index_day(client)
+    engine.update_index_day(client)
 
 
-def SU_update_index_min(engine, client=ms.client):
+def update_index_min(engine, client=ms.client):
     engine = select_update_engine(engine)
-    engine.SU_update_index_min(client)
+    engine.update_index_min(client)
 
 
 def select_save_engine(engine):
@@ -110,5 +110,5 @@ def select_update_engine(engine):
         return utdx
 
 
-def SU_save_stock_min_5(file_dir, client=ms.client):
+def save_stock_min_5(file_dir, client=ms.client):
     return tdx_file.save_tdx_to_mongo(file_dir, client)

@@ -28,15 +28,14 @@ def data_make_qfq(bfq_data, xdxr_data):
     '使用数据库数据进行复权'
     info = xdxr_data[xdxr_data['category'] == 1]
     bfq_data['if_trade'] = 1
-    data = pd.concat([bfq_data, info[['category']]
-                      [bfq_data.index[0]:bfq_data.index[-1]]], axis=1)
+    data = pd.concat([bfq_data, info[['category']][bfq_data.index[0]:bfq_data.index[-1]]], axis=1)
     data['if_trade'].fillna(value=0, inplace=True)
     data = data.fillna(method='ffill')
-    data = pd.concat([data, info[['fenhong', 'peigu', 'peigujia',
-                                  'songzhuangu']][bfq_data.index[0]:bfq_data.index[-1]]], axis=1)
+    data = pd.concat([data, info[['fenhong', 'peigu', 'peigujia', 'songzhuangu']][bfq_data.index[0]:bfq_data.index[-1]]], axis=1)
     data = data.fillna(0)
-    data['preclose'] = (data['close'].shift(1) * 10 - data['fenhong'] + data['peigu']
-                        * data['peigujia']) / (10 + data['peigu'] + data['songzhuangu'])
+    data['preclose'] = (data['close'].shift(1) * 10 -
+                        data['fenhong'] +
+                        data['peigu'] * data['peigujia']) / (10 + data['peigu'] + data['songzhuangu'])
     data['adj'] = (data['preclose'].shift(-1) /
                    data['close']).fillna(1)[::-1].cumprod()
     data['open'] = data['open'] * data['adj']
@@ -77,7 +76,7 @@ def data_make_hfq(bfq_data, xdxr_data):
 
 def data_stock_to_fq(__data, type_='01'):
 
-    def __fetch_stock_xdxr(code, format_='pd', collections=ms.client.flyshares.stock_xdxr):
+    def __fetch_stock_xdxr(code, format_='pd', collections=ms.client.flyshare.stock_xdxr):
         '获取股票除权信息/数据库'
         try:
             data = pd.DataFrame([item for item in collections.find(

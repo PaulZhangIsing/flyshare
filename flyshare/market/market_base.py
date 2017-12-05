@@ -19,7 +19,7 @@ def market_engine_base(__bid, fp=None):
     # inside function
     def __get_data(__bid):
 
-        __coll = MongoDBSetting.client.flyshares.stock_day
+        __coll = MongoDBSetting.client.flyshare.stock_day
         __data = __coll.find_one(
             {"code": str(__bid['code'])[0:6], "date": str(__bid['date'])[0:10]})
         return __data

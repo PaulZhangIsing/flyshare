@@ -45,8 +45,8 @@ class Backtest():
     bid = MarketBid()
     order = MarketBidList()
     mongo_setting = MongoDBSetting()
-    clients = setting.client
-    user = setting.setting_user_name
+    clients = MongoDBSetting.client
+    user = MongoDBSetting.setting_user_name
     market_data = []
     now = None
     today = None

@@ -10,7 +10,7 @@ from flyshare.util import MongoDBSetting as ms
 
 def save_stock_day_all(client=ms.client):
     df = ts.get_stock_basics()
-    __coll = client.flyshares.stock_day
+    __coll = client.flyshare.stock_day
     __coll.ensure_index('code')
 
     def saving_work(i):
@@ -37,27 +37,27 @@ def SU_save_stock_list(client=ms.client):
     data = fetch_get_stock_list()
     date = str(datetime.date.today())
     date_stamp = util_date_stamp(date)
-    coll = client.flyshares.stock_list
+    coll = client.flyshare.stock_list
     coll.insert({'date': date, 'date_stamp': date_stamp,
                  'stock': {'code': data}})
 
 
 def SU_save_trade_date_all(client=ms.client):
     data = fetch_get_trade_date('', '')
-    coll = client.flyshares.trade_date
+    coll = client.flyshare.trade_date
     coll.insert_many(data)
 
 
 def SU_save_stock_info(client=ms.client):
     data = fetch_get_stock_info('all')
-    coll = client.flyshares.stock_info
+    coll = client.flyshare.stock_info
     coll.insert_many(data)
 
 
 def save_stock_day_all_bfq(client=ms.client):
     df = ts.get_stock_basics()
 
-    __coll = client.flyshares.stock_day_bfq
+    __coll = client.flyshare.stock_day_bfq
     __coll.ensure_index('code')
 
     def saving_work(i):
@@ -83,7 +83,7 @@ def save_stock_day_all_bfq(client=ms.client):
 def save_stock_day_with_fqfactor(client=ms.client):
     df = ts.get_stock_basics()
 
-    __coll = client.flyshares.stock_day
+    __coll = client.flyshare.stock_day
     __coll.ensure_index('code')
 
     def saving_work(i):

@@ -1,9 +1,6 @@
 #coding:utf-8
 
 import datetime
-import time
-import math
-import pandas as pd
 
 def util_if_trade(day):
     '日期是否交易'

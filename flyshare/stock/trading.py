@@ -21,12 +21,7 @@ from flyshare.util import vars,get_date_today,log_debug,log_info,log_exception,g
     is_tdx,is_tushare,is_default,is_today,is_flyshare, is_datareader
 import flyshare as fs
 
-def get_hist_data(code=None,
-                  start=None,
-                  end=None,
-                  autype='qfq',
-                  ktype='D',
-                  data_source='default'):
+def get_hist_data(code=None, start=None, end=None, autype='qfq', ktype='D', data_source='default'):
     """
     Parameters
     ------
@@ -127,8 +122,7 @@ def get_hist_data(code=None,
         return ts.bar(code, start_date=start, end_date=end, conn=ac.TDX_CONN)
 
 
-def get_tick_data(code=None, date=None, retry_count=3, pause=0.001,
-                  src='sn', asset='X', data_source = 'tushare'):
+def get_tick_data(code=None, date=None, retry_count=3, pause=0.001, src='sn', asset='X', data_source = 'tushare'):
     """rf
     tick数据
     Parameters:

@@ -29,7 +29,7 @@ def SU_update_stock_day(client=ms.client):
             coll.insert_many(data)
         else:
             pass
-    coll_stock_day = client.flyshares.stock_day
+    coll_stock_day = client.flyshare.stock_day
     for item in fetch_get_stock_time_to_market().index:
 
         if coll_stock_day.find({'code': str(item)[0:6]}).count() > 0:
@@ -54,7 +54,7 @@ def SU_update_stock_day(client=ms.client):
 
 
 def SU_update_stock_xdxr(client=ms.client):
-    client.flyshares.drop_collection('stock_xdxr')
+    client.flyshare.drop_collection('stock_xdxr')
     SU_save_stock_xdxr()
 
 

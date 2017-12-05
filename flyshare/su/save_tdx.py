@@ -28,7 +28,7 @@ def now_time():
 
 def SU_save_stock_day(client=ms.client):
     __stock_list = fetch_get_stock_time_to_market()
-    coll_stock_day = client.flyshares.stock_day
+    coll_stock_day = client.flyshare.stock_day
     coll_stock_day.create_index(
         [("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)])
     __err = []
@@ -66,9 +66,9 @@ def SU_save_stock_day(client=ms.client):
 
 
 def SU_save_stock_xdxr(client=ms.client):
-    client.flyshares.drop_collection('stock_xdxr')
+    client.flyshare.drop_collection('stock_xdxr')
     __stock_list = fetch_get_stock_time_to_market()
-    __coll = client.flyshares.stock_xdxr
+    __coll = client.flyshare.stock_xdxr
     __coll.create_index([('code', pymongo.ASCENDING),
                          ('date', pymongo.ASCENDING)])
     __err = []
@@ -94,7 +94,7 @@ def SU_save_stock_xdxr(client=ms.client):
 
 def SU_save_stock_min(client=ms.client):
     __stock_list = fetch_get_stock_time_to_market()
-    __coll = client.flyshares.stock_min
+    __coll = client.flyshare.stock_min
     __coll.create_index([('code', pymongo.ASCENDING), ('time_stamp',
                                                        pymongo.ASCENDING), ('date_stamp', pymongo.ASCENDING)])
     __err = []
@@ -140,7 +140,7 @@ def SU_save_stock_min(client=ms.client):
 
 def SU_save_index_day(client=ms.client):
     __index_list = fetch_get_stock_list('index')
-    __coll = client.flyshares.index_day
+    __coll = client.flyshare.index_day
     __coll.create_index([('code', pymongo.ASCENDING),
                          ('date_stamp', pymongo.ASCENDING)])
     __err = []
@@ -177,7 +177,7 @@ def SU_save_index_day(client=ms.client):
 
 def SU_save_index_min(client=ms.client):
     __index_list = fetch_get_stock_list('index')
-    __coll = client.flyshares.index_min
+    __coll = client.flyshare.index_min
     __coll.create_index([('code', pymongo.ASCENDING), ('time_stamp',
                                                        pymongo.ASCENDING), ('date_stamp', pymongo.ASCENDING)])
     __err = []
@@ -223,7 +223,7 @@ def SU_save_index_min(client=ms.client):
 
 def SU_save_etf_day(client=ms.client):
     __index_list = fetch_get_stock_list('etf')
-    __coll = client.flyshares.index_day
+    __coll = client.flyshare.index_day
     __coll.create_index([('code', pymongo.ASCENDING),
                          ('date_stamp', pymongo.ASCENDING)])
     __err = []
@@ -260,7 +260,7 @@ def SU_save_etf_day(client=ms.client):
 
 def SU_save_etf_min(client=ms.client):
     __index_list = fetch_get_stock_list('etf')
-    __coll = client.flyshares.index_min
+    __coll = client.flyshare.index_min
     __coll.create_index([('code', pymongo.ASCENDING), ('time_stamp',
                                                        pymongo.ASCENDING), ('date_stamp', pymongo.ASCENDING)])
     __err = []
@@ -305,8 +305,8 @@ def SU_save_etf_min(client=ms.client):
 
 
 def SU_save_stock_list(client=ms.client):
-    client.flyshares.drop_collection('stock_list')
-    __coll = client.flyshares.stock_list
+    client.flyshare.drop_collection('stock_list')
+    __coll = client.flyshare.stock_list
     __coll.create_index('code')
     __err = []
 
@@ -319,8 +319,8 @@ def SU_save_stock_list(client=ms.client):
 
 
 def SU_save_stock_block(client=ms.client):
-    client.flyshares.drop_collection('stock_block')
-    __coll = client.flyshares.stock_block
+    client.flyshare.drop_collection('stock_block')
+    __coll = client.flyshare.stock_block
     __coll.create_index('code')
     __err = []
     try:
@@ -332,9 +332,9 @@ def SU_save_stock_block(client=ms.client):
     except:
         pass
 def SU_save_stock_info(client=ms.client):
-    client.flyshares.drop_collection('stock_info')
+    client.flyshare.drop_collection('stock_info')
     __stock_list = fetch_get_stock_time_to_market()
-    __coll = client.flyshares.stock_info
+    __coll = client.flyshare.stock_info
     __coll.create_index('code')
     __err = []
 
@@ -359,7 +359,7 @@ def SU_save_stock_info(client=ms.client):
 
 def SU_save_stock_transaction(client=ms.client):
     __stock_list = fetch_get_stock_time_to_market()
-    __coll = client.flyshares.stock_transaction
+    __coll = client.flyshare.stock_transaction
     __coll.create_index('code', pymongo.ASCENDING)
     __err = []
 

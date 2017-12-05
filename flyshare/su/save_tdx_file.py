@@ -30,7 +30,7 @@ from flyshare.util import MongoDBSetting as ms, log_info, util_time_stamp, util_
 
 def save_tdx_to_mongo(file_dir, client=ms.client):
     reader = TdxMinBarReader()
-    __coll = client.flyshares.stock_min_five
+    __coll = client.flyshare.stock_min_five
     for a, v, files in os.walk(file_dir):
         for file in files:
             if (str(file)[0:2] == 'sh' and int(str(file)[2]) == 6) or \

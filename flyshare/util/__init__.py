@@ -24,7 +24,9 @@ from .date_trade import (trade_date_sse, util_if_trade, util_date_gap,
                          util_get_trade_range)
 
 from .bar import (util_make_min_index,
-                  util_make_hour_index, util_time_gap)
+                  util_make_hour_index,
+                  util_time_gap)
 
 from .transform import (util_to_json_from_pandas,
-                        util_to_list_from_numpy, util_to_list_from_pandas)
+                        util_to_list_from_numpy,
+                        util_to_list_from_pandas)

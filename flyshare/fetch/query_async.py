@@ -49,7 +49,7 @@ class processor():
 
 async def fetch_stock_day_adv(code, __start, __end,
                                  if_drop_index=False,
-                                 collections=util_sql_async_mongo_setting().flyshares.stock_day):
+                                 collections=util_sql_async_mongo_setting().flyshare.stock_day):
     '获取股票日线'
     __start = str(__start)[0:10]
     __end = str(__end)[0:10]

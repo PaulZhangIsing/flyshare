@@ -191,7 +191,7 @@ class Tdx_Executor():
         except Exception as e:
             raise e
 
-    def save_mongo(self, data, client=ms.client.flyshares.realtime):
+    def save_mongo(self, data, client=ms.client.flyshare.realtime):
         client.insert_many(util_to_json_from_pandas(data))
 
 

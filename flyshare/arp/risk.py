@@ -44,7 +44,7 @@ def risk_eva_account(message, days, client):
         return {""}
 
     except:
-        log_expection('error in risk evaluation')
+        log_exception('error in risk evaluation')
 
 
 def risk_account_freeCash_initAssets(freeCash, initAssets):
@@ -53,10 +53,10 @@ def risk_account_freeCash_initAssets(freeCash, initAssets):
         return result
     except:
         return 0
-        log_expection('error in risk_account_freeCash_initAssets')
-        log_expection('freeCash: ' + str(freeCash))
-        log_expection('currentAssets: ' + str(initAssets))
-        log_expection('expected result: ' +
+        log_exception('error in risk_account_freeCash_initAssets')
+        log_exception('freeCash: ' + str(freeCash))
+        log_exception('currentAssets: ' + str(initAssets))
+        log_exception('expected result: ' +
                       str(float(freeCash) / float(initAssets)))
 
 
@@ -66,11 +66,11 @@ def risk_account_freeCash_currentAssets(freeCash, currentAssets):
         return result
     except:
         return 0
-        log_expection(
+        log_exception(
             'error in risk_account_freeCash_currentAssets')
-        log_expection('freeCash: ' + str(freeCash))
-        log_expection('currentAssets: ' + str(currentAssets))
-        log_expection('expected result: ' +
+        log_exception('freeCash: ' + str(freeCash))
+        log_exception('currentAssets: ' + str(currentAssets))
+        log_exception('expected result: ' +
                       str(float(freeCash) / float(currentAssets)))
 
 
@@ -80,10 +80,10 @@ def risk_account_freeCash_frozenAssets(freeCash, frozenAssets):
         return result
     except:
         return 0
-        log_expection('error in risk_account_freeCash_frozenAssets')
-        log_expection('freeCash: ' + str(freeCash))
-        log_expection('currentAssets: ' + str(frozenAssets))
-        log_expection('expected result: ' +
+        log_exception('error in risk_account_freeCash_frozenAssets')
+        log_exception('freeCash: ' + str(freeCash))
+        log_exception('currentAssets: ' + str(frozenAssets))
+        log_exception('expected result: ' +
                       str(float(freeCash) / float(frozenAssets)))
 
 

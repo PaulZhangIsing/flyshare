@@ -42,21 +42,21 @@ def SU_update_stock_day(client=ms.client):
     date = str(datetime.date.today())
     date_stamp = util_date_stamp(date)
     #
-    client.flyshares.drop_collection('stock_list')
-    client.flyshares.drop_collection('trade_date')
-    client.flyshares.drop_collection('stock_info')
-    #client.flyshares.drop_collection('stock_day')
-    # client.flyshares.user_list.insert(
+    client.flyshare.drop_collection('stock_list')
+    client.flyshare.drop_collection('trade_date')
+    client.flyshare.drop_collection('stock_info')
+    #client.flyshare.drop_collection('stock_day')
+    # client.flyshare.user_list.insert(
     #{'username': 'admin', 'password': 'admin'})
     SU_save_stock_info()
     SU_save_stock_list()
     SU_save_trade_date_all()
     #save_stock_day_with_fqfactor()
 
-    coll_stocklist = client.flyshares.stock_list
+    coll_stocklist = client.flyshare.stock_list
     # 使用find_one
     stock_list = coll_stocklist.find_one()['stock']['code']
-    coll_stock_day = client.flyshares.stock_day
+    coll_stock_day = client.flyshare.stock_day
     stock_list.append('sz50')
     stock_list.append('hs300')
 
