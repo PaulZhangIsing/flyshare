@@ -7,7 +7,7 @@ from . import (ApiConfig)
 
 from .util.conn import (get_apis, close_apis)
 
-from .util.log import (log_exception,log_info,log_debug,log_critical)
+from .util.log import (util_log_exception, util_log_info, util_log_debug, util_log_critical)
 
 from .stock.trading import (get_hist_data,
                             get_tick_data,
@@ -49,3 +49,5 @@ from .arp import (Account, Portfolio, Risk)
 from .market import (MarketBid, Market)
 
 from .backtest.backtest import Backtest
+
+from .indicator import *

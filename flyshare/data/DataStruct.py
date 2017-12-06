@@ -22,7 +22,7 @@ import six
 from pyecharts import Kline
 from flyshare.data.data_fq import data_stock_to_fq
 from flyshare.data.data_resample import data_tick_resample
-from flyshare.util import (MongoDBSetting, log_info,
+from flyshare.util import (MongoDBSetting, util_log_info,
                            util_to_json_from_pandas, trade_date_sse)
 from flyshare.fetch.tdx import fetch_get_stock_realtime
 
@@ -114,7 +114,7 @@ class __stock_hq_base():
                           "max", "min"], is_datazoom_show=True, datazoom_orient='horizontal')
             kline.render(path_name)
             webbrowser.open(path_name)
-            log_info(
+            util_log_info(
                 'The Pic has been saved to your path: %s' % path_name)
         else:
             data = []
@@ -133,7 +133,7 @@ class __stock_hq_base():
                       "max", "min"], is_datazoom_show=True, datazoom_orient='horizontal')
             kline.render(path_name)
             webbrowser.open(path_name)
-            log_info(
+            util_log_info(
                 'The Pic has been saved to your path: %s' % path_name)
 
     @lru_cache()
@@ -145,7 +145,7 @@ class __stock_hq_base():
 
     @lru_cache()
     def show(self):
-        return log_info(self.data)
+        return util_log_info(self.data)
 
     @lru_cache()
     def query(self, query_text):
@@ -523,7 +523,7 @@ class DataStruct_Stock_min(__stock_hq_base):
                     self.data.groupby('code').apply(data_stock_to_fq))
                 return data
         else:
-            log_info(
+            util_log_info(
                 'none support type for qfq Current type is:%s' % self.if_fq)
             return self
 
@@ -534,7 +534,7 @@ class DataStruct_Stock_min(__stock_hq_base):
             data.if_fq = 'hfq'
             return data
         else:
-            log_info(
+            util_log_info(
                 'none support type for qfq Current type is:%s' % self.if_fq)
             return self
 
@@ -656,7 +656,7 @@ class DataStruct_Stock_day(__stock_hq_base):
                 data.if_fq = 'qfq'
                 return data
         else:
-            log_info(
+            util_log_info(
                 'none support type for qfq Current type is: %s' % self.if_fq)
             return self
 
@@ -668,7 +668,7 @@ class DataStruct_Stock_day(__stock_hq_base):
             data.if_fq = 'hfq'
             return data
         else:
-            log_info(
+            util_log_info(
                 'none support type for qfq Current type is: %s' % self.if_fq)
             return self
 

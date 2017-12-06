@@ -25,7 +25,7 @@ class Test(unittest.TestCase):
         ac.api_key = 'default key'
 
     def test_util_log(self):
-        util.log_critical("critical")
+        util.util_log_critical("critical")
 
     def test_ping(self):
         print(util.ping("www.google.com"))

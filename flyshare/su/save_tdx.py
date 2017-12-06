@@ -16,7 +16,7 @@ from flyshare.fetch.tdx import (fetch_get_index_day,
                                 fetch_get_stock_xdxr, select_best_ip)
 from flyshare.fetch.tushare import fetch_get_stock_time_to_market
 from flyshare.util import (MongoDBSetting as ms, util_get_real_date,
-                           log_info, util_to_json_from_pandas,
+                           util_log_info, util_to_json_from_pandas,
                            trade_date_sse)
 
 # ip=select_best_ip()
@@ -35,7 +35,7 @@ def SU_save_stock_day(client=ms.client):
 
     def __saving_work(code, coll_stock_day):
         try:
-            log_info(
+            util_log_info(
                 '##JOB01 Now Saving STOCK_DAY==== %s' % (str(code)))
 
             ref = coll_stock_day.find({'code': str(code)[0:6]})
@@ -46,8 +46,8 @@ def SU_save_stock_day(client=ms.client):
                 start_date = ref[ref.count() - 1]['date']
             else:
                 start_date = '1990-01-01'
-            log_info(' UPDATE_STOCK_DAY \n Trying updating %s from %s to %s' %
-                     (code, start_date, end_date))
+            util_log_info(' UPDATE_STOCK_DAY \n Trying updating %s from %s to %s' %
+                          (code, start_date, end_date))
             if start_date != end_date:
                 coll_stock_day.insert_many(
                     util_to_json_from_pandas(
@@ -55,14 +55,14 @@ def SU_save_stock_day(client=ms.client):
         except:
             __err.append(str(code))
     for item in range(len(__stock_list)):
-        log_info('The %s of Total %s' %
-                 (item, len(__stock_list)))
-        log_info('DOWNLOAD PROGRESS %s ' % str(
+        util_log_info('The %s of Total %s' %
+                      (item, len(__stock_list)))
+        util_log_info('DOWNLOAD PROGRESS %s ' % str(
             float(item / len(__stock_list) * 100))[0:4] + '%')
 
         __saving_work(__stock_list.index[item], coll_stock_day)
-    log_info('ERROR CODE \n ')
-    log_info(__err)
+    util_log_info('ERROR CODE \n ')
+    util_log_info(__err)
 
 
 def SU_save_stock_xdxr(client=ms.client):
@@ -74,7 +74,7 @@ def SU_save_stock_xdxr(client=ms.client):
     __err = []
 
     def __saving_work(code, __coll):
-        log_info('##JOB02 Now Saving XDXR INFO ==== %s' % (str(code)))
+        util_log_info('##JOB02 Now Saving XDXR INFO ==== %s' % (str(code)))
         try:
             __coll.insert_many(
                 util_to_json_from_pandas(
@@ -84,12 +84,12 @@ def SU_save_stock_xdxr(client=ms.client):
             __err.append(str(code))
     for i_ in range(len(__stock_list)):
         #__saving_work('000001')
-        log_info('The %s of Total %s' % (i_, len(__stock_list)))
-        log_info('DOWNLOAD PROGRESS %s ' % str(
+        util_log_info('The %s of Total %s' % (i_, len(__stock_list)))
+        util_log_info('DOWNLOAD PROGRESS %s ' % str(
             float(i_ / len(__stock_list) * 100))[0:4] + '%')
         __saving_work(__stock_list.index[i_], __coll)
-    log_info('ERROR CODE \n ')
-    log_info(__err)
+    util_log_info('ERROR CODE \n ')
+    util_log_info(__err)
 
 
 def SU_save_stock_min(client=ms.client):
@@ -100,7 +100,7 @@ def SU_save_stock_min(client=ms.client):
     __err = []
 
     def __saving_work(code, __coll):
-        log_info('##JOB03 Now Saving STOCK_MIN ==== %s' % (str(code)))
+        util_log_info('##JOB03 Now Saving STOCK_MIN ==== %s' % (str(code)))
         try:
             for type in ['1min', '5min', '15min', '30min', '60min']:
                 ref_ = __coll.find(
@@ -110,7 +110,7 @@ def SU_save_stock_min(client=ms.client):
                     start_time = ref_[ref_.count() - 1]['datetime']
                 else:
                     start_time = '2015-01-01'
-                log_info(
+                util_log_info(
                     '##JOB03.%s Now Saving %s from %s to %s ==%s ' % (['1min', '5min', '15min', '30min', '60min'].index(type), str(code), start_time, end_time, type))
                 if start_time != end_time:
                     __data = fetch_get_stock_min(
@@ -120,7 +120,7 @@ def SU_save_stock_min(client=ms.client):
                             util_to_json_from_pandas(__data[1::]))
 
         except Exception as e:
-            log_info(e)
+            util_log_info(e)
 
             __err.append(code)
 
@@ -130,12 +130,12 @@ def SU_save_stock_min(client=ms.client):
         __saving_work, __stock_list.index[i_], __coll) for i_ in range(len(__stock_list))}
     count = 0
     for i_ in concurrent.futures.as_completed(res):
-        log_info('The %s of Total %s' % (count, len(__stock_list)))
-        log_info('DOWNLOAD PROGRESS %s ' % str(
+        util_log_info('The %s of Total %s' % (count, len(__stock_list)))
+        util_log_info('DOWNLOAD PROGRESS %s ' % str(
             float(count / len(__stock_list) * 100))[0:4] + '%')
         count = count + 1
-    log_info('ERROR CODE \n ')
-    log_info(__err)
+    util_log_info('ERROR CODE \n ')
+    util_log_info(__err)
 
 
 def SU_save_index_day(client=ms.client):
@@ -156,8 +156,8 @@ def SU_save_index_day(client=ms.client):
             else:
                 start_time = '1990-01-01'
 
-            log_info('##JOB04 Now Saving INDEX_DAY==== \n Trying updating %s from %s to %s' %
-                     (code, start_time, end_time))
+            util_log_info('##JOB04 Now Saving INDEX_DAY==== \n Trying updating %s from %s to %s' %
+                          (code, start_time, end_time))
 
             if start_time != end_time:
                 __coll.insert_many(
@@ -167,12 +167,12 @@ def SU_save_index_day(client=ms.client):
             __err.append(str(code))
     for i_ in range(len(__index_list)):
         #__saving_work('000001')
-        log_info('The %s of Total %s' % (i_, len(__index_list)))
-        log_info('DOWNLOAD PROGRESS %s ' % str(
+        util_log_info('The %s of Total %s' % (i_, len(__index_list)))
+        util_log_info('DOWNLOAD PROGRESS %s ' % str(
             float(i_ / len(__index_list) * 100))[0:4] + '%')
         __saving_work(__index_list.index[i_][0], __coll)
-    log_info('ERROR CODE \n ')
-    log_info(__err)
+    util_log_info('ERROR CODE \n ')
+    util_log_info(__err)
 
 
 def SU_save_index_min(client=ms.client):
@@ -184,7 +184,7 @@ def SU_save_index_min(client=ms.client):
 
     def __saving_work(code, __coll):
 
-        log_info('##JOB05 Now Saving Index_MIN ==== %s' % (str(code)))
+        util_log_info('##JOB05 Now Saving Index_MIN ==== %s' % (str(code)))
         try:
 
             for type in ['1min', '5min', '15min', '30min', '60min']:
@@ -195,7 +195,7 @@ def SU_save_index_min(client=ms.client):
                     start_time = ref_[ref_.count() - 1]['datetime']
                 else:
                     start_time = '2015-01-01'
-                log_info(
+                util_log_info(
                     '##JOB05.%s Now Saving %s from %s to %s ==%s ' % (['1min', '5min', '15min', '30min', '60min'].index(type), str(code), start_time, end_time, type))
                 if start_time != end_time:
                     __data = fetch_get_index_min(
@@ -213,12 +213,12 @@ def SU_save_index_min(client=ms.client):
         __saving_work, __index_list.index[i_][0], __coll) for i_ in range(len(__index_list))}  # multi index ./.
     count = 0
     for i_ in concurrent.futures.as_completed(res):
-        log_info('The %s of Total %s' % (count, len(__index_list)))
-        log_info('DOWNLOAD PROGRESS %s ' % str(
+        util_log_info('The %s of Total %s' % (count, len(__index_list)))
+        util_log_info('DOWNLOAD PROGRESS %s ' % str(
             float(count / len(__index_list) * 100))[0:4] + '%')
         count = count + 1
-    log_info('ERROR CODE \n ')
-    log_info(__err)
+    util_log_info('ERROR CODE \n ')
+    util_log_info(__err)
 
 
 def SU_save_etf_day(client=ms.client):
@@ -239,8 +239,8 @@ def SU_save_etf_day(client=ms.client):
             else:
                 start_time = '1990-01-01'
 
-            log_info('##JOB06 Now Saving ETF_DAY==== \n Trying updating %s from %s to %s' %
-                     (code, start_time, end_time))
+            util_log_info('##JOB06 Now Saving ETF_DAY==== \n Trying updating %s from %s to %s' %
+                          (code, start_time, end_time))
 
             if start_time != end_time:
                 __coll.insert_many(
@@ -250,12 +250,12 @@ def SU_save_etf_day(client=ms.client):
             __err.append(str(code))
     for i_ in range(len(__index_list)):
         #__saving_work('000001')
-        log_info('The %s of Total %s' % (i_, len(__index_list)))
-        log_info('DOWNLOAD PROGRESS %s ' % str(
+        util_log_info('The %s of Total %s' % (i_, len(__index_list)))
+        util_log_info('DOWNLOAD PROGRESS %s ' % str(
             float(i_ / len(__index_list) * 100))[0:4] + '%')
         __saving_work(__index_list.index[i_][0], __coll)
-    log_info('ERROR CODE \n ')
-    log_info(__err)
+    util_log_info('ERROR CODE \n ')
+    util_log_info(__err)
 
 
 def SU_save_etf_min(client=ms.client):
@@ -267,7 +267,7 @@ def SU_save_etf_min(client=ms.client):
 
     def __saving_work(code, __coll):
 
-        log_info('##JOB07 Now Saving ETF_MIN ==== %s' % (str(code)))
+        util_log_info('##JOB07 Now Saving ETF_MIN ==== %s' % (str(code)))
         try:
 
             for type in ['1min', '5min', '15min', '30min', '60min']:
@@ -278,7 +278,7 @@ def SU_save_etf_min(client=ms.client):
                     start_time = ref_[ref_.count() - 1]['datetime']
                 else:
                     start_time = '2015-01-01'
-                log_info(
+                util_log_info(
                     '##JOB07.%s Now Saving %s from %s to %s ==%s ' % (['1min', '5min', '15min', '30min', '60min'].index(type), str(code), start_time, end_time, type))
                 if start_time != end_time:
                     __data = fetch_get_index_min(
@@ -296,12 +296,12 @@ def SU_save_etf_min(client=ms.client):
         __saving_work, __index_list.index[i_][0], __coll) for i_ in range(len(__index_list))}  # multi index ./.
     count = 0
     for i_ in concurrent.futures.as_completed(res):
-        log_info('The %s of Total %s' % (count, len(__index_list)))
-        log_info('DOWNLOAD PROGRESS %s ' % str(
+        util_log_info('The %s of Total %s' % (count, len(__index_list)))
+        util_log_info('DOWNLOAD PROGRESS %s ' % str(
             float(count / len(__index_list) * 100))[0:4] + '%')
         count = count + 1
-    log_info('ERROR CODE \n ')
-    log_info(__err)
+    util_log_info('ERROR CODE \n ')
+    util_log_info(__err)
 
 
 def SU_save_stock_list(client=ms.client):
@@ -311,7 +311,7 @@ def SU_save_stock_list(client=ms.client):
     __err = []
 
     try:
-        log_info('##JOB08 Now Saving STOCK_LIST ====')
+        util_log_info('##JOB08 Now Saving STOCK_LIST ====')
         __coll.insert_many(util_to_json_from_pandas(
             fetch_get_stock_list()))
     except:
@@ -324,7 +324,7 @@ def SU_save_stock_block(client=ms.client):
     __coll.create_index('code')
     __err = []
     try:
-        log_info('##JOB09 Now Saving STOCK_BlOCK ====')
+        util_log_info('##JOB09 Now Saving STOCK_BlOCK ====')
         __coll.insert_many(util_to_json_from_pandas(
             fetch_get_stock_block('tdx')))
         __coll.insert_many(util_to_json_from_pandas(
@@ -339,7 +339,7 @@ def SU_save_stock_info(client=ms.client):
     __err = []
 
     def __saving_work(code, __coll):
-        log_info('##JOB010 Now Saving STOCK INFO ==== %s' % (str(code)))
+        util_log_info('##JOB010 Now Saving STOCK INFO ==== %s' % (str(code)))
         try:
             __coll.insert_many(
                 util_to_json_from_pandas(
@@ -349,12 +349,12 @@ def SU_save_stock_info(client=ms.client):
             __err.append(str(code))
     for i_ in range(len(__stock_list)):
         #__saving_work('000001')
-        log_info('The %s of Total %s' % (i_, len(__stock_list)))
-        log_info('DOWNLOAD PROGRESS %s ' % str(
+        util_log_info('The %s of Total %s' % (i_, len(__stock_list)))
+        util_log_info('DOWNLOAD PROGRESS %s ' % str(
             float(i_ / len(__stock_list) * 100))[0:4] + '%')
         __saving_work(__stock_list.index[i_], __coll)
-    log_info('ERROR CODE \n ')
-    log_info(__err)
+    util_log_info('ERROR CODE \n ')
+    util_log_info(__err)
 
 
 def SU_save_stock_transaction(client=ms.client):
@@ -364,7 +364,7 @@ def SU_save_stock_transaction(client=ms.client):
     __err = []
 
     def __saving_work(code):
-        log_info(
+        util_log_info(
             '##JOB10 Now Saving STOCK_TRANSACTION ==== %s' % (str(code)))
         try:
             __coll.insert_many(
@@ -374,12 +374,12 @@ def SU_save_stock_transaction(client=ms.client):
             __err.append(str(code))
     for i_ in range(len(__stock_list)):
         #__saving_work('000001')
-        log_info('The %s of Total %s' % (i_, len(__stock_list)))
-        log_info('DOWNLOAD PROGRESS %s ' % str(
+        util_log_info('The %s of Total %s' % (i_, len(__stock_list)))
+        util_log_info('DOWNLOAD PROGRESS %s ' % str(
             float(i_ / len(__stock_list) * 100))[0:4] + '%')
         __saving_work(__stock_list.index[i_])
-    log_info('ERROR CODE \n ')
-    log_info(__err)
+    util_log_info('ERROR CODE \n ')
+    util_log_info(__err)
 
 
 if __name__ == '__main__':

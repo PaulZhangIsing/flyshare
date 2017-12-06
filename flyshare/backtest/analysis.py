@@ -4,7 +4,7 @@ import sys
 import numpy
 import pandas as pd
 from flyshare.fetch.query import fetch_stock_day
-from flyshare.util import log_info, trade_date_sse
+from flyshare.util import util_log_info, trade_date_sse
 
 
 def backtest_analysis_start(client, code_list, assets_d, account_days, message, total_date, benchmark_data):
@@ -41,7 +41,7 @@ def backtest_analysis_start(client, code_list, assets_d, account_days, message, 
     """
     # 数据检查
     if (len(benchmark_data)) < 1:
-        log_info('Wrong with benchmark data ! ')
+        util_log_info('Wrong with benchmark data ! ')
         sys.exit()
 
     # 计算一个benchmark

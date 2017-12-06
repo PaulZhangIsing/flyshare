@@ -6,7 +6,7 @@ import random
 import threading
 import time
 import pandas as pd
-from flyshare.util import log_info, util_to_json_from_pandas
+from flyshare.util import util_log_info, util_to_json_from_pandas
 """
 重新定义bid模式
 
@@ -82,7 +82,7 @@ class MarketBid():
             self.trade_id = bid['trade_id']
             return self
         except:
-            log_info('Failed to tran from dict')
+            util_log_info('Failed to tran from dict')
 
     def from_dataframe(self, dataframe):
         bid_list = []
@@ -109,7 +109,7 @@ class MarketBid():
             self.trade_id = bid['trade_id']
             return self
         except:
-            log_info('Failed to tran from dict')
+            util_log_info('Failed to tran from dict')
         
 
 class MarketBidList():   # also the order tree

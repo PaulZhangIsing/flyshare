@@ -3,7 +3,7 @@
 import threading
 
 from flyshare.util import (util_date_stamp, util_date_valid,
-                           log_info)
+                           util_log_info)
 
 from .account import Account
 from .risk import Risk

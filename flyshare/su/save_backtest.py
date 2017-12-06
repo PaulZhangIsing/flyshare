@@ -26,7 +26,7 @@ import csv
 import os
 import sys
 
-from flyshare.util import MongoDBSetting, log_exception
+from flyshare.util import MongoDBSetting, util_log_exception
 
 
 def save_account_message(message, client):
@@ -48,7 +48,7 @@ def save_account_message(message, client):
             'detail': message['body']['account']['detail']
         })
     except:
-        log_exception('error in saving backtest account')
+        util_log_exception('error in saving backtest account')
     # print(message)
 
 

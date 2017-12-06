@@ -21,17 +21,17 @@ formatter = logging.Formatter('%(levelname)s - %(message)s')
 console.setFormatter(formatter)
 logging.getLogger('').addHandler(console)
 
-def log_debug(logs):
+def util_log_debug(logs):
     logging.debug(logs)
 
-def log_info(logs):
+def util_log_info(logs):
     logging.info(logs)
 
-def log_exception(logs):
+def util_log_exception(logs):
     logging.exception(logs)
 
-def log_critical(logs):
+def util_log_critical(logs):
     logging.critical(logs)
 
 if __name__ == '__main__':
-    log_info("A quirky message only developers care about")
+    util_log_info("A quirky message only developers care about")

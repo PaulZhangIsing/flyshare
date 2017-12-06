@@ -1,7 +1,7 @@
 # coding:utf-8
 
 from flyshare.su.user import user_sign_in, user_sign_up
-from flyshare.util import log_info
+from flyshare.util import util_log_info
 import flyshare.ApiConfig as ac
 import pymongo
 
@@ -37,7 +37,7 @@ class MongoDBSetting():
     def setting_login(self):
         self.username = self.setting_user_name
         self.password = self.setting_user_password
-        log_info('username:' + str(self.setting_user_name))
+        util_log_info('username:' + str(self.setting_user_name))
         result = user_sign_in(self.username, self.password, self.client)
         if result == True:
             self.user['username'] = self.username
@@ -45,7 +45,7 @@ class MongoDBSetting():
             self.user['login'] = True
             return self.user
         else:
-            log_info('failed to login')
+            util_log_info('failed to login')
 
 
 info_ip_list = ['101.227.73.20',

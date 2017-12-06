@@ -17,7 +17,7 @@ import bson.json_util as ju
 import flyshare.ApiConfig as ac
 import tushare as ts
 import datetime
-from flyshare.util import vars,get_date_today,log_debug,log_info,log_exception,get_date_today,today,\
+from flyshare.util import vars,get_date_today,util_log_debug,util_log_info,util_log_exception,get_date_today,today,\
     is_tdx,is_tushare,is_default,is_today,is_flyshare, is_datareader
 import flyshare as fs
 
@@ -51,11 +51,11 @@ def get_hist_data(code=None, start=None, end=None, autype='qfq', ktype='D', data
         data_source = 'tushare'
 
     if not code.isdigit():
-        log_debug("The data is only available in Datareader: code ="+code)
+        util_log_debug("The data is only available in Datareader: code =" + code)
         data_source = 'datareader'
 
     data_source = data_source.lower()
-    log_debug("datasource = "+data_source)
+    util_log_debug("datasource = " + data_source)
 
     if is_tushare(data_source):
 
@@ -63,7 +63,7 @@ def get_hist_data(code=None, start=None, end=None, autype='qfq', ktype='D', data
             start = '2017-01-01'
         if end is None:
             end = get_date_today()
-        log_debug("tushare data code:" + code+", start:"+start+", end:"+end)
+        util_log_debug("tushare data code:" + code + ", start:" + start + ", end:" + end)
         return ts.get_k_data(code=code, start=start, end=end, ktype=ktype, autype=autype)
     elif is_datareader(data_source):
         import pandas_datareader.data as web
@@ -82,7 +82,7 @@ def get_hist_data(code=None, start=None, end=None, autype='qfq', ktype='D', data
         except Exception as e:
             pass
         if data is not None:
-            log_debug("Datareader-Yahoo data:")
+            util_log_debug("Datareader-Yahoo data:")
             return data
         else:
             try:
@@ -90,7 +90,7 @@ def get_hist_data(code=None, start=None, end=None, autype='qfq', ktype='D', data
             except:
                 pass
             if data is not None:
-                log_debug("Datareader-Google data:")
+                util_log_debug("Datareader-Google data:")
                 return data
     elif is_flyshare(data_source):
         url = vars.DATA_SOURCE+'/histdata?'
@@ -112,7 +112,7 @@ def get_hist_data(code=None, start=None, end=None, autype='qfq', ktype='D', data
             df = df.drop('_id',1)
         return df
     elif is_tdx(data_source):
-        log_debug("TDX data: ")
+        util_log_debug("TDX data: ")
         if ac.TDX_CONN is None:
             ac.TDX_CONN = fs.get_apis()
 

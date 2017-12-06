@@ -2,7 +2,7 @@
 
 
 from flyshare.fetch import fetch_get_stock_day, fetch_get_stock_xdxr
-from flyshare.util import MongoDBSetting as ms, log_info
+from flyshare.util import MongoDBSetting as ms, util_log_info
 
 import datetime
 import pandas as pd
@@ -94,5 +94,5 @@ def data_stock_to_fq(__data, type_='01'):
     elif type_ in ['02', 'hfq']:
         return data_make_hfq(__data, __fetch_stock_xdxr(__data['code'][0]))
     else:
-        log_info('wrong fq type! Using qfq')
+        util_log_info('wrong fq type! Using qfq')
         return data_make_qfq(__data, __fetch_stock_xdxr(__data['code'][0]))

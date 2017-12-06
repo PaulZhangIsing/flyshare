@@ -9,7 +9,7 @@ from flyshare.fetch.query import (fetch_future_day,
                                   fetch_future_tick,
                                   fetch_index_day, fetch_index_min,
                                   fetch_stock_day, fetch_stock_min)
-from flyshare.util import (MongoDBSetting, log_info,
+from flyshare.util import (MongoDBSetting, util_log_info,
                            util_sql_mongo_setting,
                            util_to_json_from_pandas)
 
@@ -108,7 +108,7 @@ class Market():
                     __bid.price = 'strict_price'
                     return __bid
                 else:
-                    log_info('unsupport type:' + __bid.price)
+                    util_log_info('unsupport type:' + __bid.price)
                     return __bid
             else:
                 return __bid

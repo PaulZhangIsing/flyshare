@@ -8,7 +8,7 @@ from pytdx.hq import TdxHq_API
 from pytdx.exhq import TdxExHq_API
 from flyshare.util import (util_date_stamp, util_date_str2int,
                            util_date_valid, util_get_real_date,
-                           util_get_real_datelist, log_info,
+                           util_get_real_datelist, util_log_info,
                            util_time_stamp, ping,
                            trade_date_sse)
 import flyshare.ApiConfig as ac
@@ -36,11 +36,11 @@ def ping(ip):
 
 
 def select_best_ip():
-    log_info('Selecting the Best Server IP of TDX')
+    util_log_info('Selecting the Best Server IP of TDX')
     listx = vars.SLIST
     conn_times = [ping(x) for x in listx]
     best_ip = listx[conn_times.index(min(conn_times))]
-    log_info('===The BEST SERVER is :  %s ===' % (best_ip))
+    util_log_info('===The BEST SERVER is :  %s ===' % (best_ip))
     ac.TDX_BEST_IP = best_ip
     return best_ip
 
@@ -444,10 +444,10 @@ def fetch_get_stock_transaction(code, start, end, retry=2, ip=ac.TDX_BEST_IP, po
                 if len(data_) < 1:
                     return None
             except:
-                log_info('Wrong in Getting %s history transaction data in day %s' % (
+                util_log_info('Wrong in Getting %s history transaction data in day %s' % (
                     code, trade_date_sse[index_]))
             else:
-                log_info('Successfully Getting %s history transaction data in day %s' % (
+                util_log_info('Successfully Getting %s history transaction data in day %s' % (
                     code, trade_date_sse[index_]))
                 data = data.append(data_)
 
@@ -500,7 +500,7 @@ def fetch_get_stock_block(ip=ac.TDX_BEST_IP, port=7709):
         if len(data) > 10:
             return data.assign(source='tdx').drop(['block_type', 'code_index'], axis=1).set_index('code', drop=False, inplace=False).drop_duplicates()
         else:
-            log_info('Wrong with fetch block ')
+            util_log_info('Wrong with fetch block ')
 
 if __name__ == '__main__':
     print(select_best_ip())

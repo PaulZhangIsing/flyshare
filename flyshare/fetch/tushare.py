@@ -4,7 +4,7 @@ import json
 
 import tushare as QATs
 import pandas as pd
-from flyshare.util import util_date_stamp, log_info, util_to_json_from_pandas,util_date_int2str
+from flyshare.util import util_date_stamp, util_log_info, util_to_json_from_pandas,util_date_int2str
 
 
 def fetch_get_stock_day(name, startDate='', endDate='', if_fq='01', type_='json'):
@@ -18,7 +18,7 @@ def fetch_get_stock_day(name, startDate='', endDate='', if_fq='01', type_='json'
     elif str(if_fq) in ['bfq', '00']:
         if_fq = 'bfq'
     else:
-        log_info('wrong with fq_factor! using qfq')
+        util_log_info('wrong with fq_factor! using qfq')
         if_fq = 'qfq'
 
     data = QATs.get_k_data(str(name), startDate, endDate,

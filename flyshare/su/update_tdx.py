@@ -7,7 +7,7 @@ from flyshare.fetch.tdx import (fetch_get_stock_day,
 from flyshare.fetch.tushare import fetch_get_stock_time_to_market
 from flyshare.su.save_tdx import SU_save_stock_xdxr
 from flyshare.util import (MongoDBSetting as ms,
-                           log_info,
+                           util_log_info,
                            util_to_json_from_pandas,
                            trade_date_sse)
 
@@ -21,7 +21,7 @@ from flyshare.util import (MongoDBSetting as ms,
 
 def SU_update_stock_day(client=ms.client):
     def save_stock_day(code, start, end, coll):
-        log_info('##JOB01 Now Updating STOCK_DAY==== %s' % (str(code)))
+        util_log_info('##JOB01 Now Updating STOCK_DAY==== %s' % (str(code)))
         data = util_to_json_from_pandas(
             fetch_get_stock_day(str(code), start, end, '00'))
 
@@ -41,8 +41,8 @@ def SU_update_stock_day(client=ms.client):
             end_date = str(now_time())[0:10]
             start_date = trade_date_sse[trade_date_sse.index(
                 start_date) + 1]
-            log_info(' UPDATE_STOCK_DAY \n Trying updating %s from %s to %s' %
-                     (item, start_date, end_date))
+            util_log_info(' UPDATE_STOCK_DAY \n Trying updating %s from %s to %s' %
+                          (item, start_date, end_date))
 
             save_stock_day(item, start_date, end_date, coll_stock_day)
 
@@ -50,7 +50,7 @@ def SU_update_stock_day(client=ms.client):
             save_stock_day(item, '1990-01-01',
                            str(now_time())[0:10], coll_stock_day)
 
-    log_info('Done == \n')
+    util_log_info('Done == \n')
 
 
 def SU_update_stock_xdxr(client=ms.client):

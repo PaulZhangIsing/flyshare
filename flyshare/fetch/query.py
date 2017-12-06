@@ -8,7 +8,7 @@ from flyshare.util import (MongoDBSetting as ms,
                            util_date_stamp,
                            trade_date_sse,
                            util_date_valid,
-                           log_info,
+                           util_log_info,
                            util_time_stamp,
                            util_to_json_from_pandas,
                            util_to_list_from_pandas)
@@ -47,7 +47,7 @@ def fetch_stock_day(code, __start, __end, format_='numpy', collections=ms.client
             __data = __data.set_index('date', drop=False)
         return __data
     else:
-        log_info('something wrong with date')
+        util_log_info('something wrong with date')
 
 
 def fetch_trade_date():
@@ -85,7 +85,7 @@ def fetch_stock_full(date_, format_='numpy', collections=ms.client.flyshare.stoc
             __data = __data.set_index('date', drop=True)
         return __data
     else:
-        log_info('something wrong with date')
+        util_log_info('something wrong with date')
 
 
 def fetch_stock_info(code, collections):
@@ -133,7 +133,7 @@ def fetch_index_day(code, __start, __end, format_='numpy', collections=ms.client
             __data = __data.set_index('date', drop=False)
         return __data
     else:
-        log_info('something wrong with date')
+        util_log_info('something wrong with date')
 
 
 def fetch_indexlist_day(stock_list, date_range, collections=ms.client.flyshare.index_day):
@@ -281,7 +281,7 @@ def fetch_stock_info(code, format_='pd', collections=ms.client.flyshare.stock_in
         #data['date'] = pd.to_datetime(data['date'])
         return data.set_index('code', drop=False)
     except Exception as e:
-        log_info(e)
+        util_log_info(e)
         return None
 
 
@@ -289,4 +289,4 @@ def fetch_stock_name(code, collections=ms.client.flyshare.stock_list):
     try:
         return collections.find_one({'code': code})['name']
     except Exception as e:
-        log_info(e)
+        util_log_info(e)

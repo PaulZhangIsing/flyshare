@@ -19,7 +19,7 @@ from flyshare.fetch.query import (fetch_indexlist_day,
 from flyshare.util import (MongoDBSetting as ms,
                            util_date_stamp,
                            util_date_valid,
-                           log_info,
+                           util_log_info,
                            util_time_stamp)
 
 
@@ -52,7 +52,7 @@ def fetch_stock_day_adv(code, __start, __end, if_drop_index=False, collections=m
             __data['date'] = pd.to_datetime(__data['date'])
             return DataStruct_Stock_day(__data.query('volume>1').set_index(['date', 'code'], drop=if_drop_index))
         else:
-            log_info('something wrong with date')
+            util_log_info('something wrong with date')
     elif isinstance(code, list):
         return DataStruct_Stock_day(pd.concat(fetch_stocklist_day(code, [__start, __end])).query('volume>1').set_index(['date', 'code'], drop=if_drop_index))
 
@@ -83,7 +83,7 @@ def fetch_index_day_adv(code, __start, __end, if_drop_index=False, collections=m
             __data['date'] = pd.to_datetime(__data['date'])
             return DataStruct_Index_day(__data.query('volume>1').set_index(['date', 'code'], drop=if_drop_index))
         else:
-            log_info('something wrong with date')
+            util_log_info('something wrong with date')
 
     elif isinstance(code, list):
         return DataStruct_Index_day(pd.concat(fetch_indexlist_day(code, [__start, __end])).query('volume>1').set_index(['date', 'code'], drop=if_drop_index))

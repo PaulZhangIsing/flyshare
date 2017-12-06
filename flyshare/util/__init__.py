@@ -4,7 +4,7 @@ from .date import (date_stamp, now, today, is_today, get_date_today)
 
 from .csv import (save_csv)
 
-from .log import (log_debug,log_info,log_exception,log_critical)
+from .log import (util_log_debug, util_log_info, util_log_exception, util_log_critical)
 
 from .data_source import (is_datareader, is_flyshare, is_tushare, is_default, is_tdx)
 

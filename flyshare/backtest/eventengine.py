@@ -1,5 +1,5 @@
 # coding=utf-8
-from flyshare.util import log_info, log_debug
+from flyshare.util import util_log_info, util_log_debug
 
 
 class Backtest_Event_engine():
@@ -39,7 +39,7 @@ def sync_order_LM(cls, event_, order_=None, order_id_=None, trade_id_=None, mark
                     cls.account.order_queue = cls.account.order_queue.append(
                         order_.to_df())
                 else:
-                    log_info('FROM ENGINE: NOT ENOUGH MONEY:CASH  %s Order %s' % (
+                    util_log_info('FROM ENGINE: NOT ENOUGH MONEY:CASH  %s Order %s' % (
                         cls.account.cash_available, order_.amount * order_.price))
             elif order_.towards is -1:
 
@@ -49,8 +49,8 @@ def sync_order_LM(cls, event_, order_=None, order_id_=None, trade_id_=None, mark
                         order_.to_df())
 
         else:
-            log_info('Order Event Warning:%s in %s' %
-                     (event_, str(cls.now)))
+            util_log_info('Order Event Warning:%s in %s' %
+                          (event_, str(cls.now)))
 
     elif event_ in ['wait', 'live']:
         # 订单存活 不会导致任何状态改变
@@ -137,5 +137,5 @@ def sync_order_LM(cls, event_, order_=None, order_id_=None, trade_id_=None, mark
                 cls.account.order_queue[cls.account.order_queue['order_id'] ==
                                          order_id_]['amount'] -= market_message_['body']['bid']['amount']
     else:
-        log_info(
+        util_log_info(
             'EventEngine Warning: Unknown type of order event in  %s' % str(cls.now))

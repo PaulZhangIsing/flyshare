@@ -23,7 +23,7 @@
 # SOFTWARE.
 
 from flyshare.fetch import tushare
-from flyshare.util import util_date_stamp, MongoDBSetting as ms, util_date_valid, log_info
+from flyshare.util import util_date_stamp, MongoDBSetting as ms, util_date_valid, util_log_info
 from .save_tushare import SU_save_stock_info, SU_save_stock_list, SU_save_trade_date_all,save_stock_day_with_fqfactor
 import json
 import pymongo
@@ -62,7 +62,7 @@ def SU_update_stock_day(client=ms.client):
 
 
     for item in stock_list:
-        log_info('updating stock data -- %s' % item)
+        util_log_info('updating stock data -- %s' % item)
         # coll.find({'code':str(item)[0:6]}).count()
         # 先拿到最后一个记录的交易日期
         try:
@@ -72,8 +72,8 @@ def SU_update_stock_day(client=ms.client):
                                  coll_stock_day.find({'code': str(item)[0:6]}).count() - 1]['date'])
                 end_date = str(datetime.date.today())
 
-                log_info('trying updating from %s to %s' %
-                         (start_date, end_date))
+                util_log_info('trying updating from %s to %s' %
+                              (start_date, end_date))
                 data = tushare.fetch_get_stock_day(
                     str(item)[0:6], start_date, end_date,'02')[1::]
             else:
@@ -83,4 +83,4 @@ def SU_update_stock_day(client=ms.client):
 
             coll_stock_day.insert_many(data)
         except:
-            log_info('error in updating--- %s' % item)
+            util_log_info('error in updating--- %s' % item)

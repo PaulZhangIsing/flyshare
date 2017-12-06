@@ -1,7 +1,7 @@
 import datetime
 import random
 
-from flyshare.util import MongoDBSetting, log_info
+from flyshare.util import MongoDBSetting, util_log_info
 
 """
 需要一个可以被修改和继承的基类

@@ -2,7 +2,7 @@
 
 
 from flyshare.backtest import analysis
-from flyshare.util import log_exception, log_info
+from flyshare.util import util_log_exception, util_log_info
 import math
 import numpy
 import pandas
@@ -44,7 +44,7 @@ def risk_eva_account(message, days, client):
         return {""}
 
     except:
-        log_exception('error in risk evaluation')
+        util_log_exception('error in risk evaluation')
 
 
 def risk_account_freeCash_initAssets(freeCash, initAssets):
@@ -53,11 +53,11 @@ def risk_account_freeCash_initAssets(freeCash, initAssets):
         return result
     except:
         return 0
-        log_exception('error in risk_account_freeCash_initAssets')
-        log_exception('freeCash: ' + str(freeCash))
-        log_exception('currentAssets: ' + str(initAssets))
-        log_exception('expected result: ' +
-                      str(float(freeCash) / float(initAssets)))
+        util_log_exception('error in risk_account_freeCash_initAssets')
+        util_log_exception('freeCash: ' + str(freeCash))
+        util_log_exception('currentAssets: ' + str(initAssets))
+        util_log_exception('expected result: ' +
+                           str(float(freeCash) / float(initAssets)))
 
 
 def risk_account_freeCash_currentAssets(freeCash, currentAssets):
@@ -66,12 +66,12 @@ def risk_account_freeCash_currentAssets(freeCash, currentAssets):
         return result
     except:
         return 0
-        log_exception(
+        util_log_exception(
             'error in risk_account_freeCash_currentAssets')
-        log_exception('freeCash: ' + str(freeCash))
-        log_exception('currentAssets: ' + str(currentAssets))
-        log_exception('expected result: ' +
-                      str(float(freeCash) / float(currentAssets)))
+        util_log_exception('freeCash: ' + str(freeCash))
+        util_log_exception('currentAssets: ' + str(currentAssets))
+        util_log_exception('expected result: ' +
+                           str(float(freeCash) / float(currentAssets)))
 
 
 def risk_account_freeCash_frozenAssets(freeCash, frozenAssets):
@@ -80,11 +80,11 @@ def risk_account_freeCash_frozenAssets(freeCash, frozenAssets):
         return result
     except:
         return 0
-        log_exception('error in risk_account_freeCash_frozenAssets')
-        log_exception('freeCash: ' + str(freeCash))
-        log_exception('currentAssets: ' + str(frozenAssets))
-        log_exception('expected result: ' +
-                      str(float(freeCash) / float(frozenAssets)))
+        util_log_exception('error in risk_account_freeCash_frozenAssets')
+        util_log_exception('freeCash: ' + str(freeCash))
+        util_log_exception('currentAssets: ' + str(frozenAssets))
+        util_log_exception('expected result: ' +
+                           str(float(freeCash) / float(frozenAssets)))
 
 
 def risk_calc_assets(trade_history, assets):

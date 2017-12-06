@@ -118,8 +118,8 @@ def before_backtest():
 @B.load_strategy
 def strategy():
     global risk_position  # 在这个地方global变量 可以拿到before_backtest里面的东西
-    fs.log_info(B.account.sell_available)
-    fs.log_info('LEFT Cash: %s' % B.account.cash_available)
+    fs.util_log_info(B.account.sell_available)
+    fs.util_log_info('LEFT Cash: %s' % B.account.cash_available)
 
     #B.backtest_get_market_data_panel(QB,time,type_) 面板数据
     # time 如果不填 就是默认的B.now/B.today
@@ -127,16 +127,14 @@ def strategy():
     for item in B.strategy_stock_list:
         market_data=B.backtest_get_market_data(B, item, B.today)
         if market_data is not None:
-            fs.log_info(market_data.data)
+            fs.util_log_info(market_data.data)
         else:
-            fs.log_info('{} HAS NO DATA IN {}'.format(item, B.today))# 如果是分钟回测 用B.now
+            fs.util_log_info('{} HAS NO DATA IN {}'.format(item, B.today))# 如果是分钟回测 用B.now
 
         if B.backtest_hold_amount(B, item) == 0:  # 如果不持仓
-            B.backtest_send_order(
-                B, item, 10000, 1, {'bid_model': 'Market'})
+            B.backtest_send_order(B, item, 1000, 1, {'bid_model': 'Market'})
         elif B.backtest_sell_available(B, item) > 0:  #如果可卖数量大于0
-            B.backtest_send_order(
-                B, item, 10000, -1, {'bid_model': 'Market'})
+            B.backtest_send_order(B, item, 1000, -1, {'bid_model': 'Market'})
                 
 # #查询当前一只股票的持仓量
 # B.backtest_hold_amount(QB,code)

@@ -25,7 +25,7 @@
 import json
 import os
 from pytdx.reader import TdxMinBarReader
-from flyshare.util import MongoDBSetting as ms, log_info, util_time_stamp, util_date_stamp
+from flyshare.util import MongoDBSetting as ms, util_log_info, util_time_stamp, util_date_stamp
 
 
 def save_tdx_to_mongo(file_dir, client=ms.client):
@@ -37,7 +37,7 @@ def save_tdx_to_mongo(file_dir, client=ms.client):
                 (str(file)[0:2] == 'sz' and int(str(file)[2]) == 0) or \
                     (str(file)[0:2] == 'sz' and int(str(file)[2]) == 3):
 
-                log_info('Now_saving ' + str(file)
+                util_log_info('Now_saving ' + str(file)
                                  [2:8] + '\'s 5 min tick')
                 fname = file_dir + '\\' + file
                 df = reader.get_df(fname)

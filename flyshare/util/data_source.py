@@ -1,4 +1,4 @@
-
+#coding:utf-8
 
 def is_tushare(source):
     if source in ['tushare', 'ts', 'Tushare']:

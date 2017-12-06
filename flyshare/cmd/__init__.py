@@ -11,7 +11,7 @@ import subprocess
 
 
 from flyshare.backtest.analysis import backtest_analysis_start
-from flyshare.util import log_info, MongoDBSetting as ms, util_mongo_initial, util_mongo_make_index
+from flyshare.util import util_log_info, MongoDBSetting as ms, util_mongo_initial, util_mongo_make_index
 from flyshare import (save_stock_list, save_stock_min, save_stock_xdxr, save_stock_block, save_stock_info,
                       save_stock_day, save_index_day, save_index_min, save_etf_day, save_etf_min)
 
@@ -84,15 +84,23 @@ class CLI(cmd.Cmd):
                 os.popen('del back*csv')
                 os.popen('del *log')
             else:
-                os.popen('rm -rf back*csv')
-                os.popen('rm -rf  *log')
-                os.popen('find . -name "*.log" -type f -print0 | xargs -0 /bin/rm -f')
+                now_path = os.getcwd()
+                if now_path.endswith("flyshare"):
+                    os.popen('rm -rf back*csv')
+                    os.popen('rm -rf *log')
+                    os.popen('rm -rf .cache')
+                    os.popen('rm -rf build')
+                    os.popen('rm -rf dist')
+                    os.popen('rm -rf flyshare.egg-info')
+                    os.popen('find . -name "*.log" -type f -print0 | xargs -0 /bin/rm -f')
+                    os.popen('find . -name "*.pyc" -type f -print0 | xargs -0 /bin/rm -f')
+
 
         except:
             pass
 
     def help_clean(self):
-        log_info('Clean the old backtest reports and logs')
+        util_log_info('Clean the old backtest reports and logs')
 
     def do_exit(self, arg):     # 定义quit命令所执行的操作
         sys.exit(1)
@@ -168,7 +176,7 @@ class CLI(cmd.Cmd):
 
     def do_fn(self, arg):
         try:
-            log_info(eval(arg))
+            util_log_info(eval(arg))
         except:
             print(Exception)
 
@@ -176,7 +184,7 @@ class CLI(cmd.Cmd):
         return True
 
     def help(self):
-        log_info('fn+methods name')
+        util_log_info('fn+methods name')
 
 
 def sourcecpy(src, des):

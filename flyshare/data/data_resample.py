@@ -1,7 +1,7 @@
 # coding:utf-8
 
 
-from flyshare.util import util_make_min_index, log_info
+from flyshare.util import util_make_min_index, util_log_info
 from flyshare.fetch import fetch_get_stock_transaction
 from datetime import time
 import pandas as pd

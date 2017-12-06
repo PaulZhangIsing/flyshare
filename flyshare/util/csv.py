@@ -1,3 +1,5 @@
+#coding:utf-8
+
 import csv
 
 def save_csv(data, name, column=None, location = None):

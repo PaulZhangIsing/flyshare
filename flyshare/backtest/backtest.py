@@ -27,7 +27,7 @@ from flyshare.su.save_backtest import (save_account_message,
                                        SU_save_pnl_to_csv)
 
 from flyshare.util import (MongoDBSetting, util_get_real_date,
-                           log_exception, log_info,
+                           util_log_exception, util_log_info,
                            util_make_min_index, util_time_gap, util_date_gap,
                            util_to_json_from_pandas, trade_date_sse)
 from tabulate import tabulate
@@ -200,7 +200,7 @@ class Backtest():
 
     def __backtest_log_info(self, log):
         if self.backtest_print_log:
-            return log_info(log)
+            return util_log_info(log)
         else:
             pass
 
@@ -544,17 +544,26 @@ class Backtest():
         if isinstance(time, str):
             if len(time) == 10:
                 try:
-                    return self.market_data_hashable[(datetime.datetime.strptime(time, '%Y-%m-%d'), code)]
+                    try:
+                        return self.market_data_hashable[(datetime.datetime.strptime(time, '%Y-%m-%d'), code)]
+                    except:
+                        return self.outside_data_hashable[(datetime.datetime.strptime(time, '%Y-%m-%d'), code)]
                 except:
                     return None
             elif len(time) == 19:
                 try:
-                    return self.market_data_hashable[(datetime.datetime.strptime(time, '%Y-%m-%d %H:%M:%S'), code)]
+                    try:
+                        return self.market_data_hashable[(datetime.datetime.strptime(time, '%Y-%m-%d %H:%M:%S'), code)]
+                    except:
+                        return self.outside_data_hashable[(datetime.datetime.strptime(time, '%Y-%m-%d %H:%M:%S'), code)]
                 except:
                     return None
         else:
             try:
-                return self.market_data_hashable[(time, code)]
+                try:
+                    return self.market_data_hashable[(time, code)]
+                except:
+                    return self.outside_data_hashable[(time, code)]
             except:
                 return None
 
@@ -610,8 +619,8 @@ class Backtest():
 
     def backtest_hold_amount(self, __code):
         try:
-            return pd.DataFrame(self.account.hold[1::], columns=self.account.hold[0]).set_index(
-                'code', drop=False)['amount'].groupby('code').sum()[__code]
+            return pd.DataFrame(self.account.hold[1::],
+                                columns=self.account.hold[0]).set_index('code', drop=False)['amount'].groupby('code').sum()[__code]
         except:
             return 0
 
@@ -746,7 +755,9 @@ class Backtest():
             if _cls.backtest_type in ['day', 'd', 'index_day']:
 
                 func(*arg, **kwargs)  # 发委托单
+
                 _cls.__sell_from_order_queue(_cls)
+
             elif _cls.backtest_type in ['1min', '5min', '15min', '30min', '60min', 'index_1min', 'index_5min', 'index_15min', 'index_30min', 'index_60min']:
                 if _cls.backtest_type in ['1min', 'index_1min']:
                     type_ = '1min'

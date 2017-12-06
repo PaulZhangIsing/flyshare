@@ -50,7 +50,7 @@ def get_stock_basics(date=None, data_source = 'tushare'):
                timeToMarket
     """
     if util.is_tushare(data_source):
-        util.log_debug('Tushare Data:')
+        util.util_log_debug('Tushare Data:')
         return ts.get_stock_basics(date=date)
     elif util.is_flyshare(data_source):
         url = vars.DATA_SOURCE + '/stockbasics'

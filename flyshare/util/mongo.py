@@ -4,7 +4,7 @@ import subprocess
 
 import pandas as pd
 import pymongo
-from flyshare.util import MongoDBSetting, log_info
+from flyshare.util import MongoDBSetting, util_log_info
 
 
 def util_mongo_initial(db=MongoDBSetting.client.quantaxis):
@@ -27,9 +27,9 @@ def util_mongo_make_index(db=MongoDBSetting.client.quantaxis):
 
 
 def util_mongo_status(db=MongoDBSetting.client.quantaxis):
-    log_info(db.collection_names())
-    log_info(db.last_status())
-    log_info(subprocess.call('mongostat', shell=True))
+    util_log_info(db.collection_names())
+    util_log_info(db.last_status())
+    util_log_info(subprocess.call('mongostat', shell=True))
 
 
 def util_mongo_infos(db=MongoDBSetting.client.quantaxis):
