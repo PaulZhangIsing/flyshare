@@ -9,7 +9,7 @@ Flyshare is a Pythonic data sharing and algorithmic trading library.
 ## Getting Startted
 ### [Authentication](http://www.asiabigdata.org/registration/)
 
-Get your free API key to start using the data collected from stock markets like China, Hong Kong, USA, etc.
+Get your free API key to start using the data collected from stock markets such as China, Hong Kong, USA, etc.
 
 You can find your API key on your [account settings page](http://www.asiabigdata.org/login/).
 

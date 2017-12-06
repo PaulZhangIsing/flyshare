@@ -11,10 +11,9 @@ import subprocess
 
 
 from flyshare.backtest.analysis import backtest_analysis_start
-from flyshare.util import log_info, Setting, util_mongo_initial, util_mongo_make_index
+from flyshare.util import log_info, MongoDBSetting as ms, util_mongo_initial, util_mongo_make_index
 from flyshare import (save_stock_list, save_stock_min, save_stock_xdxr, save_stock_block, save_stock_info,
-                      save_stock_day, save_index_day, save_index_min, save_etf_day, save_etf_min,
-                      update_stock_day)
+                      save_stock_day, save_index_day, save_index_min, save_etf_day, save_etf_min)
 
 from flyshare import *
 from flyshare import __version__
@@ -23,6 +22,7 @@ from flyshare import __version__
 class CLI(cmd.Cmd):
 
     def __init__(self):
+        print("Welcome to Flyshare!\n")
         cmd.Cmd.__init__(self)
         self.prompt = 'flyshare> '    # 定义命令行提示符
 
@@ -33,7 +33,7 @@ class CLI(cmd.Cmd):
         print (sub_cmd.communicate()[0])
 
     def do_version(self, arg):
-        log_info(__version__)
+        print(__version__)
 
     def help_version(self):
         print("syntax: version [message]",)
@@ -42,11 +42,11 @@ class CLI(cmd.Cmd):
     #@click.command()
     #@click.option('--e', default=1, help='Number of greetings.')
     def do_examples(self, arg):
-        log_info('flyshare example')
+        print('flyshare example')
         now_path = os.getcwd()
         project_dir = os.path.dirname(os.path.abspath(__file__))
         file_dir = ''
-        log_info('Copy a example strategy from :  ' + project_dir)
+        print('Copy a example strategy from :  ' + project_dir)
         if platform.system() == 'Windows':
             file_dir = project_dir + '\\backtest_example.py'
         elif platform.system() in ['Linux', 'Darwin']:
@@ -54,7 +54,7 @@ class CLI(cmd.Cmd):
 
         shutil.copy(file_dir, now_path)
 
-        log_info('Successfully generate a example strategy in :  ' + now_path)
+        print('Successfully generate a example strategy in :  ' + now_path)
 
     def help_examples(self):
         print('make a sample backtest framework')
@@ -86,6 +86,7 @@ class CLI(cmd.Cmd):
             else:
                 os.popen('rm -rf back*csv')
                 os.popen('rm -rf  *log')
+                os.popen('find . -name "*.log" -type f -print0 | xargs -0 /bin/rm -f')
 
         except:
             pass
@@ -108,8 +109,7 @@ class CLI(cmd.Cmd):
         else:
             arg = arg.split(' ')
             if len(arg) == 1 and arg[0] == 'all':
-                Setting.client.flyshare.user_list.insert(
-                    {'username': 'admin', 'password': 'admin'})
+                ms.client.flyshare.user_list.insert({'username': 'admin', 'password': 'admin'})
                 save_stock_day('tdx')
                 save_stock_xdxr('tdx')
                 #save_stock_min('tdx')
@@ -121,8 +121,7 @@ class CLI(cmd.Cmd):
                 save_stock_block('tdx')
                 #save_stock_info('tdx')
             elif len(arg) == 1 and arg[0] == 'day':
-                Setting.client.flyshare.user_list.insert(
-                    {'username': 'admin', 'password': 'admin'})
+                ms.client.flyshare.user_list.insert({'username': 'admin', 'password': 'admin'})
                 save_stock_day('tdx')
                 save_stock_xdxr('tdx')
                 #save_stock_min('tdx')
@@ -133,8 +132,7 @@ class CLI(cmd.Cmd):
                 save_stock_list('tdx')
                 save_stock_block('tdx')
             elif len(arg) == 1 and arg[0] == 'min':
-                Setting.client.flyshare.user_list.insert(
-                    {'username': 'admin', 'password': 'admin'})
+                ms.client.flyshare.user_list.insert({'username': 'admin', 'password': 'admin'})
                 #save_stock_day('tdx')
                 save_stock_xdxr('tdx')
                 save_stock_min('tdx')
@@ -145,8 +143,7 @@ class CLI(cmd.Cmd):
                 save_stock_list('tdx')
                 save_stock_block('tdx')
             elif len(arg) == 1 and arg[0] in ['X','x']:
-                Setting.client.flyshare.user_list.insert(
-                    {'username': 'admin', 'password': 'admin'})
+                ms.client.flyshare.user_list.insert({'username': 'admin', 'password': 'admin'})
                 save_stock_day('tdx')
                 save_stock_xdxr('tdx')
                 save_stock_min('tdx')
@@ -160,20 +157,23 @@ class CLI(cmd.Cmd):
             else:
                 for i in arg:
                     if i == 'insert_user':
-                        if Setting.client.flyshare.user_list.find({'username': 'admin'}).count() == 0:
-                            Setting.client.flyshare.user_list.insert(
+                        if ms.client.flyshare.user_list.find({'username': 'admin'}).count() == 0:
+                            ms.client.flyshare.user_list.insert(
                                 {'username': 'admin', 'password': 'admin'})
                     else:
                         eval("save_%s('tdx')" % (i))
 
     def help_save(self):
-        log_info('Save all the stock data from pytdx')
+        print('Save all the stock data from pytdx')
 
     def do_fn(self, arg):
         try:
             log_info(eval(arg))
         except:
             print(Exception)
+
+    def do_EOF(self,line):
+        return True
 
     def help(self):
         log_info('fn+methods name')
