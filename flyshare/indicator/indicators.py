@@ -2,7 +2,7 @@
 
 """
 
-***********  之后会被合并到QAIndicator_Dataframe里面    ***********
+***********  之后会被合并到indicator_Dataframe里面    ***********
 
 
 flyshare  指标计算

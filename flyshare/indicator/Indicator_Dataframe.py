@@ -43,7 +43,22 @@ DataFrame 类
 
 
 def indicator_OSC(DataFrame, N, M):
-    '变动速率线'
+    """变动速率线
+
+    :param DataFrame: 数据
+    :param N: 统计天数
+    :param M: 统计天数
+    :return: osc maosc
+
+    用法注释：
+
+    OSC 以100 为中轴线，OSC>100 为多头市场；OSC<100 为空头市场；
+    OSC 向上交叉其平均线时，买进；OSC 向下交叉其平均线时卖出；
+    OSC 在高水平或低水平与股价产生背离时，应注意股价随时有反转的可能；
+    OSC 的超买超卖界限值随个股不同而不同，使用者应自行调整
+
+    """
+
     C = DataFrame['close']
     OS = (C - MA(C, N)) * 100
     MAOSC = EMA(OS, M)
@@ -53,7 +68,21 @@ def indicator_OSC(DataFrame, N, M):
 
 
 def indicator_BBI(DataFrame, N1, N2, N3, N4):
-    '多空指标'
+    """多空指标
+
+    :param DataFrame: 数据
+    :param N1: 统计天数
+    :param N2: 统计天数
+    :param N3: 统计天数
+    :param N4: 统计天数
+    :return: BBI
+
+    用法注释：
+
+    1.股价位于BBI 上方，视为多头市场；
+    2.股价位于BBI 下方，视为空头市场。
+
+    """
     C = DataFrame['close']
     bbi = (MA(C, N1) + MA(C, N2) + MA(C, N3) + MA(C, N4)) / 4
     DICT = {'BBI': bbi}
@@ -62,7 +91,27 @@ def indicator_BBI(DataFrame, N1, N2, N3, N4):
 
 
 def indicator_PBX(DataFrame, N1, N2, N3, N4, N5, N6):
-    '瀑布线'
+    """ 瀑布线 PBX
+
+    :param DataFrame:
+    :param N1: 统计天数
+    :param N2: 统计天数
+    :param N3: 统计天数
+    :param N4: 统计天数
+    :param N5: 统计天数
+    :param N6: 统计天数
+    :return: PBX
+
+    用法注释：
+
+    股价上升穿越轨道线上限时，回档机率大；
+    股价下跌穿越轨道线下限时，反弹机率大；
+    股价波动于轨道线内时，代表常态行情，此时，超买超卖指标可发挥效用；
+    股价波动于轨道线外时，代表脱轨行情，此时，应使用趋势型指标。
+
+    """
+
+    ''
     C = DataFrame['close']
     PBX1 = (EMA(C, N1) + EMA(C, 2 * N1) + EMA(C, 4 * N1)) / 3
     PBX2 = (EMA(C, N2) + EMA(C, 2 * N2) + EMA(C, 4 * N2)) / 3
@@ -82,7 +131,15 @@ def indicator_BOLL(DataFrame, N):
     其英文全称是“Bolinger Bands”，是研判股价运动趋势的一种中长期技术分析工具
     :param DataFrame:
     :param N:
-    :return:
+    :return: 上轨线UB 、中轨线BOLL、下轨线LB 的值
+
+    用法注释：
+
+    1.股价上升穿越布林线上限时，回档机率大；
+    2.股价下跌穿越布林线下限时，反弹机率大；
+    3.布林线震动波带变窄时，表示变盘在即；
+    4.BOLL须配合BB 、WIDTH 使用
+
     """
     C = DataFrame['close']
     boll = MA(C, N)
@@ -99,7 +156,14 @@ def indicator_ROC(DataFrame, N, M):
     :param DataFrame:
     :param N:
     :param M:
-    :return:
+    :return: ROC
+
+    用法注释：
+
+    1.本指标的超买超卖界限值随个股不同而不同，使用者应自行调整；
+    2.本指标的超买超卖范围，一般介于±6.5之间；
+    3.本指标用法请参考MTM 指标用法；
+    4.本指标可设参考线。
     """
     C = DataFrame['close']
     roc = 100 * (C - REF(C, N)) / REF(C, N)
@@ -118,6 +182,18 @@ def indicator_MTM(DataFrame, N, M):
     :param N:
     :param M:
     :return:
+
+    用法注释：
+
+    MTM线　:当日收盘价与N日前的收盘价的差；
+    MTMMA线:对上面的差值求N日移动平均；
+    参数：N 间隔天数，也是求移动平均的天数，一般取6用法：
+    1.MTM从下向上突破MTMMA，买入信号；
+    2.MTM从上向下跌破MTMMA，卖出信号；
+    3.股价续创新高，而MTM未配合上升，意味上涨动力减弱；
+    4.股价续创新低，而MTM未配合下降，意味下跌动力减弱；
+    5.股价与MTM在低位同步上升，将有反弹行情；反之，从高位同步下降，将有回落走势。
+
     """
 
     C = DataFrame['close']
@@ -207,6 +283,14 @@ def indicator_WR(DataFrame, N, N1):
     :param N:
     :param N1:
     :return:
+
+    方法注释：
+
+    WR波动于0 - 100，100置于顶部，0置于底部。
+    本指标以50为中轴线，高于50视为股价转强；低于50视为股价转弱
+    本指标高于20后再度向下跌破20，卖出；低于80后再度向上突破80，买进。
+    WR连续触底3 - 4次，股价向下反转机率大；连续触顶3 - 4次，股价向上反转机率大。
+
     """
 
     HIGH = DataFrame['high']
@@ -229,6 +313,14 @@ def indicator_BIAS(DataFrame, N1, N2, N3):
     :param N2:
     :param N3:
     :return:
+
+
+    用法注释：
+
+    1.本指标的乖离极限值随个股不同而不同，使用者可利用参考线设定，固定其乖离范围；
+    2.当股价的正乖离扩大到一定极限时，股价会产生向下拉回的作用力；
+    3.当股价的负乖离扩大到一定极限时，股价会产生向上拉升的作用力；
+    4.本指标可设参考线。
     """
 
     CLOSE = DataFrame['close']
